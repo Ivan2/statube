@@ -1,0 +1,16 @@
+package ru.sis.statube.additional
+
+import android.content.Context
+import android.graphics.drawable.Drawable
+import androidx.core.content.ContextCompat
+import java.util.*
+
+fun Context.color(colorId: Int): Int = ContextCompat.getColor(this, colorId)
+
+fun Context.drawable(drawableId: Int): Drawable? = ContextCompat.getDrawable(this, drawableId)
+
+fun Context.string(stringId: Int): String = this.getString(stringId)
+
+fun Context.string(stringId: Int, vararg args: Any): String = this.getString(stringId).format(Locale.ENGLISH, *args)
+
+fun Context.pxFromDp(dp: Float): Float = dp * this.resources.displayMetrics.density
