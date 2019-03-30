@@ -103,6 +103,52 @@
             android:layout_marginTop="8dp"
             android:textSize="12sp"/>
 
+        <RelativeLayout
+            android:id="@+id/vMoveToYoutubeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_marginTop="8dp"
+            android:textSize="12sp">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/icon_youtube"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="32dp"
+                android:textSize="14sp"
+                android:text="Перейти на Youtube"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/vMoveToStatisticsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_marginTop="8dp"
+            android:textSize="12sp">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_clear_black_24dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="32dp"
+                android:textSize="14sp"
+                android:text="Статистика"/>
+
+        </RelativeLayout>
+
     </LinearLayout>
 
 </LinearLayout>

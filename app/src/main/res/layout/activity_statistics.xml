@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".presentation.screens.statistics.StatisticsActivity">
+
+    <TextView
+        android:id="@+id/vTitleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textStyle="bold"
+        android:textSize="18sp"/>
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:visibility="gone">
+
+        <TableRow>
+
+            <TextView
+                style="@style/TableColumn0"/>
+
+            <TextView
+                style="@style/TableValueColumns"
+                android:textStyle="normal"
+                android:textSize="16sp"
+                android:text="Подписчиков"/>
+
+            <TextView
+                style="@style/TableValueColumns"
+                android:textStyle="normal"
+                android:textSize="16sp"
+                android:text="Просмотров"/>
+
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                style="@style/TableColumn0"
+                android:text="Среднее\nза день"/>
+
+            <TextView
+                android:id="@+id/vAvgDailySubsTextView"
+                style="@style/TableValueColumns"/>
+
+            <TextView
+                android:id="@+id/vAvgDailyViewsTextView"
+                style="@style/TableValueColumns"/>
+
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                style="@style/TableColumn0"
+                android:text="14 дней"/>
+
+            <TextView
+                android:id="@+id/vSubs14TextView"
+                style="@style/TableValueColumns"/>
+
+            <TextView
+                android:id="@+id/vViews14TextView"
+                style="@style/TableValueColumns"/>
+
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                style="@style/TableColumn0"
+                android:text="30 дней"/>
+
+            <TextView
+                android:id="@+id/vSubs30TextView"
+                style="@style/TableValueColumns"/>
+
+            <TextView
+                android:id="@+id/vViews30TextView"
+                style="@style/TableValueColumns"/>
+
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                style="@style/TableColumn0"
+                android:text="60 дней"/>
+
+            <TextView
+                android:id="@+id/vSubs60TextView"
+                style="@style/TableValueColumns"/>
+
+            <TextView
+                android:id="@+id/vViews60TextView"
+                style="@style/TableValueColumns"/>
+
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                style="@style/TableColumn0"
+                android:text="90 дней"/>
+
+            <TextView
+                android:id="@+id/vSubs90TextView"
+                style="@style/TableValueColumns"/>
+
+            <TextView
+                android:id="@+id/vViews90TextView"
+                style="@style/TableValueColumns"/>
+
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                style="@style/TableColumn0"
+                android:text="180 дней"/>
+
+            <TextView
+                android:id="@+id/vSubs180TextView"
+                style="@style/TableValueColumns"/>
+
+            <TextView
+                android:id="@+id/vViews180TextView"
+                style="@style/TableValueColumns"/>
+
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                style="@style/TableColumn0"
+                android:text="365 дней"/>
+
+            <TextView
+                android:id="@+id/vSubs365TextView"
+                style="@style/TableValueColumns"/>
+
+            <TextView
+                android:id="@+id/vViews365TextView"
+                style="@style/TableValueColumns"/>
+
+        </TableRow>
+
+    </TableLayout>
+
+    <co.ceryle.radiorealbutton.RadioRealButtonGroup
+        android:id="@+id/vChartTypeButtonGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:rrbg_backgroundColor="@color/white"
+        app:rrbg_animateSelector_duration="200"
+        app:rrbg_animateSelector="linear"
+        app:rrbg_selectorFullSize="true"
+        app:rrbg_borderColor="@color/colorPrimary"
+        app:rrbg_borderSize="1dp"
+        app:rrbg_dividerColor="@color/colorPrimary"
+        app:rrbg_dividerSize="1dp"
+        app:rrbg_dividerPadding="0dp"
+        app:rrbg_radius="6dp"
+        app:rrbg_selectorColor="@color/colorPrimary"
+        app:rrbg_buttonsPadding="2dp"
+        app:rrbg_bottomLineSize="0dp"
+        app:rrbg_checkedPosition="0">
+
+        <co.ceryle.radiorealbutton.RadioRealButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:rrb_ripple="false"
+            app:rrb_textGravity="center"
+            app:rrb_textColor="@color/colorPrimary"
+            app:rrb_textColorTo="@color/white"
+            app:rrb_textSize="12sp"
+            app:rrb_text="Абсолютные\nзначения"/>
+
+        <co.ceryle.radiorealbutton.RadioRealButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:rrb_ripple="false"
+            app:rrb_textGravity="center"
+            app:rrb_textColor="@color/colorPrimary"
+            app:rrb_textColorTo="@color/white"
+            app:rrb_textSize="12sp"
+            app:rrb_text="Относительные\nзначения"/>
+
+    </co.ceryle.radiorealbutton.RadioRealButtonGroup>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <CheckBox
+                android:id="@+id/vSubsCheckBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:checked="true"
+                android:text="Подписки"/>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <CheckBox
+                android:id="@+id/vViewsCheckBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:checked="true"
+                android:text="Просмотры"/>
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/vLineChart"
+        android:layout_width="match_parent"
+        android:layout_height="300dp" />
+
+</LinearLayout>

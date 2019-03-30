@@ -4,6 +4,7 @@
 /build
 /captures
 *.iml
+*config.json
 .DS_Store
 .gradle
 .externalNativeBuild

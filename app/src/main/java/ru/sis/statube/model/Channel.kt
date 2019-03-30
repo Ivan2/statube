@@ -17,7 +17,7 @@ class Channel : Serializable {
 
     var country: String? = null
 
-    var statistics: Statistics? = null
+    var statistics: ChannelStatistics? = null
 
     var brandingSettings: BrandingSettings? = null
 

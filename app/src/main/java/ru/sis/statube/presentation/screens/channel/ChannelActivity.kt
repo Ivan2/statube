@@ -11,6 +11,7 @@ import ru.sis.statube.R
 import ru.sis.statube.additional.CHANNEL_DATA_KEY
 import ru.sis.statube.additional.YOUTUBE_OPEN_CHANNEL_URL
 import ru.sis.statube.model.Channel
+import ru.sis.statube.presentation.screens.statistics.StatisticsActivity
 
 class ChannelActivity : AppCompatActivity() {
 
@@ -35,7 +36,7 @@ class ChannelActivity : AppCompatActivity() {
 
         update(channel)
 
-        presenter.loadChannel(channel.id) { updatedChannel ->
+        presenter.loadChannel(this, channel.id) { updatedChannel ->
             if (updatedChannel != null)
                 update(updatedChannel)
         }
@@ -113,9 +114,14 @@ class ChannelActivity : AppCompatActivity() {
             vKeywordsTextView.text = keywords ?: ""
         }
 
-        vImageView.setOnClickListener {
+        vMoveToYoutubeLayout.setOnClickListener {
             val url = String.format(YOUTUBE_OPEN_CHANNEL_URL, channel.id)
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            startActivity(intent)
+        }
+        vMoveToStatisticsLayout.setOnClickListener {
+            val intent = Intent(this, StatisticsActivity::class.java)
+            intent.putExtra(CHANNEL_DATA_KEY, channel)
             startActivity(intent)
         }
     }

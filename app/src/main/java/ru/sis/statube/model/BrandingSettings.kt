@@ -1,6 +1,8 @@
 package ru.sis.statube.model
 
-class BrandingSettings {
+import java.io.Serializable
+
+class BrandingSettings : Serializable {
 
     var keywords: String? = null
 

@@ -22,11 +22,11 @@ class ChannelsActivity : AppCompatActivity() {
         vRecyclerView.layoutManager = LinearLayoutManager(this@ChannelsActivity)
 
         vSearchButton.setOnClickListener {
-            presenter.searchChannels(vSearchEditText.text.toString()) { channels ->
+            presenter.searchChannels(this, vSearchEditText.text.toString()) { channels ->
                 pageToken = channels.nextPageToken
 
                 vRecyclerView.adapter = ChannelsListAdapter(channels.channelList, { addChannels ->
-                    presenter.searchChannels(vSearchEditText.text.toString(), pageToken) { channels ->
+                    presenter.searchChannels(this, vSearchEditText.text.toString(), pageToken) { channels ->
                         pageToken = channels.nextPageToken
                         addChannels(channels.channelList)
                     }
