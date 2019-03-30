@@ -1,13 +1,13 @@
 package ru.sis.statube.presentation.screens.channels
 
 import android.content.Intent
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_channels.*
 import ru.sis.statube.R
-import ru.sis.statube.additional.YOUTUBE_OPEN_CHANNEL_URL
+import ru.sis.statube.additional.CHANNEL_DATA_KEY
+import ru.sis.statube.presentation.screens.channel.ChannelActivity
 
 class ChannelsActivity : AppCompatActivity() {
 
@@ -31,9 +31,9 @@ class ChannelsActivity : AppCompatActivity() {
                         addChannels(channels.channelList)
                     }
                 }, { channel ->
-                    val url = String.format(YOUTUBE_OPEN_CHANNEL_URL, channel.id)
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                    startActivity(intent);
+                    val intent = Intent(this, ChannelActivity::class.java)
+                    intent.putExtra(CHANNEL_DATA_KEY, channel)
+                    startActivity(intent)
                 })
             }
         }

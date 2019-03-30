@@ -25,6 +25,10 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".presentation.screens.channel.ChannelActivity"
+            android:screenOrientation="portrait"/>
+
     </application>
 
 </manifest>

@@ -1,8 +1,8 @@
-package ru.sis.statube.net.response.json.channel
+package ru.sis.statube.net.response.json.search
 
 import com.google.gson.annotations.SerializedName
 
-class ChannelIdResponse {
+class ChannelSearchIdResponse {
 
     @SerializedName("channelId")
     var id: String? = null

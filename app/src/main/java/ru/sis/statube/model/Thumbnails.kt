@@ -1,6 +1,8 @@
 package ru.sis.statube.model
 
-class Thumbnails {
+import java.io.Serializable
+
+class Thumbnails : Serializable {
 
     var default: Thumbnail? = null
 

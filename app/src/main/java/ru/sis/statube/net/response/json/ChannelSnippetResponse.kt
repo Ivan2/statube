@@ -1,4 +1,4 @@
-package ru.sis.statube.net.response.json.channel
+package ru.sis.statube.net.response.json
 
 import com.google.gson.annotations.SerializedName
 import ru.sis.statube.net.response.json.ThumbnailsResponse
@@ -25,5 +25,8 @@ class ChannelSnippetResponse {
 
     @SerializedName("liveBroadcastContent")
     var liveBroadcastContent: String? = null
+
+    @SerializedName("country")
+    var country: String? = null
 
 }

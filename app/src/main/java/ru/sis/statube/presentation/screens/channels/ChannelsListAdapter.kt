@@ -67,6 +67,7 @@ class ChannelsListAdapter(
                 Glide.with(itemView.context)
                     .load(img)
                     //.placeholder(R.drawable.product_default)
+                    .centerCrop()
                     .dontAnimate()
                     .into(itemView.vImageView)
             }

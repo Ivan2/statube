@@ -1,6 +1,7 @@
-package ru.sis.statube.net.response.json.channel
+package ru.sis.statube.net.response.json.search
 
 import com.google.gson.annotations.SerializedName
+import ru.sis.statube.net.response.json.ChannelSnippetResponse
 
 class ChannelSearchResponse {
 
@@ -8,7 +9,7 @@ class ChannelSearchResponse {
     var kind: String? = null
 
     @SerializedName("id")
-    var id: ChannelIdResponse? = null
+    var id: ChannelSearchIdResponse? = null
 
     @SerializedName("snippet")
     var snippet: ChannelSnippetResponse? = null

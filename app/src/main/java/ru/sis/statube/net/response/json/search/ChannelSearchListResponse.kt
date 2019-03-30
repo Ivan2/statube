@@ -1,4 +1,4 @@
-package ru.sis.statube.net.response.json.channel
+package ru.sis.statube.net.response.json.search
 
 import com.google.gson.annotations.SerializedName
 

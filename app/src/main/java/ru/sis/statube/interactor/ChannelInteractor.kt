@@ -8,7 +8,9 @@ import ru.sis.statube.additional.YOUTUBE_DATA_API_URL
 import ru.sis.statube.model.Channel
 import ru.sis.statube.model.Channels
 import ru.sis.statube.net.OkRequest
-import ru.sis.statube.net.response.json.channel.ChannelSearchListResponse
+import ru.sis.statube.net.response.json.channel.ChannelListResponse
+import ru.sis.statube.net.response.json.search.ChannelSearchListResponse
+import ru.sis.statube.net.response.mapper.ChannelResponseMapper
 import ru.sis.statube.net.response.mapper.ChannelSearchResponseMapper
 
 class ChannelInteractor {
@@ -23,14 +25,15 @@ class ChannelInteractor {
         }
     }
 
-    private val searchPath = "search?key=%s&q=%s&part=id,snippet&order=relevance&maxResults=30&type=channel"
-    private val searchWithTokenPath = "search?key=%s&q=%s&part=id,snippet&order=relevance&maxResults=30&type=channel&pageToken=%s"
+    private val searchPath = "search?key=$YOUTUBE_DATA_API_KEY&q=%s&part=id,snippet&order=relevance&maxResults=30&type=channel"
+    private val searchWithTokenPath = "search?key=$YOUTUBE_DATA_API_KEY&q=%s&part=id,snippet&order=relevance&maxResults=30&type=channel&pageToken=%s"
+    private val channelPath = "channels?key=$YOUTUBE_DATA_API_KEY&id=%s&part=snippet,statistics,brandingSettings"
 
     fun searchAsync(text: String, pageToken: String? = null) = GlobalScope.async {
         val url = if (pageToken == null)
-            "$YOUTUBE_DATA_API_URL${String.format(searchPath, YOUTUBE_DATA_API_KEY, text)}"
+            "$YOUTUBE_DATA_API_URL${String.format(searchPath, text)}"
         else
-            "$YOUTUBE_DATA_API_URL${String.format(searchWithTokenPath, YOUTUBE_DATA_API_KEY, text, pageToken)}"
+            "$YOUTUBE_DATA_API_URL${String.format(searchWithTokenPath, text, pageToken)}"
         val response = OkRequest.getInstance().get(url)
         val channelSearchListResponse = Gson().fromJson(response, ChannelSearchListResponse::class.java)
 
@@ -46,6 +49,22 @@ class ChannelInteractor {
             this.nextPageToken = channelSearchListResponse.nextPageToken
             this.channelList = channelList
         }
+    }
+
+    fun loadAsync(channelId: String) = GlobalScope.async {
+        val url = "$YOUTUBE_DATA_API_URL${String.format(channelPath, channelId)}"
+        val response = OkRequest.getInstance().get(url)
+        val channelListResponse = Gson().fromJson(response, ChannelListResponse::class.java)
+
+        val mapper = ChannelResponseMapper()
+        val channelList = ArrayList<Channel>()
+        channelListResponse.items?.forEach { channelResponse ->
+            mapper.map(channelResponse)?.let { channel ->
+                channelList.add(channel)
+            }
+        }
+
+        channelList.firstOrNull()
     }
 
 }
