@@ -12,7 +12,9 @@ class ChannelSearchResponseMapper {
         channel.id = from.snippet?.channelId ?: return null
         channel.title = from.snippet?.channelTitle
         channel.description = from.snippet?.description
-        channel.thumbnails = ThumbnailsResponseMapper().map(from.snippet?.thumbnails)
+        channel.thumbnail = from.snippet?.thumbnails?.let {
+            it.high?.url ?: it.medium?.url ?: it.default?.url
+        }
         return channel
     }
 

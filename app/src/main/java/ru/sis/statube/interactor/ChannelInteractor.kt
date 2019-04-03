@@ -5,6 +5,7 @@ import com.google.gson.Gson
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import ru.sis.statube.additional.YOUTUBE_DATA_API_URL
+import ru.sis.statube.db.ChannelStore
 import ru.sis.statube.model.Channel
 import ru.sis.statube.model.Channels
 import ru.sis.statube.net.OkRequest
@@ -46,6 +47,11 @@ class ChannelInteractor : Interactor() {
             }
         }
 
+        val store = ChannelStore.getInstance()
+        channelList.forEach { channel ->
+            channel.isFavourite = store.getChannel(channel.id) != null
+        }
+
         Channels().apply {
             this.nextPageToken = channelSearchListResponse.nextPageToken
             this.channelList = channelList
@@ -66,7 +72,18 @@ class ChannelInteractor : Interactor() {
             }
         }
 
-        channelList.firstOrNull()
+        channelList.firstOrNull()?.apply {
+            this.isFavourite = ChannelStore.getInstance().getChannel(this.id) != null
+        }
+    }
+
+    fun changeFavouriteAsync(channel: Channel) = GlobalScope.async {
+        if (channel.isFavourite) {
+            ChannelStore.getInstance().saveChannel(channel)
+        } else {
+            ChannelStore.getInstance().deleteChannel(channel)
+        }
+        Unit
     }
 
 }

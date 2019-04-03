@@ -8,4 +8,7 @@
     <color name="red">#FF0000</color>
 
     <color name="lightGray">#AAAAAA</color>
+
+    <color name="favourite">#CC0000</color>
+    <color name="not_favourite">#AAAAAA</color>
 </resources>

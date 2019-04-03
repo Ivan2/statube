@@ -12,11 +12,14 @@ import ru.sis.statube.R
 import ru.sis.statube.additional.BANNER_IMAGE_FILE_NAME
 import ru.sis.statube.additional.CHANNEL_DATA_KEY
 import ru.sis.statube.additional.YOUTUBE_OPEN_CHANNEL_URL
+import ru.sis.statube.additional.color
 import ru.sis.statube.model.Channel
 import ru.sis.statube.presentation.screens.statistics.StatisticsActivity
 import java.io.File
 
 class ChannelActivity : AppCompatActivity() {
+
+    private val presenter = ChannelPresenter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,11 +41,8 @@ class ChannelActivity : AppCompatActivity() {
             vBannerImageView.visibility = View.GONE
         }
 
-        val imgUrl = channel.thumbnails?.let { thumbnails ->
-            thumbnails.high?.url ?: thumbnails.medium?.url ?: thumbnails.default?.url
-        }
         Glide.with(this)
-            .load(imgUrl)
+            .load(channel.thumbnail)
             //.placeholder(R.drawable.product_default)
             .circleCrop()
             .dontAnimate()
@@ -53,10 +53,17 @@ class ChannelActivity : AppCompatActivity() {
         vDescriptionTextView.text = channel.description ?: ""
         vPublishedAtTextView.text = channel.publishedAt?.toString("dd.MM.YYYY") ?: ""
         vCountryTextView.text = channel.country ?: ""
-        vViewCountTextView.text = channel.statistics?.viewCount ?: ""
-        vSubscriberCountTextView.text = channel.statistics?.subscriberCount ?: ""
-        vVideoCountTextView.text = channel.statistics?.videoCount ?: ""
-        vKeywordsTextView.text = channel.brandingSettings?.keywords ?: ""
+        vViewCountTextView.text = channel.viewCount ?: ""
+        vSubscriberCountTextView.text = channel.subscriberCount ?: ""
+        vVideoCountTextView.text = channel.videoCount ?: ""
+        vKeywordsTextView.text = channel.keywords ?: ""
+        updateFavouriteButton(channel.isFavourite)
+
+        vFavouriteButton.setOnClickListener {
+            channel.isFavourite = !channel.isFavourite
+            presenter.changeFavourite(channel)
+            updateFavouriteButton(channel.isFavourite)
+        }
 
         vMoveToYoutubeLayout.setOnClickListener {
             val url = String.format(YOUTUBE_OPEN_CHANNEL_URL, channel.id)
@@ -67,6 +74,16 @@ class ChannelActivity : AppCompatActivity() {
             val intent = Intent(this, StatisticsActivity::class.java)
             intent.putExtra(CHANNEL_DATA_KEY, channel)
             startActivity(intent)
+        }
+    }
+
+    private fun updateFavouriteButton(isFavourite: Boolean) {
+        if (isFavourite) {
+            vFavouriteButton.setImageResource(R.drawable.ic_star_black_24dp)
+            vFavouriteButton.setColorFilter(color(R.color.favourite))
+        } else {
+            vFavouriteButton.setImageResource(R.drawable.ic_star_border_black_24dp)
+            vFavouriteButton.setColorFilter(color(R.color.not_favourite))
         }
     }
 

@@ -52,13 +52,30 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/vTitleTextView"
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:textStyle="bold"
-                        android:textSize="18sp"/>
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/vFavouriteButton"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:layout_alignParentEnd="true"
+                            android:padding="4dp"
+                            android:src="@drawable/ic_star_border_black_24dp"
+                            android:tint="@color/favourite"/>
+
+                        <TextView
+                            android:id="@+id/vTitleTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_toStartOf="@id/vFavouriteButton"
+                            android:layout_marginEnd="4dp"
+                            android:textStyle="bold"
+                            android:textSize="18sp"/>
+
+                    </RelativeLayout>
 
                     <TextView
                         android:id="@+id/vDescriptionTextView"

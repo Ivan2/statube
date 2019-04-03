@@ -14,10 +14,18 @@ class ChannelResponseMapper {
         channel.publishedAt = from.snippet?.publishedAt?.parseYoutubeDateTime()
         channel.title = from.snippet?.title
         channel.description = from.snippet?.description
-        channel.thumbnails = ThumbnailsResponseMapper().map(from.snippet?.thumbnails)
+        channel.thumbnail = from.snippet?.thumbnails?.let {
+            it.high?.url ?: it.medium?.url ?: it.default?.url
+        }
         channel.country = from.snippet?.country
-        channel.statistics = StatisticsResponseMapper().map(from.statistics)
-        channel.brandingSettings = BrandingSettingsResponseMapper().map(from.brandingSettings)
+        channel.viewCount = from.statistics?.viewCount
+        channel.subscriberCount = from.statistics?.subscriberCount
+        channel.videoCount = from.statistics?.videoCount
+        channel.keywords = from.brandingSettings?.channel?.keywords
+        channel.bannerImageUrl = from.brandingSettings?.image?.let {
+            it.bannerMobileHdImageUrl ?: it.bannerMobileMediumHdImageUrl ?: it.bannerMobileExtraHdImageUrl ?:
+            it.bannerMobileLowImageUrl ?: it.bannerMobileImageUrl
+        }
         return channel
     }
 

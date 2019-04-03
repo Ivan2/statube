@@ -71,6 +71,8 @@ class ChannelsActivity : AppCompatActivity() {
                 }
             }, { channel ->
                 presenter.loadChannel(this, channel.id) {}
+            }, { channel ->
+                presenter.changeFavourite(channel)
             })
         }
     }

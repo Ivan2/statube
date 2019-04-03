@@ -28,15 +28,7 @@ class ChannelsPresenter : Presenter() {
     fun loadChannel(context: Context, channelId: String, onLoad: (channel: Channel?) -> Unit) = resolvedLaunch({
         showProgressDialog(context)
         ChannelInteractor.getInstance().loadAsync(context, channelId).await()?.let { channel ->
-            val bannerImgUrl = channel.brandingSettings?.let { brandingSettings ->
-                brandingSettings.bannerMobileHdImageUrl ?:
-                brandingSettings.bannerMobileMediumHdImageUrl ?:
-                brandingSettings.bannerMobileExtraHdImageUrl ?:
-                brandingSettings.bannerMobileLowImageUrl ?:
-                brandingSettings.bannerMobileImageUrl
-            }
-
-            val bitmap = ImageInteractor.getInstance().loadImageAsync(context, bannerImgUrl ?: "").await()
+            val bitmap = ImageInteractor.getInstance().loadImageAsync(context, channel.bannerImageUrl ?: "").await()
 
             val bannerImageFile = File(context.filesDir, BANNER_IMAGE_FILE_NAME)
             if (bannerImageFile.exists())
@@ -56,5 +48,9 @@ class ChannelsPresenter : Presenter() {
         hideProgressDialog()
         onLoad(null)
     })
+
+    fun changeFavourite(channel: Channel) = resolvedLaunch({
+        ChannelInteractor.getInstance().changeFavouriteAsync(channel).await()
+    }, {})
 
 }

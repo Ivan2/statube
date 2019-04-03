@@ -3,17 +3,20 @@ package ru.sis.statube.presentation.screens.channels
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.list_item_channel.view.*
 import ru.sis.statube.R
+import ru.sis.statube.additional.color
 import ru.sis.statube.model.Channel
 import java.lang.Exception
 
 class ChannelsListAdapter(
     channelList: List<Channel>,
     private val loadListener: (addChannels: (channelList: List<Channel>) -> Unit) -> Unit,
-    private val clickListener: (channel: Channel) -> Unit
+    private val clickListener: (channel: Channel) -> Unit,
+    private val changeFavouriteListener: (channel: Channel) -> Unit
 ) : RecyclerView.Adapter<ChannelsListAdapter.ViewHolder>() {
 
     private val channelList = ArrayList<Channel>()
@@ -58,14 +61,17 @@ class ChannelsListAdapter(
 
             itemView.vTitleTextView.text = channel.title
             itemView.vDescriptionTextView.text = channel.description
+            updateFavouriteButton(itemView.vFavouriteButton, channel.isFavourite)
 
-            val img = channel.thumbnails?.let { thumbnails ->
-                thumbnails.medium?.url ?: thumbnails.high?.url ?: thumbnails.default?.url
+            itemView.vFavouriteButton.setOnClickListener {
+                channel.isFavourite = !channel.isFavourite
+                changeFavouriteListener(channel)
+                updateFavouriteButton(itemView.vFavouriteButton, channel.isFavourite)
             }
 
-            img?.let {
+            channel.thumbnail?.let { thumbnail ->
                 Glide.with(itemView.context)
-                    .load(img)
+                    .load(thumbnail)
                     //.placeholder(R.drawable.product_default)
                     .circleCrop()
                     .dontAnimate()
@@ -82,6 +88,16 @@ class ChannelsListAdapter(
     inner class ProgressViewHolder(itemView: View) : ViewHolder(itemView) {
         override fun bind(pos: Int) {
             loadListener(::addChannels)
+        }
+    }
+
+    private fun updateFavouriteButton(favouriteButton: ImageView, isFavourite: Boolean) {
+        if (isFavourite) {
+            favouriteButton.setImageResource(R.drawable.ic_star_black_24dp)
+            favouriteButton.setColorFilter(favouriteButton.context.color(R.color.favourite))
+        } else {
+            favouriteButton.setImageResource(R.drawable.ic_star_border_black_24dp)
+            favouriteButton.setColorFilter(favouriteButton.context.color(R.color.not_favourite))
         }
     }
 
