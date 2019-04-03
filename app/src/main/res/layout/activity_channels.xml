@@ -9,6 +9,14 @@
     tools:context=".presentation.screens.channels.ChannelsActivity">
 
     <RelativeLayout
+        style="@style/TitleLayout">
+
+        <TextView
+            style="@style/TitleTextView"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp">
@@ -22,6 +30,7 @@
             android:paddingBottom="12dp"
             android:paddingStart="36dp"
             android:paddingEnd="36dp"
+            android:imeOptions="actionDone"
             android:inputType="text"
             android:textSize="14sp"
             android:textColorHint="@color/lightGray"
@@ -48,16 +57,55 @@
 
     </RelativeLayout>
 
-    <Button
-        android:id="@+id/vSearchButton"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="search"/>
+        android:layout_height="match_parent">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/vRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/vRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <LinearLayout
+            android:id="@+id/vDataLoadingLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center_horizontal"
+            android:padding="50dp"
+            android:gravity="center">
+
+            <ProgressBar
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:indeterminate="true"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/vDataNotFoundLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center_horizontal"
+            android:padding="50dp"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:text="Ничего не нашлось"/>
+
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/ic_sentiment_dissatisfied_black_24dp"
+                android:tint="@color/lightGray"/>
+
+        </LinearLayout>
+
+    </FrameLayout>
 
 </LinearLayout>

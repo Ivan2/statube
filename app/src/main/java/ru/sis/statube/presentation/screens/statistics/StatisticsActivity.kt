@@ -101,6 +101,7 @@ class StatisticsActivity : AppCompatActivity() {
                     o1.date.compareTo(o2.date)
                 })
                 val maxDays = Days.daysBetween(dataDailyList[0].date, DateTime.now()).days
+                val chartType = chartTypePosition ?: vChartTypeButtonGroup.position
 
                 vLineChart.xAxis.valueFormatter = object : ValueFormatter() {
                     override fun getFormattedValue(value: Float): String {
@@ -116,7 +117,6 @@ class StatisticsActivity : AppCompatActivity() {
 
                 val subEntries = ArrayList<Entry>()
                 val viewEntries = ArrayList<Entry>()
-                val chartType = chartTypePosition ?: vChartTypeButtonGroup.position
                 for (i in 0 until dataDailyList.size) {
                     val dataDaily = dataDailyList[i]
                     if (chartType == 0) {
@@ -125,7 +125,7 @@ class StatisticsActivity : AppCompatActivity() {
                     } else {
                         val prevDataDaily = if (i == 0) dataDaily else dataDailyList[i - 1]
                         val subDif = dataDaily.subs - prevDataDaily.subs
-                        subEntries.add(Entry(i.toFloat(), subDif.toFloat() / prevDataDaily.subs * 100f))
+                        subEntries.add(Entry(i.toFloat(), subDif.toFloat() / prevDataDaily.subs * 100f)) //TODO div 0
                         val viewDif = dataDaily.views - prevDataDaily.views
                         viewEntries.add(Entry(i.toFloat(), viewDif.toFloat() / prevDataDaily.views * 100f))
                     }

@@ -6,7 +6,35 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="TableColumn0">
+
+    <style name="TitleLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">44dp</item>
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
+
+    <style name="TitleTextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerInParent">true</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:text">@string/app_name</item>
+    </style>
+
+    <style name="TitleBackButton">
+        <item name="android:layout_width">40dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:src">@drawable/ic_arrow_back_black_24dp</item>
+        <item name="android:tint">@color/white</item>
+    </style>
+
+
+    <style name="StatisticsTableColumn0">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">44dp</item>
         <item name="android:layout_marginEnd">10dp</item>
@@ -15,7 +43,7 @@
         <item name="android:textSize">16sp</item>
     </style>
 
-    <style name="TableValueColumns">
+    <style name="StatisticsTableValueColumns">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">1</item>
@@ -23,6 +51,26 @@
         <item name="android:gravity">center</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">20sp</item>
+        <item name="android:text">-</item>
+    </style>
+
+    <style name="ChannelTableRow">
+        <item name="android:layout_marginTop">4dp</item>
+    </style>
+
+    <style name="ChannelTableColumn0">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginEnd">16dp</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="ChannelTableValueColumns">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">12sp</item>
         <item name="android:text">-</item>
     </style>
 

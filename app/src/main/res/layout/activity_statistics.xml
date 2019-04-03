@@ -8,6 +8,19 @@
     android:orientation="vertical"
     tools:context=".presentation.screens.statistics.StatisticsActivity">
 
+    <RelativeLayout
+        style="@style/TitleLayout">
+
+        <TextView
+            style="@style/TitleTextView"
+            android:text="Статистика"/>
+
+        <ImageView
+            android:id="@+id/vBackButton"
+            style="@style/TitleBackButton"/>
+
+    </RelativeLayout>
+
     <TextView
         android:id="@+id/vTitleTextView"
         android:layout_width="wrap_content"
@@ -25,16 +38,16 @@
         <TableRow>
 
             <TextView
-                style="@style/TableColumn0"/>
+                style="@style/StatisticsTableColumn0"/>
 
             <TextView
-                style="@style/TableValueColumns"
+                style="@style/StatisticsTableValueColumns"
                 android:textStyle="normal"
                 android:textSize="16sp"
                 android:text="Подписчиков"/>
 
             <TextView
-                style="@style/TableValueColumns"
+                style="@style/StatisticsTableValueColumns"
                 android:textStyle="normal"
                 android:textSize="16sp"
                 android:text="Просмотров"/>
@@ -44,112 +57,112 @@
         <TableRow>
 
             <TextView
-                style="@style/TableColumn0"
+                style="@style/StatisticsTableColumn0"
                 android:text="Среднее\nза день"/>
 
             <TextView
                 android:id="@+id/vAvgDailySubsTextView"
-                style="@style/TableValueColumns"/>
+                style="@style/StatisticsTableValueColumns"/>
 
             <TextView
                 android:id="@+id/vAvgDailyViewsTextView"
-                style="@style/TableValueColumns"/>
+                style="@style/StatisticsTableValueColumns"/>
 
         </TableRow>
 
         <TableRow>
 
             <TextView
-                style="@style/TableColumn0"
+                style="@style/StatisticsTableColumn0"
                 android:text="14 дней"/>
 
             <TextView
                 android:id="@+id/vSubs14TextView"
-                style="@style/TableValueColumns"/>
+                style="@style/StatisticsTableValueColumns"/>
 
             <TextView
                 android:id="@+id/vViews14TextView"
-                style="@style/TableValueColumns"/>
+                style="@style/StatisticsTableValueColumns"/>
 
         </TableRow>
 
         <TableRow>
 
             <TextView
-                style="@style/TableColumn0"
+                style="@style/StatisticsTableColumn0"
                 android:text="30 дней"/>
 
             <TextView
                 android:id="@+id/vSubs30TextView"
-                style="@style/TableValueColumns"/>
+                style="@style/StatisticsTableValueColumns"/>
 
             <TextView
                 android:id="@+id/vViews30TextView"
-                style="@style/TableValueColumns"/>
+                style="@style/StatisticsTableValueColumns"/>
 
         </TableRow>
 
         <TableRow>
 
             <TextView
-                style="@style/TableColumn0"
+                style="@style/StatisticsTableColumn0"
                 android:text="60 дней"/>
 
             <TextView
                 android:id="@+id/vSubs60TextView"
-                style="@style/TableValueColumns"/>
+                style="@style/StatisticsTableValueColumns"/>
 
             <TextView
                 android:id="@+id/vViews60TextView"
-                style="@style/TableValueColumns"/>
+                style="@style/StatisticsTableValueColumns"/>
 
         </TableRow>
 
         <TableRow>
 
             <TextView
-                style="@style/TableColumn0"
+                style="@style/StatisticsTableColumn0"
                 android:text="90 дней"/>
 
             <TextView
                 android:id="@+id/vSubs90TextView"
-                style="@style/TableValueColumns"/>
+                style="@style/StatisticsTableValueColumns"/>
 
             <TextView
                 android:id="@+id/vViews90TextView"
-                style="@style/TableValueColumns"/>
+                style="@style/StatisticsTableValueColumns"/>
 
         </TableRow>
 
         <TableRow>
 
             <TextView
-                style="@style/TableColumn0"
+                style="@style/StatisticsTableColumn0"
                 android:text="180 дней"/>
 
             <TextView
                 android:id="@+id/vSubs180TextView"
-                style="@style/TableValueColumns"/>
+                style="@style/StatisticsTableValueColumns"/>
 
             <TextView
                 android:id="@+id/vViews180TextView"
-                style="@style/TableValueColumns"/>
+                style="@style/StatisticsTableValueColumns"/>
 
         </TableRow>
 
         <TableRow>
 
             <TextView
-                style="@style/TableColumn0"
+                style="@style/StatisticsTableColumn0"
                 android:text="365 дней"/>
 
             <TextView
                 android:id="@+id/vSubs365TextView"
-                style="@style/TableValueColumns"/>
+                style="@style/StatisticsTableValueColumns"/>
 
             <TextView
                 android:id="@+id/vViews365TextView"
-                style="@style/TableValueColumns"/>
+                style="@style/StatisticsTableValueColumns"/>
 
         </TableRow>
 
@@ -173,7 +186,7 @@
         app:rrbg_selectorColor="@color/colorPrimary"
         app:rrbg_buttonsPadding="2dp"
         app:rrbg_bottomLineSize="0dp"
-        app:rrbg_checkedPosition="0">
+        app:rrbg_checkedPosition="1">
 
         <co.ceryle.radiorealbutton.RadioRealButton
             android:layout_width="match_parent"
