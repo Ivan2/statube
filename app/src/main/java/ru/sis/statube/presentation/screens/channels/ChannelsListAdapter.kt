@@ -13,29 +13,48 @@ import ru.sis.statube.model.Channel
 import java.lang.Exception
 
 class ChannelsListAdapter(
-    channelList: List<Channel>,
-    private val loadListener: (addChannels: (channelList: List<Channel>) -> Unit) -> Unit,
+    private val loadListener: () -> Unit,
     private val clickListener: (channel: Channel) -> Unit,
     private val changeFavouriteListener: (channel: Channel) -> Unit
 ) : RecyclerView.Adapter<ChannelsListAdapter.ViewHolder>() {
 
     private val channelList = ArrayList<Channel>()
+    private var toLoadMore = false
+    private var showLoadingMore = false
 
-    init {
-        this.channelList.addAll(channelList)
-    }
-
-    fun addChannels(channelList: List<Channel>) {
+    fun addChannels(channelList: List<Channel>, withMore: Boolean) {
+        this.toLoadMore = withMore
+        this.showLoadingMore = withMore
         this.channelList.addAll(channelList)
         notifyDataSetChanged()
     }
 
-    override fun getItemCount(): Int = channelList.size + 1
+    fun clear() {
+        this.toLoadMore = false
+        this.showLoadingMore = false
+        this.channelList.clear()
+        notifyDataSetChanged()
+    }
+
+    fun addChannel(channel: Channel) {
+        channelList.add(channel)
+        notifyItemInserted(channelList.lastIndex)
+    }
+
+    fun removeChannel(channel: Channel) {
+        for (i in 0 until channelList.size) {
+            if (channelList[i].id == channel.id) {
+                channelList.removeAt(i)
+                notifyItemRemoved(i)
+                break
+            }
+        }
+    }
+
+    override fun getItemCount(): Int = channelList.size + if (showLoadingMore) 1 else 0
 
     override fun getItemViewType(position: Int): Int {
-        if (position == channelList.size)
-            return 0
-        return 1
+        return if (position == channelList.size) 0 else 1
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -87,7 +106,10 @@ class ChannelsListAdapter(
 
     inner class ProgressViewHolder(itemView: View) : ViewHolder(itemView) {
         override fun bind(pos: Int) {
-            loadListener(::addChannels)
+            if (toLoadMore) {
+                toLoadMore = false
+                loadListener()
+            }
         }
     }
 

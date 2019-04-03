@@ -12,87 +12,132 @@ import java.util.*
 
 class ChannelsActivity : AppCompatActivity() {
 
+    private enum class State {
+        LOADING,
+        DATA_NOT_FOUND,
+        FAVOURITE_DATA_NOT_FOUND,
+        LIST
+    }
+
     private val presenter = ChannelsPresenter()
 
+    private lateinit var adapter: ChannelsListAdapter
     private var pageToken: String? = null
-
+    private var searchText = ""
     private var timer: Timer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_channels)
 
+        adapter = ChannelsListAdapter({
+            pageToken?.let {
+                presenter.searchChannels(this, searchText, it) { text, channels ->
+                    if (text == searchText) {
+                        pageToken = channels.nextPageToken
+                        adapter.addChannels(channels.channelList, pageToken != null)
+                    }
+                }
+            }
+        }, { channel ->
+            presenter.loadChannel(this, channel.id) {}
+        }, { channel ->
+            presenter.changeFavourite(channel)
+            if (searchText.isEmpty()) {
+                if (channel.isFavourite) {
+                    adapter.addChannel(channel)
+                } else {
+                    adapter.removeChannel(channel)
+                }
+                setListViewState(if (adapter.itemCount == 0) State.FAVOURITE_DATA_NOT_FOUND else State.LIST)
+            }
+        })
+
         vRecyclerView.layoutManager = LinearLayoutManager(this@ChannelsActivity)
-        setListViewState(0)
+        vRecyclerView.adapter = adapter
 
         vClearButton.setOnClickListener {
             vSearchEditText.setText("")
         }
 
         vSearchEditText.addTextChangedListener {
-            timer?.cancel()
-            if (vSearchEditText.text.toString().isEmpty()) {
-                setListViewState(0)
-                return@addTextChangedListener
-            }
-            timer = Timer().apply {
-                val task = object: TimerTask() {
-                    override fun run() {
-                        runOnUiThread {
-                            setListViewState(1)
-                            presenter.searchChannels(this@ChannelsActivity, vSearchEditText.text.toString(), null, ::onChannelsLoaded)
-                        }
+            it?.toString()?.let { text ->
+                searchText = text
+                timer?.cancel()
+                if (text.isEmpty()) {
+                    loadFavouriteChannels()
+                } else {
+                    timer = Timer().apply {
+                        schedule(object : TimerTask() {
+                            override fun run() {
+                                runOnUiThread {
+                                    setListViewState(State.LOADING)
+                                    adapter.clear()
+                                    presenter.searchChannels(this@ChannelsActivity, text, null, ::onChannelsLoaded)
+                                }
+                            }
+                        }, 800)
                     }
                 }
+            }
+        }
 
-                schedule(task, 800)
+        loadFavouriteChannels()
+    }
+
+    private fun loadFavouriteChannels() {
+        setListViewState(State.LOADING)
+        adapter.clear()
+        presenter.loadFavouriteChannels { channels ->
+            if (channels.isEmpty()) {
+                setListViewState(State.FAVOURITE_DATA_NOT_FOUND)
+            } else {
+                setListViewState(State.LIST)
+                adapter.addChannels(channels, false)
             }
         }
     }
 
     private fun onChannelsLoaded(text: String, channels: Channels) {
-        if (text != vSearchEditText.text.toString())
+        if (text != searchText)
             return
 
         val channelList = channels.channelList
         if (channelList.isEmpty()) {
-            setListViewState(0)
+            setListViewState(State.DATA_NOT_FOUND)
         } else {
-            setListViewState(2)
+            setListViewState(State.LIST)
 
             pageToken = channels.nextPageToken
-
-            vRecyclerView.adapter = ChannelsListAdapter(channelList, { addChannels ->
-                presenter.searchChannels(this, vSearchEditText.text.toString(), pageToken) { text2, channels ->
-                    if (text2 != vSearchEditText.text.toString())
-                        return@searchChannels
-                    pageToken = channels.nextPageToken
-                    addChannels(channels.channelList)
-                }
-            }, { channel ->
-                presenter.loadChannel(this, channel.id) {}
-            }, { channel ->
-                presenter.changeFavourite(channel)
-            })
+            adapter.addChannels(channelList, pageToken != null)
         }
     }
 
-    private fun setListViewState(state: Int) {
+    private fun setListViewState(state: State) {
         when (state) {
-            0 -> {
-                vRecyclerView.visibility = View.GONE
-                vDataLoadingLayout.visibility = View.GONE
-                vDataNotFoundLayout.visibility = View.VISIBLE
-            }
-            1 -> {
+            State.LOADING -> {
                 vRecyclerView.visibility = View.GONE
                 vDataLoadingLayout.visibility = View.VISIBLE
                 vDataNotFoundLayout.visibility = View.GONE
+                vFavouriteDataNotFoundLayout.visibility = View.GONE
             }
-            2 -> {
+            State.DATA_NOT_FOUND -> {
+                vRecyclerView.visibility = View.GONE
+                vDataLoadingLayout.visibility = View.GONE
+                vDataNotFoundLayout.visibility = View.VISIBLE
+                vFavouriteDataNotFoundLayout.visibility = View.GONE
+            }
+            State.FAVOURITE_DATA_NOT_FOUND -> {
+                vRecyclerView.visibility = View.GONE
+                vDataLoadingLayout.visibility = View.GONE
+                vDataNotFoundLayout.visibility = View.GONE
+                vFavouriteDataNotFoundLayout.visibility = View.VISIBLE
+            }
+            State.LIST -> {
                 vRecyclerView.visibility = View.VISIBLE
                 vDataLoadingLayout.visibility = View.GONE
                 vDataNotFoundLayout.visibility = View.GONE
+                vFavouriteDataNotFoundLayout.visibility = View.GONE
             }
         }
     }

@@ -77,6 +77,10 @@ class ChannelInteractor : Interactor() {
         }
     }
 
+    fun loadFavouriteChannelsAsync() = GlobalScope.async {
+        ChannelStore.getInstance().getChannels()
+    }
+
     fun changeFavouriteAsync(channel: Channel) = GlobalScope.async {
         if (channel.isFavourite) {
             ChannelStore.getInstance().saveChannel(channel)

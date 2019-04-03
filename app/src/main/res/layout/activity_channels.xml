@@ -106,6 +106,30 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/vFavouriteDataNotFoundLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center_horizontal"
+            android:padding="50dp"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:text="У вас нет избранных каналов"/>
+
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/ic_sentiment_dissatisfied_black_24dp"
+                android:tint="@color/lightGray"/>
+
+        </LinearLayout>
+
     </FrameLayout>
 
 </LinearLayout>

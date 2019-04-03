@@ -17,6 +17,13 @@ import java.io.FileOutputStream
 
 class ChannelsPresenter : Presenter() {
 
+    fun loadFavouriteChannels(onLoad: (channels: List<Channel>) -> Unit) = resolvedLaunch({
+        val channels = ChannelInteractor.getInstance().loadFavouriteChannelsAsync().await()
+        onLoad(channels)
+    }, {
+        onLoad(emptyList())
+    })
+
     fun searchChannels(context: Context, text: String, pageToken: String?,
                        onLoad: (text: String, channels: Channels) -> Unit) = resolvedLaunch({
         val channels = ChannelInteractor.getInstance().searchAsync(context, text, pageToken).await()
