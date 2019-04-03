@@ -5,14 +5,9 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import kotlinx.android.synthetic.main.activity_channel.*
 import ru.sis.statube.R
-import ru.sis.statube.additional.BANNER_IMAGE_FILE_NAME
-import ru.sis.statube.additional.CHANNEL_DATA_KEY
-import ru.sis.statube.additional.YOUTUBE_OPEN_CHANNEL_URL
-import ru.sis.statube.additional.color
+import ru.sis.statube.additional.*
 import ru.sis.statube.model.Channel
 import ru.sis.statube.presentation.screens.statistics.StatisticsActivity
 import java.io.File
@@ -30,24 +25,12 @@ class ChannelActivity : AppCompatActivity() {
         val bannerImageFile = File(filesDir, BANNER_IMAGE_FILE_NAME)
         if (bannerImageFile.exists()) {
             vBannerImageView.visibility = View.VISIBLE
-            Glide.with(this)
-                .load(bannerImageFile)
-                .skipMemoryCache(true)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .fitCenter()
-                .dontAnimate()
-                .into(vBannerImageView)
+            vBannerImageView.loadBanner(bannerImageFile)
         } else {
             vBannerImageView.visibility = View.GONE
         }
 
-        Glide.with(this)
-            .load(channel.thumbnail)
-            //.placeholder(R.drawable.product_default)
-            .circleCrop()
-            .dontAnimate()
-            .into(vImageView)
-
+        vImageView.loadThumbnail(channel.thumbnail)
         vIdTextView.text = channel.id
         vTitleTextView.text = channel.title ?: ""
         vDescriptionTextView.text = channel.description ?: ""

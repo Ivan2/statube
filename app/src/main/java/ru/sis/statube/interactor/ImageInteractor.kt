@@ -1,9 +1,9 @@
 package ru.sis.statube.interactor
 
 import android.content.Context
-import com.bumptech.glide.Glide
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
+import ru.sis.statube.additional.loadAsBitmap
 
 class ImageInteractor : Interactor() {
 
@@ -18,11 +18,7 @@ class ImageInteractor : Interactor() {
     }
 
     fun loadImageAsync(context: Context, url: String) = GlobalScope.async {
-        Glide.with(context)
-            .asBitmap()
-            .load(url)
-            .submit()
-            .get()
+        context.loadAsBitmap(url)
     }
 
 }

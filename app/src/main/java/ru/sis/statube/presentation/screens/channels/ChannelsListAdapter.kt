@@ -5,10 +5,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.list_item_channel.view.*
 import ru.sis.statube.R
 import ru.sis.statube.additional.color
+import ru.sis.statube.additional.loadThumbnail
 import ru.sis.statube.model.Channel
 import java.lang.Exception
 
@@ -80,21 +80,13 @@ class ChannelsListAdapter(
 
             itemView.vTitleTextView.text = channel.title
             itemView.vDescriptionTextView.text = channel.description
+            itemView.vImageView.loadThumbnail(channel.thumbnail)
             updateFavouriteButton(itemView.vFavouriteButton, channel.isFavourite)
 
             itemView.vFavouriteButton.setOnClickListener {
                 channel.isFavourite = !channel.isFavourite
                 changeFavouriteListener(channel)
                 updateFavouriteButton(itemView.vFavouriteButton, channel.isFavourite)
-            }
-
-            channel.thumbnail?.let { thumbnail ->
-                Glide.with(itemView.context)
-                    .load(thumbnail)
-                    //.placeholder(R.drawable.product_default)
-                    .circleCrop()
-                    .dontAnimate()
-                    .into(itemView.vImageView)
             }
 
             itemView.setOnClickListener {

@@ -35,15 +35,17 @@ class ChannelsPresenter : Presenter() {
     fun loadChannel(context: Context, channelId: String, onLoad: (channel: Channel?) -> Unit) = resolvedLaunch({
         showProgressDialog(context)
         ChannelInteractor.getInstance().loadAsync(context, channelId).await()?.let { channel ->
-            val bitmap = ImageInteractor.getInstance().loadImageAsync(context, channel.bannerImageUrl ?: "").await()
-
             val bannerImageFile = File(context.filesDir, BANNER_IMAGE_FILE_NAME)
             if (bannerImageFile.exists())
                 bannerImageFile.delete()
 
-            FileOutputStream(bannerImageFile).use { fos ->
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 75, fos)
-                fos.flush()
+            channel.bannerImageUrl?.let { bannerImageUrl ->
+                ImageInteractor.getInstance().loadImageAsync(context, bannerImageUrl).await()
+            }?.let { bitmap ->
+                FileOutputStream(bannerImageFile).use { fos ->
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 75, fos)
+                    fos.flush()
+                }
             }
 
             val intent = Intent(context, ChannelActivity::class.java)
