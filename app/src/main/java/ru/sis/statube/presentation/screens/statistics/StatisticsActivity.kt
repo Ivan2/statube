@@ -12,6 +12,7 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import kotlinx.android.synthetic.main.activity_statistics.*
 import org.joda.time.DateTime
 import org.joda.time.Days
@@ -25,6 +26,7 @@ import ru.sis.statube.model.SocialBladeDataDaily
 import ru.sis.statube.model.SocialBladeStatistics
 import ru.sis.statube.model.Video
 import java.util.*
+import kotlin.collections.ArrayList
 
 class StatisticsActivity : AppCompatActivity() {
 
@@ -95,6 +97,18 @@ class StatisticsActivity : AppCompatActivity() {
                 updateChart2()
             }
         }
+        vViews2CheckBox.setOnCheckedChangeListener { _, _ ->
+            updateChart2()
+        }
+        vComments2CheckBox.setOnCheckedChangeListener { _, _ ->
+            updateChart2()
+        }
+        vLikes2CheckBox.setOnCheckedChangeListener { _, _ ->
+            updateChart2()
+        }
+        vDislikes2CheckBox.setOnCheckedChangeListener { _, _ ->
+            updateChart2()
+        }
 
         prepareChart(vLineChart)
         prepareChart(vLineChart2)
@@ -104,6 +118,7 @@ class StatisticsActivity : AppCompatActivity() {
         }
 
         updateSocialBladeLocalStatistics()
+        updateVideosLocalStatistics()
     }
 
     private fun showDatePickerDialog(currentDate: DateTime, callback: (dateTime: DateTime) -> Unit) {
@@ -195,6 +210,24 @@ class StatisticsActivity : AppCompatActivity() {
         updateChart1()
     }
 
+    private fun updateVideosLocalStatistics() {
+        channel.uploads?.let { uploads ->
+            vRefresh2Button.visibility = View.INVISIBLE
+            vLoading2ProgressBar.visibility = View.VISIBLE
+
+            presenter.loadLocalStatistics(uploads, beginDate, endDate) { videoList ->
+                this.videoList = videoList
+                updateChart2()
+                vRefresh2Button.visibility = View.VISIBLE
+                vLoading2ProgressBar.visibility = View.INVISIBLE
+                val now = DateTime.now()
+                presenter.setStatistics2LastUpdatedDateTime(this, now)
+                vUpdated2TextView.text = now.formatUpdate()
+            }
+
+        }
+    }
+
     private fun updateVideosStatistics() {
         channel.uploads?.let { uploads ->
             vRefresh2Button.visibility = View.INVISIBLE
@@ -251,11 +284,11 @@ class StatisticsActivity : AppCompatActivity() {
 
                         val prevSubs = prevDataDaily.subs
                         val subDif = dataDaily.subs - prevSubs
-                        subEntries.add(Entry(x, if (prevSubs <= 0) 0f else subDif / prevSubs * 100f))
+                        subEntries.add(Entry(x, if (prevSubs <= 0) 0f else subDif.toFloat() / prevSubs * 100f))
 
                         val prevViews = prevDataDaily.views
                         val viewDif = dataDaily.views - prevViews
-                        viewEntries.add(Entry(x, if (prevViews <= 0) 0f else viewDif / prevViews * 100f))
+                        viewEntries.add(Entry(x, if (prevViews <= 0) 0f else viewDif.toFloat() / prevViews * 100f))
                     }
                 }
 
@@ -306,8 +339,10 @@ class StatisticsActivity : AppCompatActivity() {
                     }
                 }
 
-                val likeEntries = ArrayList<Entry>()
                 val viewEntries = ArrayList<Entry>()
+                val commentEntries = ArrayList<Entry>()
+                val likeEntries = ArrayList<Entry>()
+                val dislikeEntries = ArrayList<Entry>()
                 for (i in 0 until videos.size) {
                     val video = videos[i]
                     val x = Days.daysBetween(periodBegin, video.publishedAt).days.toFloat()
@@ -315,27 +350,36 @@ class StatisticsActivity : AppCompatActivity() {
                     video.viewCount?.let { viewCount ->
                         viewEntries.add(Entry(x, viewCount.toFloat()))
                     }
+                    video.commentCount?.let { commentCount ->
+                        commentEntries.add(Entry(x, commentCount.toFloat()))
+                    }
                     video.likeCount?.let { likeCount ->
                         likeEntries.add(Entry(x, likeCount.toFloat()))
                     }
+                    video.dislikeCount?.let { dislikeCount ->
+                        dislikeEntries.add(Entry(x, dislikeCount.toFloat()))
+                    }
                 }
 
-                val likeDataSet = createDataSet(likeEntries, "Лайки", R.color.subs)
                 val viewDataSet = createDataSet(viewEntries, "Просмотры", R.color.views)
+                val commentDataSet = createDataSet(commentEntries, "Комментарии", R.color.comments)
+                val likeDataSet = createDataSet(likeEntries, "Лайки", R.color.likes)
+                val dislikeDataSet = createDataSet(dislikeEntries, "Дизлайки", R.color.dislikes)
 
-                /*if (vSubsCheckBox.isChecked && vViewsCheckBox.isChecked) {
-                    LineData(subDataSet, viewDataSet)
-                } else {
-                    if (vSubsCheckBox.isChecked) {
-                        LineData(subDataSet)
-                    } else {
-                        if (vViewsCheckBox.isChecked) {*/
-                            LineData(likeDataSet, viewDataSet)
-                        /*} else {
-                            null
-                        }
-                    }
-                }*/
+                val lineDataList = ArrayList<ILineDataSet>()
+                if (vViews2CheckBox.isChecked)
+                    lineDataList.add(viewDataSet)
+                if (vComments2CheckBox.isChecked)
+                    lineDataList.add(commentDataSet)
+                if (vLikes2CheckBox.isChecked)
+                    lineDataList.add(likeDataSet)
+                if (vDislikes2CheckBox.isChecked)
+                    lineDataList.add(dislikeDataSet)
+
+                if (lineDataList.isNotEmpty())
+                    LineData(lineDataList)
+                else
+                    null
             } else {
                 null
             }

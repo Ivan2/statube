@@ -440,6 +440,75 @@
 
                 </RelativeLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <FrameLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_gravity="center">
+
+                            <CheckBox
+                                android:id="@+id/vViews2CheckBox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:buttonTint="@color/views"
+                                android:checked="true"
+                                android:text="Просмотры"/>
+
+                            <CheckBox
+                                android:id="@+id/vComments2CheckBox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:buttonTint="@color/comments"
+                                android:checked="true"
+                                android:text="Комментарии"/>
+
+                        </LinearLayout>
+
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_gravity="center">
+
+                            <CheckBox
+                                android:id="@+id/vLikes2CheckBox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:buttonTint="@color/likes"
+                                android:checked="true"
+                                android:text="Лайки"/>
+
+                            <CheckBox
+                                android:id="@+id/vDislikes2CheckBox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:buttonTint="@color/dislikes"
+                                android:checked="true"
+                                android:text="Дизлайки"/>
+
+                        </LinearLayout>
+
+                    </FrameLayout>
+
+                </LinearLayout>
+
                 <com.github.mikephil.charting.charts.LineChart
                     android:id="@+id/vLineChart2"
                     android:layout_width="match_parent"

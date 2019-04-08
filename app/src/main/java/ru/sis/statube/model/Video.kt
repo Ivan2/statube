@@ -7,6 +7,8 @@ class Video : Serializable {
 
     lateinit var id: String
 
+    lateinit var uploads: String
+
     lateinit var publishedAt: DateTime
 
     var viewCount: Long? = null

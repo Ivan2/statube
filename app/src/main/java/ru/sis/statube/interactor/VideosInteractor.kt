@@ -6,6 +6,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import org.joda.time.DateTime
 import ru.sis.statube.additional.YOUTUBE_DATA_API_URL
+import ru.sis.statube.db.store.VideoStore
 import ru.sis.statube.model.PlayListItem
 import ru.sis.statube.model.Video
 import ru.sis.statube.net.OkRequest
@@ -33,7 +34,12 @@ class VideosInteractor : Interactor() {
     fun loadAsync(context: Context, uploads: String, beginDate: DateTime, endDate: DateTime) = GlobalScope.async {
         val config = loadConfig(context)
         val playListItems = loadPlayListItems(uploads, beginDate, endDate, config.youtubeDataApiKey)
-        loadVideos(playListItems, config.youtubeDataApiKey)
+        val videos = loadVideos(playListItems, config.youtubeDataApiKey)
+        videos.forEach { video ->
+            video.uploads = uploads
+        }
+        VideoStore.getInstance().saveVideos(videos)
+        videos
     }
 
     private fun loadPlayListItems(uploads: String, beginDate: DateTime, endDate: DateTime, youtubeDataApiKey: String): List<PlayListItem> {
@@ -96,6 +102,10 @@ class VideosInteractor : Interactor() {
         }
 
         return videos
+    }
+
+    fun loadLocalVideosAsync(uploads: String) = GlobalScope.async {
+        VideoStore.getInstance().getVideosByUploads(uploads)
     }
 
 }

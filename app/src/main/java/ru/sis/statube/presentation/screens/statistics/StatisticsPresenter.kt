@@ -25,6 +25,7 @@ class StatisticsPresenter : Presenter() {
     fun getStatistics2LastUpdatedDateTime(context: Context): DateTime? =
         Preferences.getInstance().getStatistics2LastUpdatedDateTime(context)
 
+
     fun loadSocialBladeStatistics(context: Context, channelId: String, onLoad: (statistics: SocialBladeStatistics?) -> Unit,
                                   onError: () -> Unit) = resolvedLaunch({
         val statistics = SocialBladeInteractor.getInstance().loadStatisticsAsync(context, channelId).await()
@@ -40,6 +41,7 @@ class StatisticsPresenter : Presenter() {
         onLoad(null)
     })
 
+
     fun loadStatistics(context: Context, uploads: String, beginDate: DateTime, endDate: DateTime,
                        onLoad: (videoList: List<Video>?) -> Unit) = resolvedLaunch({
         showProgressDialog(context)
@@ -48,6 +50,14 @@ class StatisticsPresenter : Presenter() {
         onLoad(videoList)
     }, {
         hideProgressDialog()
+        onLoad(null)
+    })
+
+    fun loadLocalStatistics(uploads: String, beginDate: DateTime, endDate: DateTime,
+                            onLoad: (videoList: List<Video>?) -> Unit) = resolvedLaunch({
+        val videoList = VideosInteractor.getInstance().loadLocalVideosAsync(uploads).await()
+        onLoad(videoList)
+    }, {
         onLoad(null)
     })
 

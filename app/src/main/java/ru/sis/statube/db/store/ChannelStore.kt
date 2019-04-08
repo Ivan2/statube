@@ -19,7 +19,7 @@ class ChannelStore {
     fun getChannels(): List<Channel> = Realm.getDefaultInstance().use { realm ->
         val channels = ArrayList<Channel>()
         val entities = realm.where(ChannelEntity::class.java)
-                .findAll()
+            .findAll()
         val mapper = ChannelEntityMapper()
         for (entity in entities) {
             val channel = mapper.map(entity)

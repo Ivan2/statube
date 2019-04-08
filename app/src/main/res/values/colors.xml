@@ -15,4 +15,8 @@
 
     <color name="subs">#00CC00</color>
     <color name="views">#0000CC</color>
+
+    <color name="comments">#CC00CC</color>
+    <color name="likes">#00CC00</color>
+    <color name="dislikes">#CC4400</color>
 </resources>
