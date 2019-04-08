@@ -7,8 +7,8 @@ class SocialBladeDataDaily : Serializable {
 
     lateinit var date: DateTime
 
-    var subs: Int = 0
+    var subs: Long = 0
 
-    var views: Int = 0
+    var views: Long = 0
 
 }

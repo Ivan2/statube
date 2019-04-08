@@ -8,9 +8,9 @@ class SocialBladeDataDailyResponse {
     var date: String? = null
 
     @SerializedName("subs")
-    var subs: Int? = null
+    var subs: String? = null
 
     @SerializedName("views")
-    var views: Int? = null
+    var views: String? = null
 
 }

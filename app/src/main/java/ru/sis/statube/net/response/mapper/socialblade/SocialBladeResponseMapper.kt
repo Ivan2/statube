@@ -10,8 +10,8 @@ class SocialBladeResponseMapper {
             return null
         val statistics = SocialBladeStatistics()
         statistics.channelId = from.id?.channelId ?: return null
-        statistics.avgDailySubs = from.data?.avgDailySubs
-        statistics.avgDailyViews = from.data?.avgDailyViews
+        statistics.avgDailySubs = from.data?.avgDailySubs?.toLongOrNull()
+        statistics.avgDailyViews = from.data?.avgDailyViews?.toLongOrNull()
         statistics.subsByPeriod = SocialBladeSubsResponseMapper().map(from.charts?.subs)
         statistics.viewsByPeriod = SocialBladeViewsResponseMapper().map(from.charts?.views)
         statistics.growthSubs = from.charts?.growth?.subs

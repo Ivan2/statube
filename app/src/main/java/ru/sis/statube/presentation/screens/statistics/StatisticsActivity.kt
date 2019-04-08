@@ -175,20 +175,20 @@ class StatisticsActivity : AppCompatActivity() {
     }
 
     private fun updateSocialBladeLocalStatistics(statistics: SocialBladeStatistics?) {
-        vAvgDailySubsTextView.text = statistics?.avgDailySubs?.toString() ?: "?"
-        vAvgDailyViewsTextView.text = statistics?.avgDailyViews?.toString() ?: "?"
-        vSubs14TextView.text = statistics?.subsByPeriod?.by14?.toString() ?: "?"
-        vViews14TextView.text = statistics?.viewsByPeriod?.by14?.toString() ?: "?"
-        vSubs30TextView.text = statistics?.subsByPeriod?.by30?.toString() ?: "?"
-        vViews30TextView.text = statistics?.viewsByPeriod?.by30?.toString() ?: "?"
-        vSubs60TextView.text = statistics?.subsByPeriod?.by60?.toString() ?: "?"
-        vViews60TextView.text = statistics?.viewsByPeriod?.by60?.toString() ?: "?"
-        vSubs90TextView.text = statistics?.subsByPeriod?.by90?.toString() ?: "?"
-        vViews90TextView.text = statistics?.viewsByPeriod?.by90?.toString() ?: "?"
-        vSubs180TextView.text = statistics?.subsByPeriod?.by180?.toString() ?: "?"
-        vViews180TextView.text = statistics?.viewsByPeriod?.by180?.toString() ?: "?"
-        vSubs365TextView.text = statistics?.subsByPeriod?.by365?.toString() ?: "?"
-        vViews365TextView.text = statistics?.viewsByPeriod?.by365?.toString() ?: "?"
+        vAvgDailySubsTextView.text = statistics?.avgDailySubs?.format() ?: "?"
+        vAvgDailyViewsTextView.text = statistics?.avgDailyViews?.format() ?: "?"
+        vSubs14TextView.text = statistics?.subsByPeriod?.by14?.format() ?: "?"
+        vViews14TextView.text = statistics?.viewsByPeriod?.by14?.format() ?: "?"
+        vSubs30TextView.text = statistics?.subsByPeriod?.by30?.format() ?: "?"
+        vViews30TextView.text = statistics?.viewsByPeriod?.by30?.format() ?: "?"
+        vSubs60TextView.text = statistics?.subsByPeriod?.by60?.format() ?: "?"
+        vViews60TextView.text = statistics?.viewsByPeriod?.by60?.format() ?: "?"
+        vSubs90TextView.text = statistics?.subsByPeriod?.by90?.format() ?: "?"
+        vViews90TextView.text = statistics?.viewsByPeriod?.by90?.format() ?: "?"
+        vSubs180TextView.text = statistics?.subsByPeriod?.by180?.format() ?: "?"
+        vViews180TextView.text = statistics?.viewsByPeriod?.by180?.format() ?: "?"
+        vSubs365TextView.text = statistics?.subsByPeriod?.by365?.format() ?: "?"
+        vViews365TextView.text = statistics?.viewsByPeriod?.by365?.format() ?: "?"
 
         statistics?.dataDailyList?.let { dataDailyList ->
             socialBladeDataDailyList = dataDailyList
@@ -217,6 +217,12 @@ class StatisticsActivity : AppCompatActivity() {
     private fun Float.format(): String {
         val df = NumberFormat.getNumberInstance(Locale.ENGLISH) as DecimalFormat
         df.applyPattern("###,###.#")
+        return df.format(this)
+    }
+
+    private fun Long.format(): String {
+        val df = NumberFormat.getNumberInstance(Locale.ENGLISH) as DecimalFormat
+        df.applyPattern("###,###")
         return df.format(this)
     }
 

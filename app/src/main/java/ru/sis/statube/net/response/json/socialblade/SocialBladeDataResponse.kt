@@ -5,18 +5,18 @@ import com.google.gson.annotations.SerializedName
 class SocialBladeDataResponse {
 
     @SerializedName("uploads")
-    var uploads: Int? = null
+    var uploads: String? = null
 
     @SerializedName("subs")
-    var subs: Int? = null
+    var subs: String? = null
 
     @SerializedName("views")
-    var views: Int? = null
+    var views: String? = null
 
     @SerializedName("avgdailysubs")
-    var avgDailySubs: Int? = null
+    var avgDailySubs: String? = null
 
     @SerializedName("avgdailyviews")
-    var avgDailyViews: Int? = null
+    var avgDailyViews: String? = null
 
 }

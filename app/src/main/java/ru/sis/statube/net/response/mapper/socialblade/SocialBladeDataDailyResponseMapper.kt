@@ -11,8 +11,8 @@ class SocialBladeDataDailyResponseMapper {
             return null
         val dataDaily = SocialBladeDataDaily()
         dataDaily.date = from.date?.parseSocialBladeDate() ?: return null
-        dataDaily.subs = from.subs ?: return null
-        dataDaily.views = from.views ?: return null
+        dataDaily.subs = from.subs?.toLongOrNull() ?: return null
+        dataDaily.views = from.views?.toLongOrNull() ?: return null
         return dataDaily
     }
 

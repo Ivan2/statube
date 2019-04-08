@@ -34,7 +34,7 @@ class ChannelActivity : AppCompatActivity() {
         vIdTextView.text = channel.id
         vTitleTextView.text = channel.title ?: ""
         vDescriptionTextView.text = channel.description ?: ""
-        vPublishedAtTextView.text = channel.publishedAt?.toString("dd.MM.YYYY") ?: ""
+        vPublishedAtTextView.text = channel.publishedAt?.toString("dd.MM.yyyy") ?: ""
         vCountryTextView.text = channel.country ?: ""
         vViewCountTextView.text = channel.viewCount ?: ""
         vSubscriberCountTextView.text = channel.subscriberCount ?: ""

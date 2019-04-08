@@ -5,9 +5,9 @@ import com.google.gson.annotations.SerializedName
 class SocialBladeGrowthResponse {
 
     @SerializedName("subs")
-    var subs: Double? = null
+    var subs: String? = null
 
     @SerializedName("views")
-    var views: Double? = null
+    var views: String? = null
 
 }

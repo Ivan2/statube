@@ -3,8 +3,8 @@ package ru.sis.statube.additional
 import org.joda.time.*
 import org.joda.time.format.DateTimeFormat
 
-private const val YOUTUBE_DATE_TIME_PATTERN = "YYYY-MM-dd'T'HH:mm:ss.SSSZ"
-private const val SOCIAL_BLADE_DATE_PATTERN = "YYYY-MM-dd"
+private const val YOUTUBE_DATE_TIME_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+private const val SOCIAL_BLADE_DATE_PATTERN = "yyyy-MM-dd"
 
 fun String.parseYoutubeDateTime(): DateTime? {
     val formatter = DateTimeFormat.forPattern(YOUTUBE_DATE_TIME_PATTERN)

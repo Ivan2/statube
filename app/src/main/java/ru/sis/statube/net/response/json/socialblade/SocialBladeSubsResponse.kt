@@ -5,21 +5,21 @@ import com.google.gson.annotations.SerializedName
 class SocialBladeSubsResponse {
 
     @SerializedName("subs14")
-    var subs14: Int? = null
+    var subs14: String? = null
 
     @SerializedName("subs30")
-    var subs30: Int? = null
+    var subs30: String? = null
 
     @SerializedName("subs60")
-    var subs60: Int? = null
+    var subs60: String? = null
 
     @SerializedName("subs90")
-    var subs90: Int? = null
+    var subs90: String? = null
 
     @SerializedName("subs180")
-    var subs180: Int? = null
+    var subs180: String? = null
 
     @SerializedName("subs365")
-    var subs365: Int? = null
+    var subs365: String? = null
 
 }

@@ -8,8 +8,8 @@ open class DataDailyEntity : RealmObject() {
 
     open var date: Long = 0
 
-    open var subs: Int? = null
+    open var subs: Long? = null
 
-    open var views: Int? = null
+    open var views: Long? = null
 
 }

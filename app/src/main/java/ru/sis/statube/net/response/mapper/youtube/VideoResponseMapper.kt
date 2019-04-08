@@ -10,10 +10,10 @@ class VideoResponseMapper {
             return null
         val video = Video()
         video.id = from.id ?: return null
-        video.viewCount = from.statistics?.viewCount?.toIntOrNull()
-        video.likeCount = from.statistics?.likeCount?.toIntOrNull()
-        video.dislikeCount = from.statistics?.dislikeCount?.toIntOrNull()
-        video.commentCount = from.statistics?.commentCount?.toIntOrNull()
+        video.viewCount = from.statistics?.viewCount?.toLongOrNull()
+        video.likeCount = from.statistics?.likeCount?.toLongOrNull()
+        video.dislikeCount = from.statistics?.dislikeCount?.toLongOrNull()
+        video.commentCount = from.statistics?.commentCount?.toLongOrNull()
         return video
     }
 

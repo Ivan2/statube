@@ -9,12 +9,12 @@ class SocialBladeViewsResponseMapper {
         if (from == null)
             return null
         val views = ValueByPeriod()
-        views.by14 = from.views14 ?: return null
-        views.by30 = from.views30 ?: return null
-        views.by60 = from.views60 ?: return null
-        views.by90 = from.views90 ?: return null
-        views.by180 = from.views180 ?: return null
-        views.by365 = from.views365 ?: return null
+        views.by14 = from.views14?.toLongOrNull()
+        views.by30 = from.views30?.toLongOrNull()
+        views.by60 = from.views60?.toLongOrNull()
+        views.by90 = from.views90?.toLongOrNull()
+        views.by180 = from.views180?.toLongOrNull()
+        views.by365 = from.views365?.toLongOrNull()
         return views
     }
 

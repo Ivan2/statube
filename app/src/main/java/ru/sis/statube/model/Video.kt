@@ -9,12 +9,12 @@ class Video : Serializable {
 
     lateinit var publishedAt: DateTime
 
-    var viewCount: Int? = null
+    var viewCount: Long? = null
 
-    var likeCount: Int? = null
+    var likeCount: Long? = null
 
-    var dislikeCount: Int? = null
+    var dislikeCount: Long? = null
 
-    var commentCount: Int? = null
+    var commentCount: Long? = null
 
 }

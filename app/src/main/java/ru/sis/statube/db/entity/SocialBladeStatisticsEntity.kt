@@ -11,17 +11,17 @@ open class SocialBladeStatisticsEntity : RealmObject() {
     @PrimaryKey
     open var channelId: String = ""
 
-    open var avgDailySubs: Int? = null
+    open var avgDailySubs: Long? = null
 
-    open var avgDailyViews: Int? = null
+    open var avgDailyViews: Long? = null
 
     open var subsByPeriod: ValueByPeriodEntity? = null
 
     open var viewsByPeriod: ValueByPeriodEntity? = null
 
-    open var growthSubs: Double? = null
+    open var growthSubs: String? = null
 
-    open var growthViews: Double? = null
+    open var growthViews: String? = null
 
     open var dataDailyList = RealmList<DataDailyEntity>()
 
