@@ -19,12 +19,11 @@ import ru.sis.statube.R
 import ru.sis.statube.additional.CHANNEL_DATA_KEY
 import ru.sis.statube.additional.color
 import ru.sis.statube.additional.date
+import ru.sis.statube.additional.format
 import ru.sis.statube.model.Channel
 import ru.sis.statube.model.SocialBladeDataDaily
 import ru.sis.statube.model.SocialBladeStatistics
 import ru.sis.statube.model.Video
-import java.text.DecimalFormat
-import java.text.NumberFormat
 import java.util.*
 
 class StatisticsActivity : AppCompatActivity() {
@@ -212,18 +211,6 @@ class StatisticsActivity : AppCompatActivity() {
             }
 
         }
-    }
-
-    private fun Float.format(): String {
-        val df = NumberFormat.getNumberInstance(Locale.ENGLISH) as DecimalFormat
-        df.applyPattern("###,###.#")
-        return df.format(this)
-    }
-
-    private fun Long.format(): String {
-        val df = NumberFormat.getNumberInstance(Locale.ENGLISH) as DecimalFormat
-        df.applyPattern("###,###")
-        return df.format(this)
     }
 
     private fun updateChart1(chartTypePosition: Int? = null) {

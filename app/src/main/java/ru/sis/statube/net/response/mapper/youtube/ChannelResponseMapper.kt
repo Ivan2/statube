@@ -18,9 +18,9 @@ class ChannelResponseMapper {
             it.high?.url ?: it.medium?.url ?: it.default?.url
         }
         channel.country = from.snippet?.country
-        channel.viewCount = from.statistics?.viewCount
-        channel.subscriberCount = from.statistics?.subscriberCount
-        channel.videoCount = from.statistics?.videoCount
+        channel.viewCount = from.statistics?.viewCount?.toLongOrNull()
+        channel.subscriberCount = from.statistics?.subscriberCount?.toLongOrNull()
+        channel.videoCount = from.statistics?.videoCount?.toLongOrNull()
         channel.keywords = from.brandingSettings?.channel?.keywords
         channel.bannerImageUrl = from.brandingSettings?.image?.let {
             it.bannerMobileHdImageUrl ?: it.bannerMobileMediumHdImageUrl ?: it.bannerMobileExtraHdImageUrl ?:

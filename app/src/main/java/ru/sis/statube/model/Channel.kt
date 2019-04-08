@@ -17,11 +17,11 @@ class Channel : Serializable {
 
     var country: String? = null
 
-    var viewCount: String? = null
+    var viewCount: Long? = null
 
-    var subscriberCount: String? = null
+    var subscriberCount: Long? = null
 
-    var videoCount: String? = null
+    var videoCount: Long? = null
 
     var keywords: String? = null
 

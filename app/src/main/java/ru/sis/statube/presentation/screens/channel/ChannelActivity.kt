@@ -34,12 +34,12 @@ class ChannelActivity : AppCompatActivity() {
         vIdTextView.text = channel.id
         vTitleTextView.text = channel.title ?: ""
         vDescriptionTextView.text = channel.description ?: ""
-        vPublishedAtTextView.text = channel.publishedAt?.toString("dd.MM.yyyy") ?: ""
-        vCountryTextView.text = channel.country ?: ""
-        vViewCountTextView.text = channel.viewCount ?: ""
-        vSubscriberCountTextView.text = channel.subscriberCount ?: ""
-        vVideoCountTextView.text = channel.videoCount ?: ""
-        vKeywordsTextView.text = channel.keywords ?: ""
+        vPublishedAtTextView.text = channel.publishedAt?.toString("dd.MM.yyyy") ?: "?"
+        vCountryTextView.text = channel.country ?: "?"
+        vViewCountTextView.text = channel.viewCount?.format() ?: "?"
+        vSubscriberCountTextView.text = channel.subscriberCount?.format() ?: "?"
+        vVideoCountTextView.text = channel.videoCount?.format() ?: "?"
+        vKeywordsTextView.text = channel.keywords ?: "?"
         updateFavouriteButton(channel.isFavourite)
 
         vFavouriteButton.setOnClickListener {
