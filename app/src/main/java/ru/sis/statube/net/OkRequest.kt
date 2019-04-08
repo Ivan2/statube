@@ -2,7 +2,6 @@ package ru.sis.statube.net
 
 import android.util.Log
 import okhttp3.*
-import ru.sis.statube.BuildConfig
 import java.util.concurrent.TimeUnit
 
 class OkRequest private constructor() {
@@ -17,22 +16,19 @@ class OkRequest private constructor() {
         }
     }
 
-    //private val mediaType = MediaType.parse("application/json; charset=utf-8")
+    private val client = OkHttpClient.Builder()
+        .connectTimeout(10, TimeUnit.SECONDS)
+        .readTimeout(10, TimeUnit.SECONDS)
+        .writeTimeout(10, TimeUnit.SECONDS)
+        .build()
 
     fun get(url: String): String? {
-        val client = OkHttpClient.Builder()
-            .connectTimeout(10, TimeUnit.SECONDS)
-            .readTimeout(10, TimeUnit.SECONDS)
-            .writeTimeout(10, TimeUnit.SECONDS)
-            .build()
         val request = Request.Builder()
             .url(url)
             .build()
 
         val response = client.newCall(request).execute()
         val str = response.body()?.string()
-        if (BuildConfig.DEBUG)
-            Log.wtf("Response", str ?: "null")
         return str
     }
 

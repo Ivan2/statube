@@ -7,8 +7,12 @@
     <color name="white">#FFFFFF</color>
     <color name="red">#FF0000</color>
 
+    <color name="whiteSmoke">#EEEEEE</color>
     <color name="lightGray">#AAAAAA</color>
 
     <color name="favourite">#CC0000</color>
     <color name="not_favourite">#AAAAAA</color>
+
+    <color name="subs">#00CC00</color>
+    <color name="views">#0000CC</color>
 </resources>

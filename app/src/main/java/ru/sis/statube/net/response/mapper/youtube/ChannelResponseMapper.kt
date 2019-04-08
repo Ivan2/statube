@@ -26,6 +26,7 @@ class ChannelResponseMapper {
             it.bannerMobileHdImageUrl ?: it.bannerMobileMediumHdImageUrl ?: it.bannerMobileExtraHdImageUrl ?:
             it.bannerMobileLowImageUrl ?: it.bannerMobileImageUrl
         }
+        channel.uploads = from.contentDetails?.relatedPlayLists?.uploads
         return channel
     }
 

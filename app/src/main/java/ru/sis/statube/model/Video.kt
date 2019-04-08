@@ -9,8 +9,6 @@ class Video : Serializable {
 
     lateinit var publishedAt: DateTime
 
-    var title: String? = null
-
     var viewCount: Int? = null
 
     var likeCount: Int? = null

@@ -21,236 +21,435 @@
 
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/vTitleTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:textStyle="bold"
-        android:textSize="18sp"/>
-
-    <TableLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:visibility="gone">
+        android:layout_height="match_parent">
 
-        <TableRow>
-
-            <TextView
-                style="@style/StatisticsTableColumn0"/>
-
-            <TextView
-                style="@style/StatisticsTableValueColumns"
-                android:textStyle="normal"
-                android:textSize="16sp"
-                android:text="Подписчиков"/>
-
-            <TextView
-                style="@style/StatisticsTableValueColumns"
-                android:textStyle="normal"
-                android:textSize="16sp"
-                android:text="Просмотров"/>
-
-        </TableRow>
-
-        <TableRow>
-
-            <TextView
-                style="@style/StatisticsTableColumn0"
-                android:text="Среднее\nза день"/>
-
-            <TextView
-                android:id="@+id/vAvgDailySubsTextView"
-                style="@style/StatisticsTableValueColumns"/>
-
-            <TextView
-                android:id="@+id/vAvgDailyViewsTextView"
-                style="@style/StatisticsTableValueColumns"/>
-
-        </TableRow>
-
-        <TableRow>
-
-            <TextView
-                style="@style/StatisticsTableColumn0"
-                android:text="14 дней"/>
-
-            <TextView
-                android:id="@+id/vSubs14TextView"
-                style="@style/StatisticsTableValueColumns"/>
-
-            <TextView
-                android:id="@+id/vViews14TextView"
-                style="@style/StatisticsTableValueColumns"/>
-
-        </TableRow>
-
-        <TableRow>
-
-            <TextView
-                style="@style/StatisticsTableColumn0"
-                android:text="30 дней"/>
-
-            <TextView
-                android:id="@+id/vSubs30TextView"
-                style="@style/StatisticsTableValueColumns"/>
-
-            <TextView
-                android:id="@+id/vViews30TextView"
-                style="@style/StatisticsTableValueColumns"/>
-
-        </TableRow>
-
-        <TableRow>
-
-            <TextView
-                style="@style/StatisticsTableColumn0"
-                android:text="60 дней"/>
-
-            <TextView
-                android:id="@+id/vSubs60TextView"
-                style="@style/StatisticsTableValueColumns"/>
-
-            <TextView
-                android:id="@+id/vViews60TextView"
-                style="@style/StatisticsTableValueColumns"/>
-
-        </TableRow>
-
-        <TableRow>
-
-            <TextView
-                style="@style/StatisticsTableColumn0"
-                android:text="90 дней"/>
-
-            <TextView
-                android:id="@+id/vSubs90TextView"
-                style="@style/StatisticsTableValueColumns"/>
-
-            <TextView
-                android:id="@+id/vViews90TextView"
-                style="@style/StatisticsTableValueColumns"/>
-
-        </TableRow>
-
-        <TableRow>
-
-            <TextView
-                style="@style/StatisticsTableColumn0"
-                android:text="180 дней"/>
-
-            <TextView
-                android:id="@+id/vSubs180TextView"
-                style="@style/StatisticsTableValueColumns"/>
-
-            <TextView
-                android:id="@+id/vViews180TextView"
-                style="@style/StatisticsTableValueColumns"/>
-
-        </TableRow>
-
-        <TableRow>
-
-            <TextView
-                style="@style/StatisticsTableColumn0"
-                android:text="365 дней"/>
-
-            <TextView
-                android:id="@+id/vSubs365TextView"
-                style="@style/StatisticsTableValueColumns"/>
-
-            <TextView
-                android:id="@+id/vViews365TextView"
-                style="@style/StatisticsTableValueColumns"/>
-
-        </TableRow>
-
-    </TableLayout>
-
-    <co.ceryle.radiorealbutton.RadioRealButtonGroup
-        android:id="@+id/vChartTypeButtonGroup"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        app:rrbg_backgroundColor="@color/white"
-        app:rrbg_animateSelector_duration="200"
-        app:rrbg_animateSelector="linear"
-        app:rrbg_selectorFullSize="true"
-        app:rrbg_borderColor="@color/colorPrimary"
-        app:rrbg_borderSize="1dp"
-        app:rrbg_dividerColor="@color/colorPrimary"
-        app:rrbg_dividerSize="1dp"
-        app:rrbg_dividerPadding="0dp"
-        app:rrbg_radius="6dp"
-        app:rrbg_selectorColor="@color/colorPrimary"
-        app:rrbg_buttonsPadding="2dp"
-        app:rrbg_bottomLineSize="0dp"
-        app:rrbg_checkedPosition="1">
-
-        <co.ceryle.radiorealbutton.RadioRealButton
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:rrb_ripple="false"
-            app:rrb_textGravity="center"
-            app:rrb_textColor="@color/colorPrimary"
-            app:rrb_textColorTo="@color/white"
-            app:rrb_textSize="12sp"
-            app:rrb_text="Абсолютные\nзначения"/>
+            android:orientation="vertical"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp">
 
-        <co.ceryle.radiorealbutton.RadioRealButton
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:rrb_ripple="false"
-            app:rrb_textGravity="center"
-            app:rrb_textColor="@color/colorPrimary"
-            app:rrb_textColorTo="@color/white"
-            app:rrb_textSize="12sp"
-            app:rrb_text="Относительные\nзначения"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:text="Подписки и просмотры по каналу"/>
 
-    </co.ceryle.radiorealbutton.RadioRealButtonGroup>
-    
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="10dp">
-
-        <FrameLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <CheckBox
-                android:id="@+id/vSubsCheckBox"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:checked="true"
-                android:text="Подписки"/>
+                android:orientation="horizontal"
+                android:layout_gravity="end"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="4dp">
 
-        </FrameLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:textSize="12sp"
+                    android:text="Обновлено:"/>
 
-        <FrameLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
+                <TextView
+                    android:id="@+id/vUpdated1TextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_gravity="center_vertical"
+                    android:textSize="12sp"/>
 
-            <CheckBox
-                android:id="@+id/vViewsCheckBox"
-                android:layout_width="wrap_content"
+                <FrameLayout
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="4dp"
+                    android:layout_gravity="center_vertical">
+
+                    <ImageView
+                        android:id="@+id/vRefresh1Button"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="6dp"
+                        android:src="@drawable/ic_refresh_black_24dp"
+                        android:tint="@color/colorPrimary"/>
+
+                    <ProgressBar
+                        android:id="@+id/vLoading1ProgressBar"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="6dp"
+                        android:indeterminate="true"
+                        android:indeterminateTint="@color/colorPrimary"/>
+
+                </FrameLayout>
+
+            </LinearLayout>
+
+            <TableLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:checked="true"
-                android:text="Просмотры"/>
+                android:layout_margin="10dp"
+                android:visibility="gone">
 
-        </FrameLayout>
+                <TableRow>
 
-    </LinearLayout>
+                    <TextView
+                        style="@style/StatisticsTableColumn0"/>
 
-    <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/vLineChart"
-        android:layout_width="match_parent"
-        android:layout_height="300dp" />
+                    <TextView
+                        style="@style/StatisticsTableValueColumns"
+                        android:textStyle="normal"
+                        android:textSize="16sp"
+                        android:text="Подписчиков"/>
+
+                    <TextView
+                        style="@style/StatisticsTableValueColumns"
+                        android:textStyle="normal"
+                        android:textSize="16sp"
+                        android:text="Просмотров"/>
+
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView
+                        style="@style/StatisticsTableColumn0"
+                        android:text="Среднее\nза день"/>
+
+                    <TextView
+                        android:id="@+id/vAvgDailySubsTextView"
+                        style="@style/StatisticsTableValueColumns"/>
+
+                    <TextView
+                        android:id="@+id/vAvgDailyViewsTextView"
+                        style="@style/StatisticsTableValueColumns"/>
+
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView
+                        style="@style/StatisticsTableColumn0"
+                        android:text="14 дней"/>
+
+                    <TextView
+                        android:id="@+id/vSubs14TextView"
+                        style="@style/StatisticsTableValueColumns"/>
+
+                    <TextView
+                        android:id="@+id/vViews14TextView"
+                        style="@style/StatisticsTableValueColumns"/>
+
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView
+                        style="@style/StatisticsTableColumn0"
+                        android:text="30 дней"/>
+
+                    <TextView
+                        android:id="@+id/vSubs30TextView"
+                        style="@style/StatisticsTableValueColumns"/>
+
+                    <TextView
+                        android:id="@+id/vViews30TextView"
+                        style="@style/StatisticsTableValueColumns"/>
+
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView
+                        style="@style/StatisticsTableColumn0"
+                        android:text="60 дней"/>
+
+                    <TextView
+                        android:id="@+id/vSubs60TextView"
+                        style="@style/StatisticsTableValueColumns"/>
+
+                    <TextView
+                        android:id="@+id/vViews60TextView"
+                        style="@style/StatisticsTableValueColumns"/>
+
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView
+                        style="@style/StatisticsTableColumn0"
+                        android:text="90 дней"/>
+
+                    <TextView
+                        android:id="@+id/vSubs90TextView"
+                        style="@style/StatisticsTableValueColumns"/>
+
+                    <TextView
+                        android:id="@+id/vViews90TextView"
+                        style="@style/StatisticsTableValueColumns"/>
+
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView
+                        style="@style/StatisticsTableColumn0"
+                        android:text="180 дней"/>
+
+                    <TextView
+                        android:id="@+id/vSubs180TextView"
+                        style="@style/StatisticsTableValueColumns"/>
+
+                    <TextView
+                        android:id="@+id/vViews180TextView"
+                        style="@style/StatisticsTableValueColumns"/>
+
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView
+                        style="@style/StatisticsTableColumn0"
+                        android:text="365 дней"/>
+
+                    <TextView
+                        android:id="@+id/vSubs365TextView"
+                        style="@style/StatisticsTableValueColumns"/>
+
+                    <TextView
+                        android:id="@+id/vViews365TextView"
+                        style="@style/StatisticsTableValueColumns"/>
+
+                </TableRow>
+
+            </TableLayout>
+
+            <co.ceryle.radiorealbutton.RadioRealButtonGroup
+                android:id="@+id/vChartTypeButtonGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                app:rrbg_backgroundColor="@color/white"
+                app:rrbg_animateSelector_duration="200"
+                app:rrbg_animateSelector="linear"
+                app:rrbg_selectorFullSize="true"
+                app:rrbg_borderColor="@color/colorPrimary"
+                app:rrbg_borderSize="1dp"
+                app:rrbg_dividerColor="@color/colorPrimary"
+                app:rrbg_dividerSize="1dp"
+                app:rrbg_dividerPadding="0dp"
+                app:rrbg_radius="6dp"
+                app:rrbg_selectorColor="@color/colorPrimary"
+                app:rrbg_buttonsPadding="2dp"
+                app:rrbg_bottomLineSize="0dp"
+                app:rrbg_checkedPosition="1">
+
+                <co.ceryle.radiorealbutton.RadioRealButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:rrb_ripple="false"
+                    app:rrb_textGravity="center"
+                    app:rrb_textColor="@color/colorPrimary"
+                    app:rrb_textColorTo="@color/white"
+                    app:rrb_textSize="12sp"
+                    app:rrb_text="Абсолютные\nзначения"/>
+
+                <co.ceryle.radiorealbutton.RadioRealButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:rrb_ripple="false"
+                    app:rrb_textGravity="center"
+                    app:rrb_textColor="@color/colorPrimary"
+                    app:rrb_textColorTo="@color/white"
+                    app:rrb_textSize="12sp"
+                    app:rrb_text="Относительные\nзначения"/>
+
+            </co.ceryle.radiorealbutton.RadioRealButtonGroup>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <CheckBox
+                        android:id="@+id/vSubsCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:buttonTint="@color/subs"
+                        android:checked="true"
+                        android:text="Подписки"/>
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <CheckBox
+                        android:id="@+id/vViewsCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:buttonTint="@color/views"
+                        android:checked="true"
+                        android:text="Просмотры"/>
+
+                </FrameLayout>
+
+            </LinearLayout>
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/vLineChart"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"/>
+
+            <LinearLayout
+                android:id="@+id/vVideoStatisticsLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@color/whiteSmoke"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:text="Просмотры, лайки, дизлайки и комментарии по видео"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="4dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:textSize="12sp"
+                        android:text="Обновлено:"/>
+
+                    <TextView
+                        android:id="@+id/vUpdated2TextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_gravity="center_vertical"
+                        android:textSize="12sp"/>
+
+                    <FrameLayout
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_marginStart="4dp"
+                        android:layout_gravity="center_vertical">
+
+                        <ImageView
+                            android:id="@+id/vRefresh2Button"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="6dp"
+                            android:src="@drawable/ic_refresh_black_24dp"
+                            android:tint="@color/colorPrimary"/>
+
+                        <ProgressBar
+                            android:id="@+id/vLoading2ProgressBar"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="6dp"
+                            android:indeterminate="true"
+                            android:indeterminateTint="@color/colorPrimary"/>
+
+                    </FrameLayout>
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/vBeginDateLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:textSize="14sp"
+                        android:text="Дата начала"/>
+
+                    <TextView
+                        android:id="@+id/vBeginDateTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentEnd="true"
+                        android:textSize="14sp"
+                        android:textColor="@color/colorPrimary"
+                        android:text="12.34.2009"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/vEndDateLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:textSize="14sp"
+                        android:text="Дата конца"/>
+
+                    <TextView
+                        android:id="@+id/vEndDateTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentEnd="true"
+                        android:textSize="14sp"
+                        android:textColor="@color/colorPrimary"
+                        android:text="12.34.2009"/>
+
+                </RelativeLayout>
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/vLineChart2"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>

@@ -6,11 +6,12 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import org.joda.time.DateTime
 import ru.sis.statube.additional.YOUTUBE_DATA_API_URL
+import ru.sis.statube.model.PlayListItem
 import ru.sis.statube.model.Video
 import ru.sis.statube.net.OkRequest
+import ru.sis.statube.net.response.json.youtube.playListItem.PlayListItemListResponse
 import ru.sis.statube.net.response.json.youtube.video.VideoListResponse
-import ru.sis.statube.net.response.json.youtube.video.VideoSearchListResponse
-import ru.sis.statube.net.response.json.youtube.video.VideoSearchResponse
+import ru.sis.statube.net.response.mapper.youtube.PlayListItemResponseMapper
 import ru.sis.statube.net.response.mapper.youtube.VideoResponseMapper
 
 class VideosInteractor : Interactor() {
@@ -25,59 +26,76 @@ class VideosInteractor : Interactor() {
         }
     }
 
-    private val searchPath = "search?key=%s&channelId=%s&part=id&order=date&maxResults=50&type=video"
-    private val searchWithTokenPath = "search?key=%s&channelId=%s&part=id&order=date&maxResults=50&type=video&pageToken=%s"
-    private val videoPath = "videos?key=%s&id=%s&part=snippet,statistics"
+    private val playlistItemsPath = "playlistItems?key=%s&playlistId=%s&part=contentDetails&maxResults=50"
+    private val playlistItemsWithTokenPath = "playlistItems?key=%s&playlistId=%s&part=contentDetails&maxResults=50&pageToken=%s"
+    private val videoPath = "videos?key=%s&id=%s&part=statistics"
 
-    fun searchAsync(context: Context, channelId: String) = GlobalScope.async {
+    fun loadAsync(context: Context, uploads: String, beginDate: DateTime, endDate: DateTime) = GlobalScope.async {
         val config = loadConfig(context)
+        val playListItems = loadPlayListItems(uploads, beginDate, endDate, config.youtubeDataApiKey)
+        loadVideos(playListItems, config.youtubeDataApiKey)
+    }
 
-        val beginDate = DateTime.now().minusMonths(2)
-
-        val mapper = VideoResponseMapper()
-        val videoList = ArrayList<Video>()
-
+    private fun loadPlayListItems(uploads: String, beginDate: DateTime, endDate: DateTime, youtubeDataApiKey: String): List<PlayListItem> {
+        val beginDate2 = beginDate.minusMonths(1)
+        val mapper = PlayListItemResponseMapper()
+        val playListItems = ArrayList<PlayListItem>()
         var pageToken: String? = null
 
         while (true) {
-            val searchUrl = if (pageToken == null)
-                "$YOUTUBE_DATA_API_URL${String.format(searchPath, config.youtubeDataApiKey, channelId)}"
+            val playListItemsUrl = if (pageToken == null)
+                "$YOUTUBE_DATA_API_URL${String.format(playlistItemsPath, youtubeDataApiKey, uploads)}"
             else
-                "$YOUTUBE_DATA_API_URL${String.format(searchWithTokenPath, config.youtubeDataApiKey, channelId, pageToken)}"
-            val response = OkRequest.getInstance().get(searchUrl)
-            val videoSearchListResponse = Gson().fromJson(response, VideoSearchListResponse::class.java)
-            val items = videoSearchListResponse.items
-            if (items != null)
-                if (!loadVideos(config.youtubeDataApiKey, items, beginDate, mapper, videoList))
-                    break
+                "$YOUTUBE_DATA_API_URL${String.format(playlistItemsWithTokenPath, youtubeDataApiKey, uploads, pageToken)}"
+            val response = OkRequest.getInstance().get(playListItemsUrl)
+            val playListItemListResponse = Gson().fromJson(response, PlayListItemListResponse::class.java)
+            if (playListItemListResponse.items.isNullOrEmpty())
+                break
 
-            pageToken = videoSearchListResponse.nextPageToken
+            var toStop = false
+            playListItemListResponse.items?.forEach { playListItemResponse ->
+                mapper.map(playListItemResponse)?.let { playListItem ->
+                    if (playListItem.videoPublishedAt.isBefore(beginDate)) {
+                        if (playListItem.videoPublishedAt.isBefore(beginDate2))
+                            toStop = true
+                    } else {
+                        if (playListItem.videoPublishedAt.isBefore(endDate))
+                            playListItems.add(playListItem)
+                    }
+                }
+            }
+            if (toStop)
+                break
+
+            pageToken = playListItemListResponse.nextPageToken
             if (pageToken == null)
                 break
         }
 
-        videoList
+        return playListItems
     }
 
-    private fun loadVideos(youtubeDataApiKey: String, videoSearchResponseList: List<VideoSearchResponse>,
-                           beginDate: DateTime, mapper: VideoResponseMapper, videoList: ArrayList<Video>): Boolean {
-        videoSearchResponseList.forEach { videoSearchResponse ->
-            if (videoSearchResponse.kind == "youtube#searchResult" && videoSearchResponse.id?.kind == "youtube#video") {
-                videoSearchResponse.id?.id?.let { id ->
-                    val videoUrl = "$YOUTUBE_DATA_API_URL${String.format(videoPath, youtubeDataApiKey, id)}"
-                    val response = OkRequest.getInstance().get(videoUrl)
-                    val videoListResponse = Gson().fromJson(response, VideoListResponse::class.java)
-                    videoListResponse.items?.forEach { videoResponse ->
-                        mapper.map(videoResponse)?.let { video ->
-                            if (video.publishedAt.isBefore(beginDate))
-                                return false
-                            videoList.add(video)
-                        }
+    private fun loadVideos(playListItemList: List<PlayListItem>, youtubeDataApiKey: String): List<Video> {
+        val mapper = VideoResponseMapper()
+        val videos = ArrayList<Video>()
+
+        playListItemList.forEach { playListItem ->
+            try {
+                val videoUrl = "$YOUTUBE_DATA_API_URL${String.format(videoPath, youtubeDataApiKey, playListItem.videoId)}"
+                val response = OkRequest.getInstance().get(videoUrl)
+                val videoListResponse = Gson().fromJson(response, VideoListResponse::class.java)
+                videoListResponse.items?.forEach { videoResponse ->
+                    mapper.map(videoResponse)?.let { video ->
+                        video.publishedAt = playListItem.videoPublishedAt
+                        videos.add(video)
                     }
                 }
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
-        return true
+
+        return videos
     }
 
 }

@@ -1,4 +1,4 @@
-package ru.sis.statube.db
+package ru.sis.statube.db.entity
 
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey

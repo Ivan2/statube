@@ -5,7 +5,7 @@ import com.google.gson.Gson
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import ru.sis.statube.additional.YOUTUBE_DATA_API_URL
-import ru.sis.statube.db.ChannelStore
+import ru.sis.statube.db.store.ChannelStore
 import ru.sis.statube.model.Channel
 import ru.sis.statube.model.Channels
 import ru.sis.statube.net.OkRequest
@@ -28,7 +28,7 @@ class ChannelInteractor : Interactor() {
 
     private val searchPath = "search?key=%s&q=%s&part=id,snippet&order=relevance&maxResults=30&type=channel"
     private val searchWithTokenPath = "search?key=%s&q=%s&part=id,snippet&order=relevance&maxResults=30&type=channel&pageToken=%s"
-    private val channelPath = "channels?key=%s&id=%s&part=snippet,statistics,brandingSettings"
+    private val channelPath = "channels?key=%s&id=%s&part=snippet,statistics,brandingSettings,contentDetails"
 
     fun searchAsync(context: Context, text: String, pageToken: String? = null) = GlobalScope.async {
         val config = loadConfig(context)

@@ -27,6 +27,8 @@ class Channel : Serializable {
 
     var bannerImageUrl: String? = null
 
+    var uploads: String? = null
+
     var isFavourite: Boolean = false
 
 }

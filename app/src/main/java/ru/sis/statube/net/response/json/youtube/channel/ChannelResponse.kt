@@ -20,4 +20,7 @@ class ChannelResponse {
     @SerializedName("brandingSettings")
     var brandingSettings: BrandingSettingsResponse? = null
 
+    @SerializedName("contentDetails")
+    var contentDetails: ChannelContentDetailsResponse? = null
+
 }

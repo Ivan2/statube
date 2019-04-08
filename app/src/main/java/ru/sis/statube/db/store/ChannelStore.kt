@@ -1,6 +1,8 @@
-package ru.sis.statube.db
+package ru.sis.statube.db.store
 
 import io.realm.Realm
+import ru.sis.statube.db.entity.ChannelEntity
+import ru.sis.statube.db.mapper.ChannelEntityMapper
 import ru.sis.statube.model.Channel
 
 class ChannelStore {

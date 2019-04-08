@@ -23,3 +23,7 @@ fun String.parseSocialBladeDate(): DateTime? {
         null
     }
 }
+
+fun DateTime.date(): DateTime {
+    return this.withTime(0, 0, 0, 0)
+}
