@@ -6,7 +6,6 @@ import ru.sis.statube.Preferences
 import ru.sis.statube.additional.resolvedLaunch
 import ru.sis.statube.interactor.SocialBladeInteractor
 import ru.sis.statube.interactor.VideosInteractor
-import ru.sis.statube.model.SocialBladeDataDaily
 import ru.sis.statube.model.SocialBladeStatistics
 import ru.sis.statube.model.Video
 import ru.sis.statube.presentation.Presenter

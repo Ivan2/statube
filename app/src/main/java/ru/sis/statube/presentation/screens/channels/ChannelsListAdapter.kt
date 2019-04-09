@@ -10,7 +10,6 @@ import ru.sis.statube.R
 import ru.sis.statube.additional.color
 import ru.sis.statube.additional.loadThumbnail
 import ru.sis.statube.model.Channel
-import java.lang.Exception
 
 class ChannelsListAdapter(
     private val loadListener: () -> Unit,

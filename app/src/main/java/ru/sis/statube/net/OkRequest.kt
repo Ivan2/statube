@@ -1,6 +1,7 @@
 package ru.sis.statube.net
 
-import okhttp3.*
+import okhttp3.OkHttpClient
+import okhttp3.Request
 import java.util.concurrent.TimeUnit
 
 class OkRequest private constructor() {

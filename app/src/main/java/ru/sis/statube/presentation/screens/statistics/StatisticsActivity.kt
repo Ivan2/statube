@@ -1,12 +1,13 @@
 package ru.sis.statube.presentation.screens.statistics
 
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.datetime.datePicker
 import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.components.LimitLine
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
@@ -17,10 +18,7 @@ import kotlinx.android.synthetic.main.activity_statistics.*
 import org.joda.time.DateTime
 import org.joda.time.Days
 import ru.sis.statube.R
-import ru.sis.statube.additional.CHANNEL_DATA_KEY
-import ru.sis.statube.additional.color
-import ru.sis.statube.additional.date
-import ru.sis.statube.additional.format
+import ru.sis.statube.additional.*
 import ru.sis.statube.model.Channel
 import ru.sis.statube.model.SocialBladeDataDaily
 import ru.sis.statube.model.SocialBladeStatistics
@@ -46,32 +44,32 @@ class StatisticsActivity : AppCompatActivity() {
 //TODO vertical lines on actual data
         channel = intent?.getSerializableExtra(CHANNEL_DATA_KEY) as? Channel ?: return
 
-        vRefresh1Button.visibility = View.VISIBLE
-        vLoading1ProgressBar.visibility = View.INVISIBLE
-        vUpdated1TextView.text = presenter.getStatistics1LastUpdatedDateTime(this)?.formatUpdate() ?: "?"
-        vRefresh1Button.setOnClickListener {
+        vGeneralStatisticsRefreshButton.visibility = View.VISIBLE
+        vGeneralStatisticsLoadingProgressBar.visibility = View.INVISIBLE
+        vGeneralStatisticsUpdatedTextView.text = presenter.getStatistics1LastUpdatedDateTime(this)?.formatUpdate() ?: "?"
+        vGeneralStatisticsRefreshButton.setOnClickListener {
             updateSocialBladeStatistics()
         }
 
-        vChartTypeButtonGroup.setOnPositionChangedListener { _, currentPosition, _ ->
+        vGeneralStatisticsChartTypeButtonGroup.setOnPositionChangedListener { _, currentPosition, _ ->
             updateChart1(currentPosition)
         }
-        vSubsCheckBox.setOnCheckedChangeListener { _, _ ->
+        vGeneralStatisticsSubsCheckBox.setOnCheckedChangeListener { _, _ ->
             updateChart1()
         }
-        vViewsCheckBox.setOnCheckedChangeListener { _, _ ->
+        vGeneralStatisticsViewsCheckBox.setOnCheckedChangeListener { _, _ ->
             updateChart1()
         }
 
 
-        vRefresh2Button.visibility = View.VISIBLE
-        vLoading2ProgressBar.visibility = View.INVISIBLE
-        vUpdated2TextView.text = presenter.getStatistics2LastUpdatedDateTime(this)?.formatUpdate() ?: "?"
-        vRefresh2Button.setOnClickListener {
+        vVideosStatisticsRefreshButton.visibility = View.VISIBLE
+        vVideosStatisticsLoadingProgressBar.visibility = View.INVISIBLE
+        vVideosStatisticsUpdatedTextView.text = presenter.getStatistics2LastUpdatedDateTime(this)?.formatUpdate() ?: "?"
+        vVideosStatisticsRefreshButton.setOnClickListener {
             MaterialDialog(this).show {
-                message(text = "Загрузка данных может быть долгой")
-                negativeButton(text = "Отмена")
-                positiveButton(text = "Продолжить") {
+                message(R.string.statistics_dialog_long_loading_message)
+                negativeButton(R.string.statistics_dialog_long_loading_cancel)
+                positiveButton(R.string.statistics_dialog_long_loading_continue) {
                     updateVideosStatistics()
                 }
             }
@@ -83,38 +81,38 @@ class StatisticsActivity : AppCompatActivity() {
         updateBeginDateText()
         updateEndDateText()
 
-        vBeginDateLayout.setOnClickListener {
+        vVideosStatisticsBeginDateLayout.setOnClickListener {
             showDatePickerDialog(beginDate) { date ->
                 beginDate = date
                 updateBeginDateText()
                 updateChart2()
             }
         }
-        vEndDateLayout.setOnClickListener {
+        vVideosStatisticsEndDateLayout.setOnClickListener {
             showDatePickerDialog(endDate) { date ->
                 endDate = date
                 updateEndDateText()
                 updateChart2()
             }
         }
-        vViews2CheckBox.setOnCheckedChangeListener { _, _ ->
+        vVideosStatisticsViewsCheckBox.setOnCheckedChangeListener { _, _ ->
             updateChart2()
         }
-        vComments2CheckBox.setOnCheckedChangeListener { _, _ ->
+        vVideosStatisticsCommentsCheckBox.setOnCheckedChangeListener { _, _ ->
             updateChart2()
         }
-        vLikes2CheckBox.setOnCheckedChangeListener { _, _ ->
+        vVideosStatisticsLikesCheckBox.setOnCheckedChangeListener { _, _ ->
             updateChart2()
         }
-        vDislikes2CheckBox.setOnCheckedChangeListener { _, _ ->
+        vVideosStatisticsDislikesCheckBox.setOnCheckedChangeListener { _, _ ->
             updateChart2()
         }
 
-        prepareChart(vLineChart)
-        prepareChart(vLineChart2)
+        prepareChart(vGeneralStatisticsLineChart)
+        prepareChart(vVideosStatisticsLineChart)
 
         if (channel.uploads.isNullOrEmpty()) {
-            vVideoStatisticsLayout.visibility = View.GONE
+            vVideosStatisticsLayout.visibility = View.GONE
         }
 
         updateSocialBladeLocalStatistics()
@@ -126,18 +124,18 @@ class StatisticsActivity : AppCompatActivity() {
             timeInMillis = currentDate.millis
         }
         MaterialDialog(this).show {
-            datePicker(currentDate = calendar) { dialog, date ->
+            datePicker(currentDate = calendar) { _, date ->
                 callback(DateTime(date.timeInMillis))
             }
         }
     }
 
     private fun updateBeginDateText() {
-        vBeginDateTextView.text = beginDate.formatPeriod()
+        vVideosStatisticsBeginDateTextView.text = beginDate.formatPeriod()
     }
 
     private fun updateEndDateText() {
-        vEndDateTextView.text = endDate.formatPeriod()
+        vVideosStatisticsEndDateTextView.text = endDate.formatPeriod()
     }
 
     private fun prepareChart(chart: LineChart) {
@@ -152,7 +150,7 @@ class StatisticsActivity : AppCompatActivity() {
         chart.description.isEnabled = false
         chart.setDrawMarkers(true)
         chart.legend.isEnabled = false
-        chart.setNoDataText("Нет данных")
+        chart.setNoDataText(string(R.string.statistics_chart_no_data))
         chart.setNoDataTextColor(Color.RED)
         chart.setMaxVisibleValueCount(14)
         chart.setDrawGridBackground(false)
@@ -161,30 +159,30 @@ class StatisticsActivity : AppCompatActivity() {
     }
 
     private fun updateSocialBladeStatistics() {
-        vRefresh1Button.visibility = View.INVISIBLE
-        vLoading1ProgressBar.visibility = View.VISIBLE
+        vGeneralStatisticsRefreshButton.visibility = View.INVISIBLE
+        vGeneralStatisticsLoadingProgressBar.visibility = View.VISIBLE
 
         presenter.loadSocialBladeStatistics(this, channel.id, { statistics ->
             updateSocialBladeLocalStatistics(statistics)
-            vRefresh1Button.visibility = View.VISIBLE
-            vLoading1ProgressBar.visibility = View.INVISIBLE
+            vGeneralStatisticsRefreshButton.visibility = View.VISIBLE
+            vGeneralStatisticsLoadingProgressBar.visibility = View.INVISIBLE
             val now = DateTime.now()
             presenter.setStatistics1LastUpdatedDateTime(this, now)
-            vUpdated1TextView.text = now.formatUpdate()
+            vGeneralStatisticsUpdatedTextView.text = now.formatUpdate()
         }, {
-            vRefresh1Button.visibility = View.VISIBLE
-            vLoading1ProgressBar.visibility = View.INVISIBLE
+            vGeneralStatisticsRefreshButton.visibility = View.VISIBLE
+            vGeneralStatisticsLoadingProgressBar.visibility = View.INVISIBLE
         })
     }
 
     private fun updateSocialBladeLocalStatistics() {
-        vRefresh1Button.visibility = View.INVISIBLE
-        vLoading1ProgressBar.visibility = View.VISIBLE
+        vGeneralStatisticsRefreshButton.visibility = View.INVISIBLE
+        vGeneralStatisticsLoadingProgressBar.visibility = View.VISIBLE
 
         presenter.loadSocialBladeLocalStatistics(channel.id) { statistics ->
             updateSocialBladeLocalStatistics(statistics)
-            vRefresh1Button.visibility = View.VISIBLE
-            vLoading1ProgressBar.visibility = View.INVISIBLE
+            vGeneralStatisticsRefreshButton.visibility = View.VISIBLE
+            vGeneralStatisticsLoadingProgressBar.visibility = View.INVISIBLE
         }
     }
 
@@ -212,17 +210,25 @@ class StatisticsActivity : AppCompatActivity() {
 
     private fun updateVideosLocalStatistics() {
         channel.uploads?.let { uploads ->
-            vRefresh2Button.visibility = View.INVISIBLE
-            vLoading2ProgressBar.visibility = View.VISIBLE
+            updateVideosStatistics { onVideosLoaded ->
+                presenter.loadLocalStatistics(uploads, beginDate, endDate) { videoList ->
+                    onVideosLoaded(videoList)
+                }
+            }
+        }
+
+        channel.uploads?.let { uploads ->
+            vVideosStatisticsRefreshButton.visibility = View.INVISIBLE
+            vVideosStatisticsLoadingProgressBar.visibility = View.VISIBLE
 
             presenter.loadLocalStatistics(uploads, beginDate, endDate) { videoList ->
                 this.videoList = videoList
                 updateChart2()
-                vRefresh2Button.visibility = View.VISIBLE
-                vLoading2ProgressBar.visibility = View.INVISIBLE
+                vVideosStatisticsRefreshButton.visibility = View.VISIBLE
+                vVideosStatisticsLoadingProgressBar.visibility = View.INVISIBLE
                 val now = DateTime.now()
                 presenter.setStatistics2LastUpdatedDateTime(this, now)
-                vUpdated2TextView.text = now.formatUpdate()
+                vVideosStatisticsUpdatedTextView.text = now.formatUpdate()
             }
 
         }
@@ -230,41 +236,67 @@ class StatisticsActivity : AppCompatActivity() {
 
     private fun updateVideosStatistics() {
         channel.uploads?.let { uploads ->
-            vRefresh2Button.visibility = View.INVISIBLE
-            vLoading2ProgressBar.visibility = View.VISIBLE
+            updateVideosStatistics { onVideosLoaded ->
+                presenter.loadStatistics(this, uploads, beginDate, endDate) { videoList ->
+                    onVideosLoaded(videoList)
+                }
+            }
+        }
+
+
+        channel.uploads?.let { uploads ->
+            vVideosStatisticsRefreshButton.visibility = View.INVISIBLE
+            vVideosStatisticsLoadingProgressBar.visibility = View.VISIBLE
 
             presenter.loadStatistics(this, uploads, beginDate, endDate) { videoList ->
                 this.videoList = videoList
                 updateChart2()
-                vRefresh2Button.visibility = View.VISIBLE
-                vLoading2ProgressBar.visibility = View.INVISIBLE
+                vVideosStatisticsRefreshButton.visibility = View.VISIBLE
+                vVideosStatisticsLoadingProgressBar.visibility = View.INVISIBLE
                 val now = DateTime.now()
                 presenter.setStatistics2LastUpdatedDateTime(this, now)
-                vUpdated2TextView.text = now.formatUpdate()
+                vVideosStatisticsUpdatedTextView.text = now.formatUpdate()
             }
 
         }
     }
 
+    private fun updateVideosStatistics(loadVideos: (onVideosLoaded: (videoList: List<Video>?) -> Unit) -> Unit) {
+        channel.uploads?.let { uploads ->
+            vVideosStatisticsRefreshButton.visibility = View.INVISIBLE
+            vVideosStatisticsLoadingProgressBar.visibility = View.VISIBLE
+
+            loadVideos { videoList ->
+                this.videoList = videoList
+                updateChart2()
+                vVideosStatisticsRefreshButton.visibility = View.VISIBLE
+                vVideosStatisticsLoadingProgressBar.visibility = View.INVISIBLE
+                val now = DateTime.now()
+                presenter.setStatistics2LastUpdatedDateTime(this, now)
+                vVideosStatisticsUpdatedTextView.text = now.formatUpdate()
+            }
+        }
+    }
+
     private fun updateChart1(chartTypePosition: Int? = null) {
-        vLineChart.data = socialBladeDataDailyList?.let { socialBladeDataDailyList ->
+        vGeneralStatisticsLineChart.data = socialBladeDataDailyList?.let { socialBladeDataDailyList ->
             if (socialBladeDataDailyList.isNotEmpty()) {
                 val dataDailyList = ArrayList(socialBladeDataDailyList)
                 dataDailyList.sortWith(Comparator { o1, o2 ->
                     o1.date.compareTo(o2.date)
                 })
                 val periodBegin = dataDailyList[0].date.minusDays(1).date()
-                val chartType = chartTypePosition ?: vChartTypeButtonGroup.position
+                val chartType = chartTypePosition ?: vGeneralStatisticsChartTypeButtonGroup.position
 
-                vLineChart.xAxis.axisMinimum = 0f
-                vLineChart.xAxis.axisMaximum = dataDailyList.size + 1f
+                vGeneralStatisticsLineChart.xAxis.axisMinimum = 0f
+                vGeneralStatisticsLineChart.xAxis.axisMaximum = dataDailyList.size + 1f
 
-                vLineChart.xAxis.valueFormatter = object : ValueFormatter() {
+                vGeneralStatisticsLineChart.xAxis.valueFormatter = object : ValueFormatter() {
                     override fun getFormattedValue(value: Float): String {
                         return periodBegin.plusDays(value.toInt()).formatChartDate()
                     }
                 }
-                vLineChart.axisLeft.valueFormatter = object : ValueFormatter() {
+                vGeneralStatisticsLineChart.axisLeft.valueFormatter = object : ValueFormatter() {
                     override fun getFormattedValue(value: Float): String {
                         return "${value.format()}${if (chartType == 1) "%" else ""}"
                     }
@@ -292,32 +324,29 @@ class StatisticsActivity : AppCompatActivity() {
                     }
                 }
 
-                val subDataSet = createDataSet(subEntries, "Подписки", R.color.subs)
-                val viewDataSet = createDataSet(viewEntries, "Просмотры", R.color.views)
+                val subDataSet = createDataSet(subEntries, R.string.statistics_subscribers, R.color.subs)
+                val viewDataSet = createDataSet(viewEntries, R.string.statistics_views, R.color.views)
 
-                if (vSubsCheckBox.isChecked && vViewsCheckBox.isChecked) {
-                    LineData(subDataSet, viewDataSet)
-                } else {
-                    if (vSubsCheckBox.isChecked) {
-                        LineData(subDataSet)
-                    } else {
-                        if (vViewsCheckBox.isChecked) {
-                            LineData(viewDataSet)
-                        } else {
-                            null
-                        }
-                    }
-                }
+                val lineDataList = ArrayList<ILineDataSet>()
+                if (vGeneralStatisticsSubsCheckBox.isChecked)
+                    lineDataList.add(subDataSet)
+                if (vGeneralStatisticsViewsCheckBox.isChecked)
+                    lineDataList.add(viewDataSet)
+
+                if (lineDataList.isNotEmpty())
+                    LineData(lineDataList)
+                else
+                    null
             } else {
                 null
             }
         }
-        vLineChart.notifyDataSetChanged()
-        vLineChart.invalidate()
+        vGeneralStatisticsLineChart.notifyDataSetChanged()
+        vGeneralStatisticsLineChart.invalidate()
     }
 
     private fun updateChart2() {
-        vLineChart2.data = videoList?.let { videoList ->
+        vVideosStatisticsLineChart.data = videoList?.let { videoList ->
             if (videoList.isNotEmpty()) {
                 val videos = ArrayList(videoList)
                 videos.sortWith(Comparator { o1, o2 ->
@@ -325,15 +354,15 @@ class StatisticsActivity : AppCompatActivity() {
                 })
                 val periodBegin = videos.first().publishedAt.minusDays(1).date()
 
-                vLineChart2.xAxis.axisMinimum = 0f
-                vLineChart2.xAxis.axisMaximum = Days.daysBetween(periodBegin, videos.last().publishedAt.plusDays(3).date()).days.toFloat()
+                vVideosStatisticsLineChart.xAxis.axisMinimum = 0f
+                vVideosStatisticsLineChart.xAxis.axisMaximum = Days.daysBetween(periodBegin, videos.last().publishedAt.plusDays(3).date()).days.toFloat()
 
-                vLineChart2.xAxis.valueFormatter = object : ValueFormatter() {
+                vVideosStatisticsLineChart.xAxis.valueFormatter = object : ValueFormatter() {
                     override fun getFormattedValue(value: Float): String {
                         return periodBegin.plusDays(value.toInt()).formatChartDate()
                     }
                 }
-                vLineChart2.axisLeft.valueFormatter = object : ValueFormatter() {
+                vVideosStatisticsLineChart.axisLeft.valueFormatter = object : ValueFormatter() {
                     override fun getFormattedValue(value: Float): String {
                         return value.format()
                     }
@@ -361,19 +390,19 @@ class StatisticsActivity : AppCompatActivity() {
                     }
                 }
 
-                val viewDataSet = createDataSet(viewEntries, "Просмотры", R.color.views)
-                val commentDataSet = createDataSet(commentEntries, "Комментарии", R.color.comments)
-                val likeDataSet = createDataSet(likeEntries, "Лайки", R.color.likes)
-                val dislikeDataSet = createDataSet(dislikeEntries, "Дизлайки", R.color.dislikes)
+                val viewDataSet = createDataSet(viewEntries, R.string.statistics_views, R.color.views)
+                val commentDataSet = createDataSet(commentEntries, R.string.statistics_comments, R.color.comments)
+                val likeDataSet = createDataSet(likeEntries, R.string.statistics_likes, R.color.likes)
+                val dislikeDataSet = createDataSet(dislikeEntries, R.string.statistics_dislikes, R.color.dislikes)
 
                 val lineDataList = ArrayList<ILineDataSet>()
-                if (vViews2CheckBox.isChecked)
+                if (vVideosStatisticsViewsCheckBox.isChecked)
                     lineDataList.add(viewDataSet)
-                if (vComments2CheckBox.isChecked)
+                if (vVideosStatisticsCommentsCheckBox.isChecked)
                     lineDataList.add(commentDataSet)
-                if (vLikes2CheckBox.isChecked)
+                if (vVideosStatisticsLikesCheckBox.isChecked)
                     lineDataList.add(likeDataSet)
-                if (vDislikes2CheckBox.isChecked)
+                if (vVideosStatisticsDislikesCheckBox.isChecked)
                     lineDataList.add(dislikeDataSet)
 
                 if (lineDataList.isNotEmpty())
@@ -384,16 +413,17 @@ class StatisticsActivity : AppCompatActivity() {
                 null
             }
         }
-        vLineChart2.invalidate()
+        vVideosStatisticsLineChart.notifyDataSetChanged()
+        vVideosStatisticsLineChart.invalidate()
     }
 
-    private fun createDataSet(entries: List<Entry>, label: String, colorId: Int): LineDataSet {
-        val dataSet = LineDataSet(entries, label)
+    private fun createDataSet(entries: List<Entry>, labelId: Int, colorId: Int): LineDataSet {
+        val dataSet = LineDataSet(entries, string(labelId))
         dataSet.color = color(colorId)
         dataSet.circleColors = listOf(color(colorId))
         dataSet.circleHoleColor = Color.WHITE
         dataSet.lineWidth = 2f
-        dataSet.circleRadius = 4f
+        dataSet.circleRadius = 3f
         dataSet.setDrawCircleHole(true)
         return dataSet
     }

@@ -1,12 +1,13 @@
 package ru.sis.statube.presentation.screens.channels
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_channels.*
 import ru.sis.statube.R
+import ru.sis.statube.additional.string
 import ru.sis.statube.model.Channels
 import java.util.*
 
@@ -119,25 +120,23 @@ class ChannelsActivity : AppCompatActivity() {
                 vRecyclerView.visibility = View.GONE
                 vDataLoadingLayout.visibility = View.VISIBLE
                 vDataNotFoundLayout.visibility = View.GONE
-                vFavouriteDataNotFoundLayout.visibility = View.GONE
             }
             State.DATA_NOT_FOUND -> {
+                vDataNotFoundTextView.text = string(R.string.channels_not_found)
                 vRecyclerView.visibility = View.GONE
                 vDataLoadingLayout.visibility = View.GONE
                 vDataNotFoundLayout.visibility = View.VISIBLE
-                vFavouriteDataNotFoundLayout.visibility = View.GONE
             }
             State.FAVOURITE_DATA_NOT_FOUND -> {
+                vDataNotFoundTextView.text = string(R.string.favourite_channels_not_found)
                 vRecyclerView.visibility = View.GONE
                 vDataLoadingLayout.visibility = View.GONE
-                vDataNotFoundLayout.visibility = View.GONE
-                vFavouriteDataNotFoundLayout.visibility = View.VISIBLE
+                vDataNotFoundLayout.visibility = View.VISIBLE
             }
             State.LIST -> {
                 vRecyclerView.visibility = View.VISIBLE
                 vDataLoadingLayout.visibility = View.GONE
                 vDataNotFoundLayout.visibility = View.GONE
-                vFavouriteDataNotFoundLayout.visibility = View.GONE
             }
         }
     }

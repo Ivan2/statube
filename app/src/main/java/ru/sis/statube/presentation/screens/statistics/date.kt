@@ -1,6 +1,6 @@
 package ru.sis.statube.presentation.screens.statistics
 
-import org.joda.time.*
+import org.joda.time.DateTime
 
 fun DateTime.formatUpdate(): String {
     return this.toString("dd MMM HH:mm")

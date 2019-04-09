@@ -6,14 +6,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".presentation.screens.statistics.StatisticsActivity">
+    tools:context=".presentation.screens.statistics.StatisticsActivity"
+    tools:ignore="contentDescription">
 
     <RelativeLayout
         style="@style/TitleLayout">
 
         <TextView
             style="@style/TitleTextView"
-            android:text="Статистика"/>
+            android:text="@string/statistics_title"/>
 
         <ImageView
             android:id="@+id/vBackButton"
@@ -40,7 +41,7 @@
                 android:gravity="center"
                 android:textStyle="bold"
                 android:textSize="18sp"
-                android:text="Подписки и просмотры по каналу"/>
+                android:text="@string/statistics_general_statistics_title"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -55,10 +56,10 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:textSize="12sp"
-                    android:text="Обновлено:"/>
+                    android:text="@string/statistics_updated"/>
 
                 <TextView
-                    android:id="@+id/vUpdated1TextView"
+                    android:id="@+id/vGeneralStatisticsUpdatedTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
@@ -72,7 +73,7 @@
                     android:layout_gravity="center_vertical">
 
                     <ImageView
-                        android:id="@+id/vRefresh1Button"
+                        android:id="@+id/vGeneralStatisticsRefreshButton"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:padding="6dp"
@@ -80,7 +81,7 @@
                         android:tint="@color/colorPrimary"/>
 
                     <ProgressBar
-                        android:id="@+id/vLoading1ProgressBar"
+                        android:id="@+id/vGeneralStatisticsLoadingProgressBar"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:padding="6dp"
@@ -105,13 +106,13 @@
                         style="@style/StatisticsTableValueColumns"
                         android:textStyle="normal"
                         android:textSize="14sp"
-                        android:text="Подписчиков"/>
+                        android:text="@string/statistics_subscribers"/>
 
                     <TextView
                         style="@style/StatisticsTableValueColumns"
                         android:textStyle="normal"
                         android:textSize="14sp"
-                        android:text="Просмотров"/>
+                        android:text="@string/statistics_views"/>
 
                 </TableRow>
 
@@ -119,7 +120,7 @@
 
                     <TextView
                         style="@style/StatisticsTableColumn0"
-                        android:text="Среднее\nза день"/>
+                        android:text="@string/statistics_avg_daily"/>
 
                     <TextView
                         android:id="@+id/vAvgDailySubsTextView"
@@ -135,7 +136,7 @@
 
                     <TextView
                         style="@style/StatisticsTableColumn0"
-                        android:text="14 дней"/>
+                        android:text="@string/statistics_14_days"/>
 
                     <TextView
                         android:id="@+id/vSubs14TextView"
@@ -151,7 +152,7 @@
 
                     <TextView
                         style="@style/StatisticsTableColumn0"
-                        android:text="30 дней"/>
+                        android:text="@string/statistics_30_days"/>
 
                     <TextView
                         android:id="@+id/vSubs30TextView"
@@ -167,7 +168,7 @@
 
                     <TextView
                         style="@style/StatisticsTableColumn0"
-                        android:text="60 дней"/>
+                        android:text="@string/statistics_60_days"/>
 
                     <TextView
                         android:id="@+id/vSubs60TextView"
@@ -183,7 +184,7 @@
 
                     <TextView
                         style="@style/StatisticsTableColumn0"
-                        android:text="90 дней"/>
+                        android:text="@string/statistics_90_days"/>
 
                     <TextView
                         android:id="@+id/vSubs90TextView"
@@ -199,7 +200,7 @@
 
                     <TextView
                         style="@style/StatisticsTableColumn0"
-                        android:text="180 дней"/>
+                        android:text="@string/statistics_180_days"/>
 
                     <TextView
                         android:id="@+id/vSubs180TextView"
@@ -215,7 +216,7 @@
 
                     <TextView
                         style="@style/StatisticsTableColumn0"
-                        android:text="365 дней"/>
+                        android:text="@string/statistics_365_days"/>
 
                     <TextView
                         android:id="@+id/vSubs365TextView"
@@ -230,7 +231,7 @@
             </TableLayout>
 
             <co.ceryle.radiorealbutton.RadioRealButtonGroup
-                android:id="@+id/vChartTypeButtonGroup"
+                android:id="@+id/vGeneralStatisticsChartTypeButtonGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
@@ -257,7 +258,7 @@
                     app:rrb_textColor="@color/colorPrimary"
                     app:rrb_textColorTo="@color/white"
                     app:rrb_textSize="12sp"
-                    app:rrb_text="Абсолютные\nзначения"/>
+                    app:rrb_text="@string/statistics_absolute_values"/>
 
                 <co.ceryle.radiorealbutton.RadioRealButton
                     android:layout_width="match_parent"
@@ -267,14 +268,15 @@
                     app:rrb_textColor="@color/colorPrimary"
                     app:rrb_textColorTo="@color/white"
                     app:rrb_textSize="12sp"
-                    app:rrb_text="Относительные\nзначения"/>
+                    app:rrb_text="@string/statistics_relative_values"/>
 
             </co.ceryle.radiorealbutton.RadioRealButtonGroup>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:baselineAligned="false">
 
                 <FrameLayout
                     android:layout_width="0dp"
@@ -282,13 +284,13 @@
                     android:layout_weight="1">
 
                     <CheckBox
-                        android:id="@+id/vSubsCheckBox"
+                        android:id="@+id/vGeneralStatisticsSubsCheckBox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:buttonTint="@color/subs"
                         android:checked="true"
-                        android:text="Подписки"/>
+                        android:text="@string/statistics_subscribers"/>
 
                 </FrameLayout>
 
@@ -298,25 +300,25 @@
                     android:layout_weight="1">
 
                     <CheckBox
-                        android:id="@+id/vViewsCheckBox"
+                        android:id="@+id/vGeneralStatisticsViewsCheckBox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:buttonTint="@color/views"
                         android:checked="true"
-                        android:text="Просмотры"/>
+                        android:text="@string/statistics_views"/>
 
                 </FrameLayout>
 
             </LinearLayout>
 
             <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/vLineChart"
+                android:id="@+id/vGeneralStatisticsLineChart"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"/>
 
             <LinearLayout
-                android:id="@+id/vVideoStatisticsLayout"
+                android:id="@+id/vVideosStatisticsLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -338,7 +340,7 @@
                     android:gravity="center"
                     android:textStyle="bold"
                     android:textSize="18sp"
-                    android:text="Просмотры, лайки, дизлайки и комментарии по видео"/>
+                    android:text="@string/statistics_videos_statistics_title"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -353,10 +355,10 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:textSize="12sp"
-                        android:text="Обновлено:"/>
+                        android:text="@string/statistics_updated"/>
 
                     <TextView
-                        android:id="@+id/vUpdated2TextView"
+                        android:id="@+id/vVideosStatisticsUpdatedTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
@@ -370,7 +372,7 @@
                         android:layout_gravity="center_vertical">
 
                         <ImageView
-                            android:id="@+id/vRefresh2Button"
+                            android:id="@+id/vVideosStatisticsRefreshButton"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:padding="6dp"
@@ -378,7 +380,7 @@
                             android:tint="@color/colorPrimary"/>
 
                         <ProgressBar
-                            android:id="@+id/vLoading2ProgressBar"
+                            android:id="@+id/vVideosStatisticsLoadingProgressBar"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:padding="6dp"
@@ -390,60 +392,61 @@
                 </LinearLayout>
 
                 <RelativeLayout
-                    android:id="@+id/vBeginDateLayout"
+                    android:id="@+id/vVideosStatisticsBeginDateLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:padding="8dp">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:textSize="14sp"
-                        android:text="Дата начала"/>
-
-                    <TextView
-                        android:id="@+id/vBeginDateTextView"
+                        android:id="@+id/vVideosStatisticsBeginDateTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_alignParentEnd="true"
                         android:textSize="14sp"
-                        android:textColor="@color/colorPrimary"
-                        android:text="12.34.2009"/>
+                        android:textColor="@color/colorPrimary"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toStartOf="@id/vVideosStatisticsBeginDateTextView"
+                        android:layout_centerVertical="true"
+                        android:textSize="14sp"
+                        android:text="@string/statistics_begin_date"/>
 
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/vEndDateLayout"
+                    android:id="@+id/vVideosStatisticsEndDateLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="8dp">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:textSize="14sp"
-                        android:text="Дата конца"/>
-
-                    <TextView
-                        android:id="@+id/vEndDateTextView"
+                        android:id="@+id/vVideosStatisticsEndDateTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_alignParentEnd="true"
                         android:textSize="14sp"
-                        android:textColor="@color/colorPrimary"
-                        android:text="12.34.2009"/>
+                        android:textColor="@color/colorPrimary"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toStartOf="@id/vVideosStatisticsEndDateTextView"
+                        android:layout_centerVertical="true"
+                        android:textSize="14sp"
+                        android:text="@string/statistics_end_date"/>
 
                 </RelativeLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:baselineAligned="false">
 
                     <FrameLayout
                         android:layout_width="0dp"
@@ -457,20 +460,20 @@
                             android:layout_gravity="center">
 
                             <CheckBox
-                                android:id="@+id/vViews2CheckBox"
+                                android:id="@+id/vVideosStatisticsViewsCheckBox"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:buttonTint="@color/views"
                                 android:checked="true"
-                                android:text="Просмотры"/>
+                                android:text="@string/statistics_views"/>
 
                             <CheckBox
-                                android:id="@+id/vComments2CheckBox"
+                                android:id="@+id/vVideosStatisticsCommentsCheckBox"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:buttonTint="@color/comments"
                                 android:checked="true"
-                                android:text="Комментарии"/>
+                                android:text="@string/statistics_comments"/>
 
                         </LinearLayout>
 
@@ -488,20 +491,20 @@
                             android:layout_gravity="center">
 
                             <CheckBox
-                                android:id="@+id/vLikes2CheckBox"
+                                android:id="@+id/vVideosStatisticsLikesCheckBox"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:buttonTint="@color/likes"
                                 android:checked="true"
-                                android:text="Лайки"/>
+                                android:text="@string/statistics_likes"/>
 
                             <CheckBox
-                                android:id="@+id/vDislikes2CheckBox"
+                                android:id="@+id/vVideosStatisticsDislikesCheckBox"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:buttonTint="@color/dislikes"
                                 android:checked="true"
-                                android:text="Дизлайки"/>
+                                android:text="@string/statistics_dislikes"/>
 
                         </LinearLayout>
 
@@ -510,7 +513,7 @@
                 </LinearLayout>
 
                 <com.github.mikephil.charting.charts.LineChart
-                    android:id="@+id/vLineChart2"
+                    android:id="@+id/vVideosStatisticsLineChart"
                     android:layout_width="match_parent"
                     android:layout_height="250dp"/>
 

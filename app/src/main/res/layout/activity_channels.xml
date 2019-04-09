@@ -2,11 +2,11 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".presentation.screens.channels.ChannelsActivity">
+    tools:context=".presentation.screens.channels.ChannelsActivity"
+    tools:ignore="contentDescription">
 
     <RelativeLayout
         style="@style/TitleLayout">
@@ -34,7 +34,7 @@
             android:inputType="text"
             android:textSize="14sp"
             android:textColorHint="@color/lightGray"
-            android:hint="Поиск"/>
+            android:hint="@string/channels_search"/>
 
         <ImageView
             android:layout_width="18dp"
@@ -92,34 +92,11 @@
             android:gravity="center">
 
             <TextView
+                android:id="@+id/vDataNotFoundTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
-                android:text="Ничего не нашлось"/>
-
-            <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginTop="10dp"
-                android:src="@drawable/ic_sentiment_dissatisfied_black_24dp"
-                android:tint="@color/lightGray"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/vFavouriteDataNotFoundLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_gravity="center_horizontal"
-            android:padding="50dp"
-            android:gravity="center">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:text="У вас нет избранных каналов"/>
+                android:text="@string/channels_not_found"/>
 
             <ImageView
                 android:layout_width="48dp"

@@ -2,9 +2,9 @@ package ru.sis.statube.presentation.screens.channel
 
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_channel.*
 import ru.sis.statube.R
 import ru.sis.statube.additional.*
@@ -34,7 +34,7 @@ class ChannelActivity : AppCompatActivity() {
         vIdTextView.text = channel.id
         vTitleTextView.text = channel.title ?: ""
         vDescriptionTextView.text = channel.description ?: ""
-        vPublishedAtTextView.text = channel.publishedAt?.toString("dd.MM.yyyy") ?: "?"
+        vPublishedAtTextView.text = channel.publishedAt?.formatPublishedAt() ?: "?"
         vCountryTextView.text = channel.country ?: "?"
         vViewCountTextView.text = channel.viewCount?.format() ?: "?"
         vSubscriberCountTextView.text = channel.subscriberCount?.format() ?: "?"

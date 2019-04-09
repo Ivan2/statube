@@ -1,3 +1,46 @@
 <resources>
     <string name="app_name">StaTube</string>
+
+    <!-- channels -->
+    <string name="channels_search">Поиск</string>
+    <string name="channels_not_found">Ничего не нашлось</string>
+    <string name="favourite_channels_not_found">У вас нет избранных каналов</string>
+
+    <!-- channel -->
+    <string name="channel_id">ID</string>
+    <string name="channel_subscribers">Подписчиков</string>
+    <string name="channel_views">Просмотров</string>
+    <string name="channel_video_count">Кол-во видео</string>
+    <string name="channel_created">Дата создания</string>
+    <string name="channel_country">Страна</string>
+    <string name="channel_keywords">Ключевые слова</string>
+    <string name="channel_move_to_youtube">Перейти на Youtube</string>
+    <string name="channel_move_to_statistics">Статистика</string>
+
+    <!-- statistics -->
+    <string name="statistics_title">Статистика</string>
+    <string name="statistics_updated">Обновлено:</string>
+    <string name="statistics_general_statistics_title">Подписки и просмотры по каналу</string>
+    <string name="statistics_videos_statistics_title">Просмотры, лайки, дизлайки и комментарии по видео</string>
+    <string name="statistics_subscribers">Подписки</string>
+    <string name="statistics_views">Просмотры</string>
+    <string name="statistics_comments">Комментарии</string>
+    <string name="statistics_likes">Лайки</string>
+    <string name="statistics_dislikes">Дизлайки</string>
+    <string name="statistics_avg_daily">Среднее\nза день</string>
+    <string name="statistics_14_days">14 дней</string>
+    <string name="statistics_30_days">30 дней</string>
+    <string name="statistics_60_days">60 дней</string>
+    <string name="statistics_90_days">90 дней</string>
+    <string name="statistics_180_days">180 дней</string>
+    <string name="statistics_365_days">365 дней</string>
+    <string name="statistics_absolute_values">Абсолютные\nзначения</string>
+    <string name="statistics_relative_values">Относительные\nзначения</string>
+    <string name="statistics_begin_date">Дата начала</string>
+    <string name="statistics_end_date">Дата конца</string>
+    <string name="statistics_dialog_long_loading_message">Загрузка данных может быть долгой</string>
+    <string name="statistics_dialog_long_loading_continue">Продолжить</string>
+    <string name="statistics_dialog_long_loading_cancel">Отмена</string>
+    <string name="statistics_chart_no_data">Нет данных</string>
+
 </resources>
