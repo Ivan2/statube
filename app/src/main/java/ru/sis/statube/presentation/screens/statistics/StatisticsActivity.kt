@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.datetime.datePicker
 import com.github.mikephil.charting.charts.LineChart
-import com.github.mikephil.charting.components.LimitLine
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
@@ -46,7 +45,10 @@ class StatisticsActivity : AppCompatActivity() {
 
         vGeneralStatisticsRefreshButton.visibility = View.VISIBLE
         vGeneralStatisticsLoadingProgressBar.visibility = View.INVISIBLE
-        vGeneralStatisticsUpdatedTextView.text = presenter.getStatistics1LastUpdatedDateTime(this)?.formatUpdate() ?: "?"
+        vGeneralStatisticsUpdatedTextView.text = "?"
+        presenter.loadGeneralStatisticsLastUpdatedDateTime(channel.id) { date ->
+            vGeneralStatisticsUpdatedTextView.text = date?.formatUpdate() ?: "?"
+        }
         vGeneralStatisticsRefreshButton.setOnClickListener {
             updateSocialBladeStatistics()
         }
@@ -64,7 +66,12 @@ class StatisticsActivity : AppCompatActivity() {
 
         vVideosStatisticsRefreshButton.visibility = View.VISIBLE
         vVideosStatisticsLoadingProgressBar.visibility = View.INVISIBLE
-        vVideosStatisticsUpdatedTextView.text = presenter.getStatistics2LastUpdatedDateTime(this)?.formatUpdate() ?: "?"
+        vVideosStatisticsUpdatedTextView.text = "?"
+        channel.uploads?.let { uploads ->
+            presenter.loadVideosStatisticsLastUpdatedDateTime(uploads) { date ->
+                vVideosStatisticsUpdatedTextView.text = date?.formatUpdate() ?: "?"
+            }
+        }
         vVideosStatisticsRefreshButton.setOnClickListener {
             MaterialDialog(this).show {
                 message(R.string.statistics_dialog_long_loading_message)
@@ -167,7 +174,7 @@ class StatisticsActivity : AppCompatActivity() {
             vGeneralStatisticsRefreshButton.visibility = View.VISIBLE
             vGeneralStatisticsLoadingProgressBar.visibility = View.INVISIBLE
             val now = DateTime.now()
-            presenter.setStatistics1LastUpdatedDateTime(this, now)
+            presenter.setGeneralStatisticsLastUpdatedDateTime(channel.id, now)
             vGeneralStatisticsUpdatedTextView.text = now.formatUpdate()
         }, {
             vGeneralStatisticsRefreshButton.visibility = View.VISIBLE
@@ -227,7 +234,7 @@ class StatisticsActivity : AppCompatActivity() {
                 vVideosStatisticsRefreshButton.visibility = View.VISIBLE
                 vVideosStatisticsLoadingProgressBar.visibility = View.INVISIBLE
                 val now = DateTime.now()
-                presenter.setStatistics2LastUpdatedDateTime(this, now)
+                presenter.setVideosStatisticsLastUpdatedDateTime(uploads, now)
                 vVideosStatisticsUpdatedTextView.text = now.formatUpdate()
             }
 
@@ -254,7 +261,7 @@ class StatisticsActivity : AppCompatActivity() {
                 vVideosStatisticsRefreshButton.visibility = View.VISIBLE
                 vVideosStatisticsLoadingProgressBar.visibility = View.INVISIBLE
                 val now = DateTime.now()
-                presenter.setStatistics2LastUpdatedDateTime(this, now)
+                presenter.setVideosStatisticsLastUpdatedDateTime(uploads, now)
                 vVideosStatisticsUpdatedTextView.text = now.formatUpdate()
             }
 
@@ -272,7 +279,7 @@ class StatisticsActivity : AppCompatActivity() {
                 vVideosStatisticsRefreshButton.visibility = View.VISIBLE
                 vVideosStatisticsLoadingProgressBar.visibility = View.INVISIBLE
                 val now = DateTime.now()
-                presenter.setStatistics2LastUpdatedDateTime(this, now)
+                presenter.setVideosStatisticsLastUpdatedDateTime(uploads, now)
                 vVideosStatisticsUpdatedTextView.text = now.formatUpdate()
             }
         }

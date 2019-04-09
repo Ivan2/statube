@@ -2,27 +2,46 @@ package ru.sis.statube.presentation.screens.statistics
 
 import android.content.Context
 import org.joda.time.DateTime
-import ru.sis.statube.Preferences
 import ru.sis.statube.additional.resolvedLaunch
 import ru.sis.statube.interactor.SocialBladeInteractor
+import ru.sis.statube.interactor.StatisticsLastUpdatedInteractor
 import ru.sis.statube.interactor.VideosInteractor
 import ru.sis.statube.model.SocialBladeStatistics
+import ru.sis.statube.model.StatisticsLastUpdated
 import ru.sis.statube.model.Video
 import ru.sis.statube.presentation.Presenter
 
 class StatisticsPresenter : Presenter() {
 
-    fun setStatistics1LastUpdatedDateTime(context: Context, dateTime: DateTime?) =
-        Preferences.getInstance().setStatistics1LastUpdatedDateTime(context, dateTime)
+    fun setGeneralStatisticsLastUpdatedDateTime(channelId: String, dateTime: DateTime?) = resolvedLaunch({
+        val statisticsLastUpdated = StatisticsLastUpdated().apply {
+            this.id = "Channel $channelId"
+            this.date = dateTime
+        }
+        StatisticsLastUpdatedInteractor.getInstance().setStatisticsLastUpdatedAsync(statisticsLastUpdated).await()
+    }, {})
 
-    fun getStatistics1LastUpdatedDateTime(context: Context): DateTime? =
-        Preferences.getInstance().getStatistics1LastUpdatedDateTime(context)
+    fun loadGeneralStatisticsLastUpdatedDateTime(channelId: String, onLoad: (date: DateTime?) -> Unit) = resolvedLaunch({
+        val statisticsLastUpdated = StatisticsLastUpdatedInteractor.getInstance().getStatisticsLastUpdatedAsync("Channel $channelId").await()
+        onLoad(statisticsLastUpdated?.date)
+    }, {
+        onLoad(null)
+    })
 
-    fun setStatistics2LastUpdatedDateTime(context: Context, dateTime: DateTime?) =
-        Preferences.getInstance().setStatistics2LastUpdatedDateTime(context, dateTime)
+    fun setVideosStatisticsLastUpdatedDateTime(uploads: String, dateTime: DateTime?) = resolvedLaunch({
+        val statisticsLastUpdated = StatisticsLastUpdated().apply {
+            this.id = "Uploads $uploads"
+            this.date = dateTime
+        }
+        StatisticsLastUpdatedInteractor.getInstance().setStatisticsLastUpdatedAsync(statisticsLastUpdated).await()
+    }, {})
 
-    fun getStatistics2LastUpdatedDateTime(context: Context): DateTime? =
-        Preferences.getInstance().getStatistics2LastUpdatedDateTime(context)
+    fun loadVideosStatisticsLastUpdatedDateTime(uploads: String, onLoad: (date: DateTime?) -> Unit) = resolvedLaunch({
+        val statisticsLastUpdated = StatisticsLastUpdatedInteractor.getInstance().getStatisticsLastUpdatedAsync("Uploads $uploads").await()
+        onLoad(statisticsLastUpdated?.date)
+    }, {
+        onLoad(null)
+    })
 
 
     fun loadSocialBladeStatistics(context: Context, channelId: String, onLoad: (statistics: SocialBladeStatistics?) -> Unit,
