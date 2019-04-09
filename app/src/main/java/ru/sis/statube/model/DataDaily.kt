@@ -3,7 +3,7 @@ package ru.sis.statube.model
 import org.joda.time.DateTime
 import java.io.Serializable
 
-class SocialBladeDataDaily : Serializable {
+class DataDaily : Serializable {
 
     lateinit var date: DateTime
 

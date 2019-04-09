@@ -9,7 +9,7 @@ import java.io.InputStreamReader
 
 open class Interactor {
 
-    protected fun loadConfig(context: Context): Config {
+    protected fun getConfig(context: Context): Config {
         return context.resources.openRawResource(R.raw.config).use { stream ->
             BufferedReader(InputStreamReader(stream)).use { reader ->
                 val json = reader.readText()

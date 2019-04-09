@@ -6,7 +6,7 @@ import io.realm.annotations.PrimaryKey
 import io.realm.annotations.RealmClass
 
 @RealmClass
-open class SocialBladeStatisticsEntity : RealmObject() {
+open class GeneralStatisticsEntity : RealmObject() {
 
     @PrimaryKey
     open var channelId: String = ""

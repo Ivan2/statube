@@ -1,14 +1,14 @@
 package ru.sis.statube.db.mapper
 
-import ru.sis.statube.db.entity.SocialBladeStatisticsEntity
-import ru.sis.statube.model.SocialBladeStatistics
+import ru.sis.statube.db.entity.GeneralStatisticsEntity
+import ru.sis.statube.model.GeneralStatistics
 
-class SocialBladeStatisticsEntityMapper {
+class GeneralStatisticsEntityMapper {
 
-    fun map(from: SocialBladeStatisticsEntity?): SocialBladeStatistics? {
+    fun map(from: GeneralStatisticsEntity?): GeneralStatistics? {
         if (from == null)
             return null
-        val statistics = SocialBladeStatistics()
+        val statistics = GeneralStatistics()
         statistics.channelId = from.channelId
         statistics.avgDailySubs = from.avgDailySubs
         statistics.avgDailyViews = from.avgDailyViews
@@ -20,8 +20,8 @@ class SocialBladeStatisticsEntityMapper {
         return statistics
     }
 
-    fun reverseMap(from: SocialBladeStatistics): SocialBladeStatisticsEntity {
-        val statistics = SocialBladeStatisticsEntity()
+    fun reverseMap(from: GeneralStatistics): GeneralStatisticsEntity {
+        val statistics = GeneralStatisticsEntity()
         statistics.channelId = from.channelId
         statistics.avgDailySubs = from.avgDailySubs
         statistics.avgDailyViews = from.avgDailyViews

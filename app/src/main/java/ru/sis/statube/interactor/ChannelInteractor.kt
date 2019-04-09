@@ -30,8 +30,8 @@ class ChannelInteractor : Interactor() {
     private val searchWithTokenPath = "search?key=%s&q=%s&part=id,snippet&order=relevance&maxResults=30&type=channel&pageToken=%s"
     private val channelPath = "channels?key=%s&id=%s&part=snippet,statistics,brandingSettings,contentDetails"
 
-    fun searchAsync(context: Context, text: String, pageToken: String? = null) = GlobalScope.async {
-        val config = loadConfig(context)
+    fun searchChannelsAsync(context: Context, text: String, pageToken: String? = null) = GlobalScope.async {
+        val config = getConfig(context)
         val url = if (pageToken == null)
             "$YOUTUBE_DATA_API_URL${String.format(searchPath, config.youtubeDataApiKey, text)}"
         else
@@ -58,8 +58,8 @@ class ChannelInteractor : Interactor() {
         }
     }
 
-    fun loadAsync(context: Context, channelId: String) = GlobalScope.async {
-        val config = loadConfig(context)
+    fun getChannelAsync(context: Context, channelId: String) = GlobalScope.async {
+        val config = getConfig(context)
         val url = "$YOUTUBE_DATA_API_URL${String.format(channelPath, config.youtubeDataApiKey, channelId)}"
         val response = OkRequest.getInstance().get(url)
         val channelListResponse = Gson().fromJson(response, ChannelListResponse::class.java)
@@ -77,11 +77,11 @@ class ChannelInteractor : Interactor() {
         }
     }
 
-    fun loadFavouriteChannelsAsync() = GlobalScope.async {
+    fun getFavouriteChannelsAsync() = GlobalScope.async {
         ChannelStore.getInstance().getChannels()
     }
 
-    fun changeFavouriteAsync(channel: Channel) = GlobalScope.async {
+    fun changeFavouriteChannelAsync(channel: Channel) = GlobalScope.async {
         if (channel.isFavourite) {
             ChannelStore.getInstance().saveChannel(channel)
         } else {

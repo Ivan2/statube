@@ -8,7 +8,7 @@ import ru.sis.statube.presentation.Presenter
 class ChannelPresenter : Presenter() {
 
     fun changeFavourite(channel: Channel) = resolvedLaunch({
-        ChannelInteractor.getInstance().changeFavouriteAsync(channel).await()
+        ChannelInteractor.getInstance().changeFavouriteChannelAsync(channel).await()
     }, {})
 
 }

@@ -15,12 +15,12 @@ import ru.sis.statube.net.response.json.youtube.video.VideoListResponse
 import ru.sis.statube.net.response.mapper.youtube.PlayListItemResponseMapper
 import ru.sis.statube.net.response.mapper.youtube.VideoResponseMapper
 
-class VideosInteractor : Interactor() {
+class VideosStatisticsInteractor : Interactor() {
 
     companion object {
-        private var INSTANCE: VideosInteractor? = null
-        fun getInstance(): VideosInteractor {
-            val instance = INSTANCE ?: VideosInteractor()
+        private var INSTANCE: VideosStatisticsInteractor? = null
+        fun getInstance(): VideosStatisticsInteractor {
+            val instance = INSTANCE ?: VideosStatisticsInteractor()
             if (INSTANCE == null)
                 INSTANCE = instance
             return instance
@@ -31,10 +31,10 @@ class VideosInteractor : Interactor() {
     private val playlistItemsWithTokenPath = "playlistItems?key=%s&playlistId=%s&part=contentDetails&maxResults=50&pageToken=%s"
     private val videoPath = "videos?key=%s&id=%s&part=statistics"
 
-    fun loadAsync(context: Context, uploads: String, beginDate: DateTime, endDate: DateTime) = GlobalScope.async {
-        val config = loadConfig(context)
-        val playListItems = loadPlayListItems(uploads, beginDate, endDate, config.youtubeDataApiKey)
-        val videos = loadVideos(playListItems, config.youtubeDataApiKey)
+    fun getVideosStatisticsAsync(context: Context, uploads: String, beginDate: DateTime, endDate: DateTime) = GlobalScope.async {
+        val config = getConfig(context)
+        val playListItems = getPlayListItems(uploads, beginDate, endDate, config.youtubeDataApiKey)
+        val videos = getVideos(playListItems, config.youtubeDataApiKey)
         videos.forEach { video ->
             video.uploads = uploads
         }
@@ -42,7 +42,7 @@ class VideosInteractor : Interactor() {
         videos
     }
 
-    private fun loadPlayListItems(uploads: String, beginDate: DateTime, endDate: DateTime, youtubeDataApiKey: String): List<PlayListItem> {
+    private fun getPlayListItems(uploads: String, beginDate: DateTime, endDate: DateTime, youtubeDataApiKey: String): List<PlayListItem> {
         val beginDate2 = beginDate.minusMonths(1)
         val mapper = PlayListItemResponseMapper()
         val playListItems = ArrayList<PlayListItem>()
@@ -81,7 +81,7 @@ class VideosInteractor : Interactor() {
         return playListItems
     }
 
-    private fun loadVideos(playListItemList: List<PlayListItem>, youtubeDataApiKey: String): List<Video> {
+    private fun getVideos(playListItemList: List<PlayListItem>, youtubeDataApiKey: String): List<Video> {
         val mapper = VideoResponseMapper()
         val videos = ArrayList<Video>()
 
@@ -104,7 +104,7 @@ class VideosInteractor : Interactor() {
         return videos
     }
 
-    fun loadLocalVideosAsync(uploads: String) = GlobalScope.async {
+    fun getVideosStatisticsLocalAsync(uploads: String) = GlobalScope.async {
         VideoStore.getInstance().getVideosByUploads(uploads)
     }
 

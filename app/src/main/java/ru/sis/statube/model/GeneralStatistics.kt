@@ -2,7 +2,7 @@ package ru.sis.statube.model
 
 import java.io.Serializable
 
-class SocialBladeStatistics : Serializable {
+class GeneralStatistics : Serializable {
 
     lateinit var channelId: String
 
@@ -18,6 +18,6 @@ class SocialBladeStatistics : Serializable {
 
     var growthViews: String? = null
 
-    var dataDailyList: List<SocialBladeDataDaily> = emptyList()
+    var dataDailyList: List<DataDaily> = emptyList()
 
 }

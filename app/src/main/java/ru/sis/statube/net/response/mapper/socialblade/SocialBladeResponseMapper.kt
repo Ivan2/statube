@@ -1,14 +1,14 @@
 package ru.sis.statube.net.response.mapper.socialblade
 
-import ru.sis.statube.model.SocialBladeStatistics
+import ru.sis.statube.model.GeneralStatistics
 import ru.sis.statube.net.response.json.socialblade.SocialBladeResponse
 
 class SocialBladeResponseMapper {
 
-    fun map(from: SocialBladeResponse?): SocialBladeStatistics? {
+    fun map(from: SocialBladeResponse?): GeneralStatistics? {
         if (from == null)
             return null
-        val statistics = SocialBladeStatistics()
+        val statistics = GeneralStatistics()
         statistics.channelId = from.id?.channelId ?: return null
         statistics.avgDailySubs = from.data?.avgDailySubs?.toLongOrNull()
         statistics.avgDailyViews = from.data?.avgDailyViews?.toLongOrNull()

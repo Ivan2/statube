@@ -17,7 +17,7 @@ class ImageInteractor : Interactor() {
         }
     }
 
-    fun loadImageAsync(context: Context, url: String) = GlobalScope.async {
+    fun getImageAsync(context: Context, url: String) = GlobalScope.async {
         context.loadAsBitmap(url)
     }
 

@@ -18,7 +18,7 @@ import java.io.FileOutputStream
 class ChannelsPresenter : Presenter() {
 
     fun loadFavouriteChannels(onLoad: (channels: List<Channel>) -> Unit) = resolvedLaunch({
-        val channels = ChannelInteractor.getInstance().loadFavouriteChannelsAsync().await()
+        val channels = ChannelInteractor.getInstance().getFavouriteChannelsAsync().await()
         onLoad(channels)
     }, {
         onLoad(emptyList())
@@ -26,7 +26,7 @@ class ChannelsPresenter : Presenter() {
 
     fun searchChannels(context: Context, text: String, pageToken: String?,
                        onLoad: (text: String, channels: Channels) -> Unit) = resolvedLaunch({
-        val channels = ChannelInteractor.getInstance().searchAsync(context, text, pageToken).await()
+        val channels = ChannelInteractor.getInstance().searchChannelsAsync(context, text, pageToken).await()
         onLoad(text, channels)
     }, {
         onLoad(text, Channels())
@@ -34,13 +34,13 @@ class ChannelsPresenter : Presenter() {
 
     fun loadChannel(context: Context, channelId: String, onLoad: (channel: Channel?) -> Unit) = resolvedLaunch({
         showProgressDialog(context)
-        ChannelInteractor.getInstance().loadAsync(context, channelId).await()?.let { channel ->
+        ChannelInteractor.getInstance().getChannelAsync(context, channelId).await()?.let { channel ->
             val bannerImageFile = File(context.filesDir, BANNER_IMAGE_FILE_NAME)
             if (bannerImageFile.exists())
                 bannerImageFile.delete()
 
             channel.bannerImageUrl?.let { bannerImageUrl ->
-                ImageInteractor.getInstance().loadImageAsync(context, bannerImageUrl).await()
+                ImageInteractor.getInstance().getImageAsync(context, bannerImageUrl).await()
             }?.let { bitmap ->
                 FileOutputStream(bannerImageFile).use { fos ->
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 75, fos)
@@ -59,7 +59,7 @@ class ChannelsPresenter : Presenter() {
     })
 
     fun changeFavourite(channel: Channel) = resolvedLaunch({
-        ChannelInteractor.getInstance().changeFavouriteAsync(channel).await()
+        ChannelInteractor.getInstance().changeFavouriteChannelAsync(channel).await()
     }, {})
 
 }
