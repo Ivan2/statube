@@ -20,6 +20,10 @@ class ChannelActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_channel)
 
+        vBackButton.setOnClickListener {
+            onBackPressed()
+        }
+
         val channel = intent?.getSerializableExtra(CHANNEL_DATA_KEY) as? Channel ?: return
 
         val bannerImageFile = File(filesDir, BANNER_IMAGE_FILE_NAME)

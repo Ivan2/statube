@@ -9,6 +9,7 @@ import ru.sis.statube.additional.YOUTUBE_DATA_API_URL
 import ru.sis.statube.db.store.VideoStore
 import ru.sis.statube.model.PlayListItem
 import ru.sis.statube.model.Video
+import ru.sis.statube.model.VideosStatisticsLastUpdated
 import ru.sis.statube.net.OkRequest
 import ru.sis.statube.net.response.json.youtube.playListItem.PlayListItemListResponse
 import ru.sis.statube.net.response.json.youtube.video.VideoListResponse
@@ -31,15 +32,23 @@ class VideosStatisticsInteractor : Interactor() {
     private val playlistItemsWithTokenPath = "playlistItems?key=%s&playlistId=%s&part=contentDetails&maxResults=50&pageToken=%s"
     private val videoPath = "videos?key=%s&id=%s&part=statistics"
 
-    fun getVideosStatisticsAsync(context: Context, uploads: String, beginDate: DateTime, endDate: DateTime) = GlobalScope.async {
+    suspend fun getVideosStatisticsAsync(context: Context, uploads: String, beginDate: DateTime, endDate: DateTime) = GlobalScope.async {
         val config = getConfig(context)
         val playListItems = getPlayListItems(uploads, beginDate, endDate, config.youtubeDataApiKey)
-        val videos = getVideos(playListItems, config.youtubeDataApiKey)
-        videos.forEach { video ->
+        val videoList = getVideos(playListItems, config.youtubeDataApiKey)
+        videoList.forEach { video ->
             video.uploads = uploads
         }
-        VideoStore.getInstance().saveVideos(videos)
-        videos
+        //TODO check network error
+        VideoStore.getInstance().saveVideos(videoList)
+        val statisticsLastUpdated = VideosStatisticsLastUpdated().apply {
+            this.id = uploads
+            this.date = DateTime.now()
+            this.beginDate = beginDate
+            this.endDate = endDate
+        }
+        StatisticsLastUpdatedInteractor.getInstance().setVideosStatisticsLastUpdatedAsync(statisticsLastUpdated).await()
+        getVideosStatisticsLocalAsync(uploads, beginDate, endDate).await()
     }
 
     private fun getPlayListItems(uploads: String, beginDate: DateTime, endDate: DateTime, youtubeDataApiKey: String): List<PlayListItem> {
@@ -104,8 +113,11 @@ class VideosStatisticsInteractor : Interactor() {
         return videos
     }
 
-    fun getVideosStatisticsLocalAsync(uploads: String) = GlobalScope.async {
-        VideoStore.getInstance().getVideosByUploads(uploads)
+    fun getVideosStatisticsLocalAsync(uploads: String, beginDate: DateTime, endDate: DateTime) = GlobalScope.async {
+        val videoList = VideoStore.getInstance().getVideosByUploads(uploads)
+        videoList.filter { video ->
+            video.publishedAt.isAfter(beginDate) && video.publishedAt.isBefore(endDate)
+        }
     }
 
 }

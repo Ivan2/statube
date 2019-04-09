@@ -42,5 +42,6 @@
     <string name="statistics_dialog_long_loading_continue">Продолжить</string>
     <string name="statistics_dialog_long_loading_cancel">Отмена</string>
     <string name="statistics_chart_no_data">Нет данных</string>
+    <string name="statistics_dates_template">%1$s - %2$s</string>
 
 </resources>

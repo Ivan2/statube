@@ -2,8 +2,10 @@ package ru.sis.statube.interactor
 
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
-import ru.sis.statube.db.store.StatisticsLastUpdatedStore
-import ru.sis.statube.model.StatisticsLastUpdated
+import ru.sis.statube.db.store.GeneralStatisticsLastUpdatedStore
+import ru.sis.statube.db.store.VideosStatisticsLastUpdatedStore
+import ru.sis.statube.model.GeneralStatisticsLastUpdated
+import ru.sis.statube.model.VideosStatisticsLastUpdated
 
 class StatisticsLastUpdatedInteractor : Interactor() {
 
@@ -17,12 +19,20 @@ class StatisticsLastUpdatedInteractor : Interactor() {
         }
     }
 
-    fun setStatisticsLastUpdatedAsync(statisticsLastUpdated: StatisticsLastUpdated) = GlobalScope.async {
-        StatisticsLastUpdatedStore.getInstance().saveStatisticsLastUpdated(statisticsLastUpdated)
+    fun setGeneralStatisticsLastUpdatedAsync(statisticsLastUpdated: GeneralStatisticsLastUpdated) = GlobalScope.async {
+        GeneralStatisticsLastUpdatedStore.getInstance().saveGeneralStatisticsLastUpdated(statisticsLastUpdated)
     }
 
-    fun getStatisticsLastUpdatedAsync(id: String) = GlobalScope.async {
-        StatisticsLastUpdatedStore.getInstance().getStatisticsLastUpdated(id)
+    fun getGeneralStatisticsLastUpdatedAsync(id: String) = GlobalScope.async {
+        GeneralStatisticsLastUpdatedStore.getInstance().getGeneralStatisticsLastUpdated(id)
+    }
+
+    fun setVideosStatisticsLastUpdatedAsync(statisticsLastUpdated: VideosStatisticsLastUpdated) = GlobalScope.async {
+        VideosStatisticsLastUpdatedStore.getInstance().saveVideosStatisticsLastUpdated(statisticsLastUpdated)
+    }
+
+    fun getVideosStatisticsLastUpdatedAsync(id: String) = GlobalScope.async {
+        VideosStatisticsLastUpdatedStore.getInstance().getVideosStatisticsLastUpdated(id)
     }
 
 }

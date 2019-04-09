@@ -350,20 +350,42 @@
                     android:layout_marginTop="4dp"
                     android:layout_marginEnd="4dp">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:textSize="12sp"
-                        android:text="@string/statistics_updated"/>
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/vVideosStatisticsUpdatedTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="4dp"
-                        android:layout_gravity="center_vertical"
-                        android:textSize="12sp"/>
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_gravity="end">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:textSize="12sp"
+                                android:text="@string/statistics_updated"/>
+
+                            <TextView
+                                android:id="@+id/vVideosStatisticsUpdatedTextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="4dp"
+                                android:layout_gravity="center_vertical"
+                                android:textSize="12sp"/>
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/vVideosStatisticsDatesTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:textSize="10sp"/>
+
+                    </LinearLayout>
 
                     <FrameLayout
                         android:layout_width="32dp"

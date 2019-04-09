@@ -4,8 +4,10 @@ import android.content.Context
 import com.google.gson.Gson
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
+import org.joda.time.DateTime
 import ru.sis.statube.additional.SOCIAL_BLADE_API_URL
 import ru.sis.statube.db.store.GeneralStatisticsStore
+import ru.sis.statube.model.GeneralStatisticsLastUpdated
 import ru.sis.statube.net.OkRequest
 import ru.sis.statube.net.response.json.socialblade.SocialBladeResponse
 import ru.sis.statube.net.response.mapper.socialblade.SocialBladeResponseMapper
@@ -34,6 +36,11 @@ class GeneralStatisticsInteractor : Interactor() {
         statistics?.let {
             GeneralStatisticsStore.getInstance().saveGeneralStatistics(statistics)
         }
+        val statisticsLastUpdated = GeneralStatisticsLastUpdated().apply {
+            this.id = channelId
+            this.date = DateTime.now()
+        }
+        StatisticsLastUpdatedInteractor.getInstance().setGeneralStatisticsLastUpdatedAsync(statisticsLastUpdated).await()
         statistics
     }
 

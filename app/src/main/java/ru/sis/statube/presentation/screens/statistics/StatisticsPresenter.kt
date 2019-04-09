@@ -7,43 +7,23 @@ import ru.sis.statube.interactor.GeneralStatisticsInteractor
 import ru.sis.statube.interactor.StatisticsLastUpdatedInteractor
 import ru.sis.statube.interactor.VideosStatisticsInteractor
 import ru.sis.statube.model.GeneralStatistics
-import ru.sis.statube.model.StatisticsLastUpdated
+import ru.sis.statube.model.GeneralStatisticsLastUpdated
 import ru.sis.statube.model.Video
+import ru.sis.statube.model.VideosStatisticsLastUpdated
 import ru.sis.statube.presentation.Presenter
 
 class StatisticsPresenter : Presenter() {
 
-    private val channelIdTemplate = "Channel %s"
-    private val uploadsTemplate = "Uploads %s"
-
-    fun setGeneralStatisticsLastUpdatedDateTime(channelId: String, dateTime: DateTime?) = resolvedLaunch({
-        val statisticsLastUpdated = StatisticsLastUpdated().apply {
-            this.id = String.format(channelIdTemplate, channelId)
-            this.date = dateTime
-        }
-        StatisticsLastUpdatedInteractor.getInstance().setStatisticsLastUpdatedAsync(statisticsLastUpdated).await()
-    }, {})
-
-    fun loadGeneralStatisticsLastUpdatedDateTime(channelId: String, onLoad: (date: DateTime?) -> Unit) = resolvedLaunch({
-        val statisticsLastUpdated = StatisticsLastUpdatedInteractor.getInstance().getStatisticsLastUpdatedAsync(
-            String.format(channelIdTemplate, channelId)).await()
-        onLoad(statisticsLastUpdated?.date)
+    fun loadGeneralStatisticsLastUpdatedDateTime(channelId: String, onLoad: (statisticsLastUpdated: GeneralStatisticsLastUpdated?) -> Unit) = resolvedLaunch({
+        val statisticsLastUpdated = StatisticsLastUpdatedInteractor.getInstance().getGeneralStatisticsLastUpdatedAsync(channelId).await()
+        onLoad(statisticsLastUpdated)
     }, {
         onLoad(null)
     })
 
-    fun setVideosStatisticsLastUpdatedDateTime(uploads: String, dateTime: DateTime?) = resolvedLaunch({
-        val statisticsLastUpdated = StatisticsLastUpdated().apply {
-            this.id = String.format(uploadsTemplate, uploads)
-            this.date = dateTime
-        }
-        StatisticsLastUpdatedInteractor.getInstance().setStatisticsLastUpdatedAsync(statisticsLastUpdated).await()
-    }, {})
-
-    fun loadVideosStatisticsLastUpdatedDateTime(uploads: String, onLoad: (date: DateTime?) -> Unit) = resolvedLaunch({
-        val statisticsLastUpdated = StatisticsLastUpdatedInteractor.getInstance().getStatisticsLastUpdatedAsync(
-            String.format(uploadsTemplate, uploads)).await()
-        onLoad(statisticsLastUpdated?.date)
+    fun loadVideosStatisticsLastUpdatedDateTime(uploads: String, onLoad: (statisticsLastUpdated: VideosStatisticsLastUpdated?) -> Unit) = resolvedLaunch({
+        val statisticsLastUpdated = StatisticsLastUpdatedInteractor.getInstance().getVideosStatisticsLastUpdatedAsync(uploads).await()
+        onLoad(statisticsLastUpdated)
     }, {
         onLoad(null)
     })
@@ -78,7 +58,7 @@ class StatisticsPresenter : Presenter() {
 
     fun loadVideosStatisticsLocal(uploads: String, beginDate: DateTime, endDate: DateTime,
                                   onLoad: (videoList: List<Video>?) -> Unit) = resolvedLaunch({
-        val videoList = VideosStatisticsInteractor.getInstance().getVideosStatisticsLocalAsync(uploads).await()
+        val videoList = VideosStatisticsInteractor.getInstance().getVideosStatisticsLocalAsync(uploads, beginDate, endDate).await()
         onLoad(videoList)
     }, {
         onLoad(null)

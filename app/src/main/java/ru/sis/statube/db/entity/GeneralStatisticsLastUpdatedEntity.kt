@@ -5,7 +5,7 @@ import io.realm.annotations.PrimaryKey
 import io.realm.annotations.RealmClass
 
 @RealmClass
-open class StatisticsLastUpdatedEntity : RealmObject() {
+open class GeneralStatisticsLastUpdatedEntity : RealmObject() {
 
     @PrimaryKey
     open var id: String = ""
