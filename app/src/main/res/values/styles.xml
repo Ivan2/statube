@@ -36,11 +36,11 @@
 
     <style name="StatisticsTableColumn0">
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">36dp</item>
-        <item name="android:layout_marginEnd">10dp</item>
+        <item name="android:layout_height">28dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:gravity">center</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">12sp</item>
     </style>
 
     <style name="StatisticsTableValueColumns">
@@ -50,7 +50,7 @@
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:gravity">center</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">12sp</item>
         <item name="android:text">-</item>
     </style>
 

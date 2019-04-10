@@ -20,8 +20,8 @@
     <!-- statistics -->
     <string name="statistics_title">Статистика</string>
     <string name="statistics_updated">Обновлено:</string>
-    <string name="statistics_general_statistics_title">Подписки и просмотры по каналу</string>
-    <string name="statistics_videos_statistics_title">Просмотры, лайки, дизлайки и комментарии по видео</string>
+    <string name="statistics_general_statistics_title">Общая статистика</string>
+    <string name="statistics_videos_statistics_title">Статистика по видео</string>
     <string name="statistics_subscribers">Подписки</string>
     <string name="statistics_views">Просмотры</string>
     <string name="statistics_comments">Комментарии</string>

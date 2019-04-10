@@ -95,7 +95,8 @@
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp">
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp">
 
                 <TableRow>
 
@@ -234,7 +235,9 @@
                 android:id="@+id/vGeneralStatisticsChartTypeButtonGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 app:rrbg_backgroundColor="@color/white"
                 app:rrbg_animateSelector_duration="200"
                 app:rrbg_animateSelector="linear"
@@ -248,7 +251,7 @@
                 app:rrbg_selectorColor="@color/colorPrimary"
                 app:rrbg_buttonsPadding="2dp"
                 app:rrbg_bottomLineSize="0dp"
-                app:rrbg_checkedPosition="1">
+                app:rrbg_checkedPosition="0">
 
                 <co.ceryle.radiorealbutton.RadioRealButton
                     android:layout_width="match_parent"
@@ -276,7 +279,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:baselineAligned="false">
+                android:baselineAligned="false"
+                android:layout_marginTop="8dp">
 
                 <FrameLayout
                     android:layout_width="0dp"
@@ -332,7 +336,7 @@
                     android:background="@color/whiteSmoke"/>
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_marginStart="16dp"
@@ -468,7 +472,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:baselineAligned="false">
+                    android:baselineAligned="false"
+                    android:layout_marginTop="8dp">
 
                     <FrameLayout
                         android:layout_width="0dp"

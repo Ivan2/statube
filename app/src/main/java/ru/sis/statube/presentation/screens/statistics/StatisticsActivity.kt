@@ -79,7 +79,7 @@ class StatisticsActivity : AppCompatActivity() {
         }
 
         endDate = DateTime.now()
-        beginDate = endDate.minusMonths(1)
+        beginDate = endDate.minusMonths(2)
 
         updateBeginDateText()
         updateEndDateText()
