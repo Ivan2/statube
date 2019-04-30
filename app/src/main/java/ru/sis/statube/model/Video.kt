@@ -11,6 +11,14 @@ class Video : Serializable {
 
     lateinit var publishedAt: DateTime
 
+    lateinit var channelId: String
+
+    var title: String? = null
+
+    var description: String? = null
+
+    var thumbnail: String? = null
+
     var viewCount: Long? = null
 
     var likeCount: Long? = null

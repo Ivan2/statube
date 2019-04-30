@@ -4,19 +4,21 @@
     <color name="colorPrimaryDark">#CC0000</color>
     <color name="colorAccent">#CC0000</color>
 
+    <color name="transparent">#00000000</color>
     <color name="white">#FFFFFF</color>
     <color name="red">#FF0000</color>
 
     <color name="whiteSmoke">#EEEEEE</color>
     <color name="lightGray">#AAAAAA</color>
+    <color name="gray">#767171</color>
 
     <color name="favourite">#CC0000</color>
     <color name="not_favourite">#AAAAAA</color>
 
-    <color name="subs">#00CC00</color>
+    <color name="subs">#00AA00</color>
     <color name="views">#0000CC</color>
 
     <color name="comments">#CC00CC</color>
-    <color name="likes">#00CC00</color>
+    <color name="likes">#00AA00</color>
     <color name="dislikes">#CC4400</color>
 </resources>

@@ -16,10 +16,10 @@ class VideoStore {
         }
     }
 
-    fun getVideosByUploads(uploads: String): List<Video> = Realm.getDefaultInstance().use { realm ->
+    fun getVideosByChannelId(channelId: String): List<Video> = Realm.getDefaultInstance().use { realm ->
         val videos = ArrayList<Video>()
         val entities = realm.where(VideoEntity::class.java)
-            .equalTo("uploads", uploads)
+            .equalTo("channelId", channelId)
             .findAll()
         val mapper = VideoEntityMapper()
         for (entity in entities) {

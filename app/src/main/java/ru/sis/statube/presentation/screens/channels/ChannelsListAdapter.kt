@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.list_item_channel.view.*
 import ru.sis.statube.R
 import ru.sis.statube.additional.color
-import ru.sis.statube.additional.loadThumbnail
+import ru.sis.statube.additional.loadChannelThumbnail
 import ru.sis.statube.model.Channel
 
 class ChannelsListAdapter(
@@ -79,7 +79,7 @@ class ChannelsListAdapter(
 
             itemView.vTitleTextView.text = channel.title
             itemView.vDescriptionTextView.text = channel.description
-            itemView.vImageView.loadThumbnail(channel.thumbnail)
+            itemView.vImageView.loadChannelThumbnail(channel.thumbnail)
             updateFavouriteButton(itemView.vFavouriteButton, channel.isFavourite)
 
             itemView.vFavouriteButton.setOnClickListener {

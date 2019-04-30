@@ -232,16 +232,14 @@ class StatisticsActivity : AppCompatActivity() {
     }
 
     private fun updateVideosStatisticsLocal() {
-        channel.uploads?.let { uploads ->
-            vVideosStatisticsRefreshButton.visibility = View.INVISIBLE
-            vVideosStatisticsLoadingProgressBar.visibility = View.VISIBLE
+        vVideosStatisticsRefreshButton.visibility = View.INVISIBLE
+        vVideosStatisticsLoadingProgressBar.visibility = View.VISIBLE
 
-            presenter.loadVideosStatisticsLocal(uploads, beginDate, endDate) { videoList ->
-                this.videoList = videoList
-                updateVideosStatisticsChart()
-                vVideosStatisticsRefreshButton.visibility = View.VISIBLE
-                vVideosStatisticsLoadingProgressBar.visibility = View.INVISIBLE
-            }
+        presenter.loadVideosStatisticsLocal(channel.id, beginDate, endDate) { videoList ->
+            this.videoList = videoList
+            updateVideosStatisticsChart()
+            vVideosStatisticsRefreshButton.visibility = View.VISIBLE
+            vVideosStatisticsLoadingProgressBar.visibility = View.INVISIBLE
         }
     }
 
@@ -250,7 +248,7 @@ class StatisticsActivity : AppCompatActivity() {
             vVideosStatisticsRefreshButton.visibility = View.INVISIBLE
             vVideosStatisticsLoadingProgressBar.visibility = View.VISIBLE
 
-            presenter.loadVideosStatistics(this, uploads, beginDate, endDate) { videoList ->
+            presenter.loadVideosStatistics(this, uploads, beginDate, endDate, channel.id) { videoList ->
                 this.videoList = videoList
                 updateVideosStatisticsChart()
                 vVideosStatisticsRefreshButton.visibility = View.VISIBLE

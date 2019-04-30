@@ -44,4 +44,13 @@
     <string name="statistics_chart_no_data">Нет данных</string>
     <string name="statistics_dates_template">%1$s - %2$s</string>
 
+    <!-- videos -->
+    <string name="videos_date">Дата</string>
+    <string name="videos_views">Просмотры</string>
+    <string name="videos_likes">Лайки</string>
+    <string name="videos_dislikes">Дизлайки</string>
+    <string name="videos_comments">Комментарии</string>
+    <string name="videos_likes_dislikes">Лайки/дизлайки</string>
+    <string name="videos_dates_template">%1$s - %2$s</string>
+
 </resources>

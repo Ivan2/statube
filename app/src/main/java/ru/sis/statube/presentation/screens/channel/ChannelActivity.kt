@@ -10,6 +10,7 @@ import ru.sis.statube.R
 import ru.sis.statube.additional.*
 import ru.sis.statube.model.Channel
 import ru.sis.statube.presentation.screens.statistics.StatisticsActivity
+import ru.sis.statube.presentation.screens.videos.VideosActivity
 import java.io.File
 
 class ChannelActivity : AppCompatActivity() {
@@ -34,7 +35,7 @@ class ChannelActivity : AppCompatActivity() {
             vBannerImageView.visibility = View.GONE
         }
 
-        vImageView.loadThumbnail(channel.thumbnail)
+        vImageView.loadChannelThumbnail(channel.thumbnail)
         vIdTextView.text = channel.id
         vTitleTextView.text = channel.title ?: ""
         vDescriptionTextView.text = channel.description ?: ""
@@ -59,6 +60,11 @@ class ChannelActivity : AppCompatActivity() {
         }
         vMoveToStatisticsLayout.setOnClickListener {
             val intent = Intent(this, StatisticsActivity::class.java)
+            intent.putExtra(CHANNEL_DATA_KEY, channel)
+            startActivity(intent)
+        }
+        vMoveToVideosLayout.setOnClickListener {
+            val intent = Intent(this, VideosActivity::class.java)
             intent.putExtra(CHANNEL_DATA_KEY, channel)
             startActivity(intent)
         }

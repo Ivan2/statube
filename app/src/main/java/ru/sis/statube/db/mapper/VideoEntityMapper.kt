@@ -9,8 +9,11 @@ class VideoEntityMapper {
     fun map(from: VideoEntity): Video? {
         val video = Video()
         video.id = from.id
-        video.uploads = from.uploads ?: return null
+        video.channelId = from.channelId ?: return null
         video.publishedAt = from.publishedAt?.let { DateTime(it) } ?: return null
+        video.title = from.title
+        video.description = from.description
+        video.thumbnail = from.thumbnail
         video.viewCount = from.viewCount
         video.likeCount = from.likeCount
         video.dislikeCount = from.dislikeCount
@@ -21,8 +24,11 @@ class VideoEntityMapper {
     fun reverseMap(from: Video): VideoEntity {
         val video = VideoEntity()
         video.id = from.id
-        video.uploads = from.uploads
+        video.channelId = from.channelId
         video.publishedAt = from.publishedAt.millis
+        video.title = from.title
+        video.description = from.description
+        video.thumbnail = from.thumbnail
         video.viewCount = from.viewCount
         video.likeCount = from.likeCount
         video.dislikeCount = from.dislikeCount

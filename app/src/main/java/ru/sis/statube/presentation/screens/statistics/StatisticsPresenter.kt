@@ -5,7 +5,7 @@ import org.joda.time.DateTime
 import ru.sis.statube.additional.resolvedLaunch
 import ru.sis.statube.interactor.GeneralStatisticsInteractor
 import ru.sis.statube.interactor.StatisticsLastUpdatedInteractor
-import ru.sis.statube.interactor.VideosStatisticsInteractor
+import ru.sis.statube.interactor.VideosInteractor
 import ru.sis.statube.model.GeneralStatistics
 import ru.sis.statube.model.GeneralStatisticsLastUpdated
 import ru.sis.statube.model.Video
@@ -45,10 +45,10 @@ class StatisticsPresenter : Presenter() {
     })
 
 
-    fun loadVideosStatistics(context: Context, uploads: String, beginDate: DateTime, endDate: DateTime,
+    fun loadVideosStatistics(context: Context, uploads: String, beginDate: DateTime, endDate: DateTime, channelId: String,
                              onLoad: (videoList: List<Video>?) -> Unit) = resolvedLaunch({
         showProgressDialog(context)
-        val videoList = VideosStatisticsInteractor.getInstance().getVideosStatisticsAsync(context, uploads, beginDate, endDate).await()
+        val videoList = VideosInteractor.getInstance().getVideosAsync(context, uploads, beginDate, endDate, channelId).await()
         hideProgressDialog()
         onLoad(videoList)
     }, {
@@ -56,9 +56,9 @@ class StatisticsPresenter : Presenter() {
         onLoad(null)
     })
 
-    fun loadVideosStatisticsLocal(uploads: String, beginDate: DateTime, endDate: DateTime,
+    fun loadVideosStatisticsLocal(channelId: String, beginDate: DateTime, endDate: DateTime,
                                   onLoad: (videoList: List<Video>?) -> Unit) = resolvedLaunch({
-        val videoList = VideosStatisticsInteractor.getInstance().getVideosStatisticsLocalAsync(uploads, beginDate, endDate).await()
+        val videoList = VideosInteractor.getInstance().getVideosLocalAsync(channelId, beginDate, endDate).await()
         onLoad(videoList)
     }, {
         onLoad(null)

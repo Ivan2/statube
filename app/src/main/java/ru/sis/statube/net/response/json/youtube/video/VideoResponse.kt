@@ -10,6 +10,9 @@ class VideoResponse {
     @SerializedName("id")
     var id: String? = null
 
+    @SerializedName("snippet")
+    var snippet: VideoSnippetResponse? = null
+
     @SerializedName("statistics")
     var statistics: VideoStatisticsResponse? = null
 

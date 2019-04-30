@@ -10,9 +10,15 @@ open class VideoEntity : RealmObject() {
     @PrimaryKey
     open var id: String = ""
 
-    open var uploads: String? = null
+    open var channelId: String? = null
 
     open var publishedAt: Long? = null
+
+    open var title: String? = null
+
+    open var description: String? = null
+
+    open var thumbnail: String? = null
 
     open var viewCount: Long? = null
 

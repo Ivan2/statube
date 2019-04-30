@@ -34,6 +34,10 @@
             android:name=".presentation.screens.statistics.StatisticsActivity"
             android:screenOrientation="portrait"/>
 
+        <activity
+            android:name=".presentation.screens.videos.VideosActivity"
+            android:screenOrientation="portrait"/>
+
     </application>
 
 </manifest>
