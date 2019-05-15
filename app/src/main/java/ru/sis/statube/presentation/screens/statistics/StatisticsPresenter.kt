@@ -47,12 +47,9 @@ class StatisticsPresenter : Presenter() {
 
     fun loadVideosStatistics(context: Context, uploads: String, beginDate: DateTime, endDate: DateTime, channelId: String,
                              onLoad: (videoList: List<Video>?) -> Unit) = resolvedLaunch({
-        showProgressDialog(context)
         val videoList = VideosInteractor.getInstance().getVideosAsync(context, uploads, beginDate, endDate, channelId).await()
-        hideProgressDialog()
         onLoad(videoList)
     }, {
-        hideProgressDialog()
         onLoad(null)
     })
 

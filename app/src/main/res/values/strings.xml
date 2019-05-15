@@ -38,11 +38,7 @@
     <string name="statistics_relative_values">Относительные\nзначения</string>
     <string name="statistics_begin_date">Дата начала</string>
     <string name="statistics_end_date">Дата конца</string>
-    <string name="statistics_dialog_long_loading_message">Загрузка данных может быть долгой</string>
-    <string name="statistics_dialog_long_loading_continue">Продолжить</string>
-    <string name="statistics_dialog_long_loading_cancel">Отмена</string>
     <string name="statistics_chart_no_data">Нет данных</string>
-    <string name="statistics_dates_template">%1$s - %2$s</string>
 
     <!-- videos -->
     <string name="videos_date">Дата</string>
@@ -51,6 +47,12 @@
     <string name="videos_dislikes">Дизлайки</string>
     <string name="videos_comments">Комментарии</string>
     <string name="videos_likes_dislikes">Лайки/дизлайки</string>
-    <string name="videos_dates_template">%1$s - %2$s</string>
+
+    <string name="period_template">%1$s - %2$s</string>
+
+    <string name="dialog_long_loading_title">Вы хотите продолжить?</string>
+    <string name="dialog_long_loading_message">Загрузка данных может быть долгой</string>
+    <string name="dialog_long_loading_continue">Продолжить</string>
+    <string name="dialog_long_loading_cancel">Отмена</string>
 
 </resources>

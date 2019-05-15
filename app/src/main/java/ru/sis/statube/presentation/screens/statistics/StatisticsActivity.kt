@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.afollestad.materialdialogs.MaterialDialog
-import com.afollestad.materialdialogs.datetime.datePicker
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
@@ -34,9 +33,6 @@ class StatisticsActivity : AppCompatActivity() {
     private var dataDailyList: List<DataDaily>? = null
     private var videoList: List<Video>? = null
 
-    private lateinit var beginDate: DateTime
-    private lateinit var endDate: DateTime
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_statistics)
@@ -47,10 +43,10 @@ class StatisticsActivity : AppCompatActivity() {
 
         channel = intent?.getSerializableExtra(CHANNEL_DATA_KEY) as? Channel ?: return
 
-        vGeneralStatisticsRefreshButton.visibility = View.VISIBLE
-        vGeneralStatisticsLoadingProgressBar.visibility = View.INVISIBLE
+        vGeneralStatisticsLastUpdateView.isPeriodVisible = false
+        vGeneralStatisticsLastUpdateView.isLoading = false
         updateGeneralStatisticsLastUpdatedDateTime()
-        vGeneralStatisticsRefreshButton.setOnClickListener {
+        vGeneralStatisticsLastUpdateView.onUpdateClickListener = {
             updateGeneralStatistics()
         }
 
@@ -65,41 +61,22 @@ class StatisticsActivity : AppCompatActivity() {
         }
 
 
-        vVideosStatisticsRefreshButton.visibility = View.VISIBLE
-        vVideosStatisticsLoadingProgressBar.visibility = View.INVISIBLE
+        vVideosStatisticsLastUpdateView.isLoading = false
         updateVideosStatisticsLastUpdatedDateTime()
-        vVideosStatisticsRefreshButton.setOnClickListener {
+        vVideosStatisticsLastUpdateView.onUpdateClickListener = {
             MaterialDialog(this).show {
-                message(R.string.statistics_dialog_long_loading_message)
-                negativeButton(R.string.statistics_dialog_long_loading_cancel)
-                positiveButton(R.string.statistics_dialog_long_loading_continue) {
+                title(R.string.dialog_long_loading_title)
+                message(R.string.dialog_long_loading_message)
+                negativeButton(R.string.dialog_long_loading_cancel)
+                positiveButton(R.string.dialog_long_loading_continue) {
                     updateVideosStatistics()
                 }
             }
         }
 
-        endDate = DateTime.now()
-        beginDate = endDate.minusMonths(2)
+        vVideosStatisticsPeriodChooser.onBeginDateChoose = { updateVideosStatisticsLocal() }
+        vVideosStatisticsPeriodChooser.onEndDateChoose = { updateVideosStatisticsLocal() }
 
-        updateBeginDateText()
-        updateEndDateText()
-
-        vVideosStatisticsBeginDateLayout.setOnClickListener {
-            showDatePickerDialog(beginDate) { date ->
-                beginDate = date
-                updateBeginDateText()
-                updateVideosStatisticsLocal()
-                //updateVideosStatisticsChart()
-            }
-        }
-        vVideosStatisticsEndDateLayout.setOnClickListener {
-            showDatePickerDialog(endDate) { date ->
-                endDate = date
-                updateEndDateText()
-                updateVideosStatisticsLocal()
-                //updateVideosStatisticsChart()
-            }
-        }
         vVideosStatisticsViewsCheckBox.setOnCheckedChangeListener { _, _ ->
             updateVideosStatisticsChart()
         }
@@ -124,25 +101,6 @@ class StatisticsActivity : AppCompatActivity() {
         updateVideosStatisticsLocal()
     }
 
-    private fun showDatePickerDialog(currentDate: DateTime, callback: (dateTime: DateTime) -> Unit) {
-        val calendar = Calendar.getInstance().apply {
-            timeInMillis = currentDate.millis
-        }
-        MaterialDialog(this).show {
-            datePicker(currentDate = calendar) { _, date ->
-                callback(DateTime(date.timeInMillis))
-            }
-        }
-    }
-
-    private fun updateBeginDateText() {
-        vVideosStatisticsBeginDateTextView.text = beginDate.formatPeriod()
-    }
-
-    private fun updateEndDateText() {
-        vVideosStatisticsEndDateTextView.text = endDate.formatPeriod()
-    }
-
     private fun prepareChart(chart: LineChart) {
         chart.isDoubleTapToZoomEnabled = true
         chart.setPinchZoom(true)
@@ -164,48 +122,35 @@ class StatisticsActivity : AppCompatActivity() {
     }
 
     private fun updateGeneralStatisticsLastUpdatedDateTime() {
-        vGeneralStatisticsUpdatedTextView.text = "?"
         presenter.loadGeneralStatisticsLastUpdatedDateTime(channel.id) { statisticsLastUpdated ->
-            vGeneralStatisticsUpdatedTextView.text = statisticsLastUpdated?.date?.formatUpdate() ?: "?"
+            vGeneralStatisticsLastUpdateView.update(statisticsLastUpdated?.date)
         }
     }
 
     private fun updateVideosStatisticsLastUpdatedDateTime() {
-        vVideosStatisticsUpdatedTextView.text = "?"
-        vVideosStatisticsDatesTextView.text = string(R.string.statistics_dates_template, "?", "?")
         channel.uploads?.let { uploads ->
             presenter.loadVideosStatisticsLastUpdatedDateTime(uploads) { statisticsLastUpdated ->
-                vVideosStatisticsUpdatedTextView.text = statisticsLastUpdated?.date?.formatUpdate() ?: "?"
-                vVideosStatisticsDatesTextView.text = string(R.string.statistics_dates_template,
-                    statisticsLastUpdated?.beginDate?.formatPeriod() ?: "?",
-                    statisticsLastUpdated?.endDate?.formatPeriod() ?: "?")
+                vVideosStatisticsLastUpdateView.update(statisticsLastUpdated?.date, statisticsLastUpdated?.beginDate, statisticsLastUpdated?.endDate)
             }
         }
     }
 
     private fun updateGeneralStatistics() {
-        vGeneralStatisticsRefreshButton.visibility = View.INVISIBLE
-        vGeneralStatisticsLoadingProgressBar.visibility = View.VISIBLE
-
+        vGeneralStatisticsLastUpdateView.isLoading = true
         presenter.loadGeneralStatistics(this, channel.id, { statistics ->
+            vGeneralStatisticsLastUpdateView.isLoading = false
             updateGeneralStatistics(statistics)
-            vGeneralStatisticsRefreshButton.visibility = View.VISIBLE
-            vGeneralStatisticsLoadingProgressBar.visibility = View.INVISIBLE
             updateGeneralStatisticsLastUpdatedDateTime()
         }, {
-            vGeneralStatisticsRefreshButton.visibility = View.VISIBLE
-            vGeneralStatisticsLoadingProgressBar.visibility = View.INVISIBLE
+            vGeneralStatisticsLastUpdateView.isLoading = false
         })
     }
 
     private fun updateGeneralStatisticsLocal() {
-        vGeneralStatisticsRefreshButton.visibility = View.INVISIBLE
-        vGeneralStatisticsLoadingProgressBar.visibility = View.VISIBLE
-
+        vGeneralStatisticsLastUpdateView.isLoading = true
         presenter.loadGeneralStatisticsLocal(channel.id) { statistics ->
+            vGeneralStatisticsLastUpdateView.isLoading = false
             updateGeneralStatistics(statistics)
-            vGeneralStatisticsRefreshButton.visibility = View.VISIBLE
-            vGeneralStatisticsLoadingProgressBar.visibility = View.INVISIBLE
         }
     }
 
@@ -232,27 +177,22 @@ class StatisticsActivity : AppCompatActivity() {
     }
 
     private fun updateVideosStatisticsLocal() {
-        vVideosStatisticsRefreshButton.visibility = View.INVISIBLE
-        vVideosStatisticsLoadingProgressBar.visibility = View.VISIBLE
-
-        presenter.loadVideosStatisticsLocal(channel.id, beginDate, endDate) { videoList ->
+        vVideosStatisticsLastUpdateView.isLoading = true
+        presenter.loadVideosStatisticsLocal(channel.id, vVideosStatisticsPeriodChooser.beginDate, vVideosStatisticsPeriodChooser.endDate) { videoList ->
+            vVideosStatisticsLastUpdateView.isLoading = false
             this.videoList = videoList
             updateVideosStatisticsChart()
-            vVideosStatisticsRefreshButton.visibility = View.VISIBLE
-            vVideosStatisticsLoadingProgressBar.visibility = View.INVISIBLE
         }
     }
 
     private fun updateVideosStatistics() {
         channel.uploads?.let { uploads ->
-            vVideosStatisticsRefreshButton.visibility = View.INVISIBLE
-            vVideosStatisticsLoadingProgressBar.visibility = View.VISIBLE
+            vVideosStatisticsLastUpdateView.isLoading = true
 
-            presenter.loadVideosStatistics(this, uploads, beginDate, endDate, channel.id) { videoList ->
+            presenter.loadVideosStatistics(this, uploads, vVideosStatisticsPeriodChooser.beginDate, vVideosStatisticsPeriodChooser.endDate, channel.id) { videoList ->
+                vVideosStatisticsLastUpdateView.isLoading = false
                 this.videoList = videoList
                 updateVideosStatisticsChart()
-                vVideosStatisticsRefreshButton.visibility = View.VISIBLE
-                vVideosStatisticsLoadingProgressBar.visibility = View.INVISIBLE
                 updateVideosStatisticsLastUpdatedDateTime()
             }
         }
@@ -406,6 +346,10 @@ class StatisticsActivity : AppCompatActivity() {
         dataSet.circleRadius = 3f
         dataSet.setDrawCircleHole(true)
         return dataSet
+    }
+
+    fun DateTime.formatChartDate(): String {
+        return this.toString("dd MMM")
     }
 
 }

@@ -6,16 +6,13 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.afollestad.materialdialogs.MaterialDialog
-import com.afollestad.materialdialogs.datetime.datePicker
 import kotlinx.android.synthetic.main.activity_videos.*
 import net.cachapa.expandablelayout.ExpandableLayout
-import org.joda.time.DateTime
 import ru.sis.statube.R
 import ru.sis.statube.additional.CHANNEL_DATA_KEY
 import ru.sis.statube.additional.string
 import ru.sis.statube.model.Channel
 import ru.sis.statube.model.Video
-import java.util.*
 import kotlin.collections.ArrayList
 
 class VideosActivity : AppCompatActivity() {
@@ -26,9 +23,6 @@ class VideosActivity : AppCompatActivity() {
     private lateinit var adapter: VideosListAdapter
     private val videoList = ArrayList<Video>()
 
-    private lateinit var beginDate: DateTime
-    private lateinit var endDate: DateTime
-
     private var sortDirection = 1
     private var sortMode: SortMode = SortMode.DATE
 
@@ -38,39 +32,21 @@ class VideosActivity : AppCompatActivity() {
 
         channel = intent?.getSerializableExtra(CHANNEL_DATA_KEY) as? Channel ?: return
 
-        vVideosRefreshButton.visibility = View.VISIBLE
-        vVideosLoadingProgressBar.visibility = View.INVISIBLE
+        vLastUpdateView.isLoading = false
         updateVideosLastUpdatedDateTime()
-        vVideosRefreshButton.setOnClickListener {
+        vLastUpdateView.onUpdateClickListener = {
             MaterialDialog(this).show {
-                message(R.string.statistics_dialog_long_loading_message)
-                negativeButton(R.string.statistics_dialog_long_loading_cancel)
-                positiveButton(R.string.statistics_dialog_long_loading_continue) {
+                title(R.string.dialog_long_loading_title)
+                message(R.string.dialog_long_loading_message)
+                negativeButton(R.string.dialog_long_loading_cancel)
+                positiveButton(R.string.dialog_long_loading_continue) {
                     loadVideos()
                 }
             }
         }
 
-        endDate = DateTime.now()
-        beginDate = endDate.minusMonths(2)
-
-        updateBeginDateText()
-        updateEndDateText()
-
-        vBeginDateTextView.setOnClickListener {
-            showDatePickerDialog(beginDate) { date ->
-                beginDate = date
-                updateBeginDateText()
-                loadVideosLocal()
-            }
-        }
-        vEndDateTextView.setOnClickListener {
-            showDatePickerDialog(endDate) { date ->
-                endDate = date
-                updateEndDateText()
-                loadVideosLocal()
-            }
-        }
+        vPeriodChooser.onBeginDateChoose = { loadVideosLocal() }
+        vPeriodChooser.onEndDateChoose = { loadVideosLocal() }
 
         vExpandableLayout.setOnExpansionUpdateListener { expansionFraction, state ->
             val color = Color.argb((expansionFraction * 30).toInt(), 0, 0, 0)
@@ -133,25 +109,6 @@ class VideosActivity : AppCompatActivity() {
         loadVideosLocal()
     }
 
-    private fun showDatePickerDialog(currentDate: DateTime, callback: (dateTime: DateTime) -> Unit) {
-        val calendar = Calendar.getInstance().apply {
-            timeInMillis = currentDate.millis
-        }
-        MaterialDialog(this).show {
-            datePicker(currentDate = calendar) { _, date ->
-                callback(DateTime(date.timeInMillis))
-            }
-        }
-    }
-
-    private fun updateBeginDateText() {
-        vBeginDateTextView.text = beginDate.formatPeriod()
-    }
-
-    private fun updateEndDateText() {
-        vEndDateTextView.text = endDate.formatPeriod()
-    }
-
     private fun updateSortMode(sortMode: SortMode) {
         this.sortMode = sortMode
         vSortTextView.text = when (sortMode) {
@@ -177,29 +134,21 @@ class VideosActivity : AppCompatActivity() {
     }
 
     private fun updateVideosLastUpdatedDateTime() {
-        vVideosUpdatedTextView.text = "?"
-        vVideosDatesTextView.text = string(R.string.videos_dates_template, "?", "?")
         channel.uploads?.let { uploads ->
             presenter.loadVideosLastUpdatedDateTime(uploads) { statisticsLastUpdated ->
-                vVideosUpdatedTextView.text = statisticsLastUpdated?.date?.formatUpdate() ?: "?"
-                vVideosDatesTextView.text = string(R.string.statistics_dates_template,
-                    statisticsLastUpdated?.beginDate?.formatPeriod() ?: "?",
-                    statisticsLastUpdated?.endDate?.formatPeriod() ?: "?")
+                vLastUpdateView.update(statisticsLastUpdated?.date, statisticsLastUpdated?.beginDate, statisticsLastUpdated?.endDate)
             }
         }
     }
 
     private fun loadVideos() {
         channel.uploads?.let { uploads ->
-            vVideosRefreshButton.visibility = View.INVISIBLE
-            vVideosLoadingProgressBar.visibility = View.VISIBLE
-
-            presenter.loadVideos(this, uploads, beginDate, endDate, channel.id) { videoList ->
+            vLastUpdateView.isLoading = true
+            presenter.loadVideos(this, uploads, vPeriodChooser.beginDate, vPeriodChooser.endDate, channel.id) { videoList ->
                 videoList?.let {
                     this.videoList.clear()
                     this.videoList.addAll(videoList)
-                    vVideosRefreshButton.visibility = View.VISIBLE
-                    vVideosLoadingProgressBar.visibility = View.INVISIBLE
+                    vLastUpdateView.isLoading = false
                     updateVideosLastUpdatedDateTime()
                     updateVideos()
                 }
@@ -208,7 +157,7 @@ class VideosActivity : AppCompatActivity() {
     }
 
     private fun loadVideosLocal() {
-        presenter.loadVideosLocal(channel.id, beginDate, endDate) { videoList ->
+        presenter.loadVideosLocal(channel.id, vPeriodChooser.beginDate, vPeriodChooser.endDate) { videoList ->
             videoList?.let {
                 this.videoList.clear()
                 this.videoList.addAll(videoList)

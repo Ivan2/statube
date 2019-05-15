@@ -27,3 +27,11 @@ fun String.parseSocialBladeDate(): DateTime? {
 fun DateTime.date(): DateTime {
     return this.withTime(0, 0, 0, 0)
 }
+
+fun DateTime.formatPeriod(): String {
+    return this.toString("dd.MM.yyyy")
+}
+
+fun DateTime.formatUpdate(): String {
+    return this.toString("dd MMM HH:mm")
+}
