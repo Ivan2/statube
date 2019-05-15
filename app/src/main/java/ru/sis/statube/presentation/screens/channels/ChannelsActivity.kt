@@ -23,10 +23,13 @@ class ChannelsActivity : AppCompatActivity() {
 
     private val presenter = ChannelsPresenter()
 
+    private val channelsKey = "CHANNELS_KEY"
+
     private lateinit var adapter: ChannelsListAdapter
     private var pageToken: String? = null
     private var searchText = ""
     private var timer: Timer? = null
+    private var isRestoreSavedState = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,6 +72,8 @@ class ChannelsActivity : AppCompatActivity() {
                 s?.toString()?.let { text ->
                     vClearButton.visibility = if (text.isEmpty()) View.INVISIBLE else View.VISIBLE
                     searchText = text
+                    if (isRestoreSavedState)
+                        return
                     timer?.cancel()
                     if (text.isEmpty()) {
                         loadFavouriteChannels()
@@ -90,7 +95,12 @@ class ChannelsActivity : AppCompatActivity() {
         })
         vClearButton.visibility = View.INVISIBLE
 
-        loadFavouriteChannels()
+        if (savedInstanceState != null && savedInstanceState.containsKey(channelsKey)) {
+            val channels = savedInstanceState.getSerializable(channelsKey) as? Channels ?: throw Exception()
+            onChannelsLoaded(searchText, channels)
+        } else {
+            loadFavouriteChannels()
+        }
     }
 
     private fun loadFavouriteChannels() {
@@ -146,6 +156,22 @@ class ChannelsActivity : AppCompatActivity() {
                 vDataNotFoundLayout.visibility = View.GONE
             }
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        if (searchText.isNotEmpty()) {
+            outState?.putSerializable(channelsKey, Channels().apply {
+                this.nextPageToken = pageToken
+                this.channelList = adapter.getChannels()
+            })
+        }
+        super.onSaveInstanceState(outState)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+        isRestoreSavedState = true
+        super.onRestoreInstanceState(savedInstanceState)
+        isRestoreSavedState = false
     }
 
 }

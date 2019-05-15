@@ -50,6 +50,8 @@ class ChannelsListAdapter(
         }
     }
 
+    fun getChannels() = ArrayList(channelList)
+
     override fun getItemCount(): Int = channelList.size + if (showLoadingMore) 1 else 0
 
     override fun getItemViewType(position: Int): Int {

@@ -1,9 +1,11 @@
 package ru.sis.statube.model
 
-class Channels {
+import java.io.Serializable
+
+class Channels : Serializable {
 
     var nextPageToken: String? = null
 
-    var channelList: List<Channel> = emptyList()
+    var channelList = ArrayList<Channel>()
 
 }
