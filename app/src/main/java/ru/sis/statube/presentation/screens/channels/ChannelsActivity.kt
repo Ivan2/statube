@@ -1,5 +1,6 @@
 package ru.sis.statube.presentation.screens.channels
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -8,8 +9,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_channels.*
 import ru.sis.statube.R
+import ru.sis.statube.additional.CHANNEL_DATA_KEY
 import ru.sis.statube.additional.string
 import ru.sis.statube.model.Channels
+import ru.sis.statube.presentation.screens.channel.ChannelActivity
 import java.util.*
 
 class ChannelsActivity : AppCompatActivity() {
@@ -24,12 +27,14 @@ class ChannelsActivity : AppCompatActivity() {
     private val presenter = ChannelsPresenter()
 
     private val channelsKey = "CHANNELS_KEY"
+    private val channelIdLoadingKey = "CHANNEL_ID_LOADING_KEY"
 
     private lateinit var adapter: ChannelsListAdapter
     private var pageToken: String? = null
     private var searchText = ""
     private var timer: Timer? = null
     private var isRestoreSavedState = false
+    private var selectedChannelId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +50,8 @@ class ChannelsActivity : AppCompatActivity() {
                 }
             }
         }, { channel ->
-            presenter.loadChannel(this, channel.id) {}
+            selectedChannelId = channel.id
+            loadChannel()
         }, { channel ->
             presenter.changeFavourite(channel)
             if (searchText.isEmpty()) {
@@ -100,6 +106,10 @@ class ChannelsActivity : AppCompatActivity() {
             onChannelsLoaded(searchText, channels)
         } else {
             loadFavouriteChannels()
+        }
+        if (savedInstanceState != null && savedInstanceState.containsKey(channelIdLoadingKey)) {
+            selectedChannelId = savedInstanceState.getString(channelIdLoadingKey)
+            loadChannel()
         }
     }
 
@@ -158,7 +168,23 @@ class ChannelsActivity : AppCompatActivity() {
         }
     }
 
+    private fun loadChannel() {
+        selectedChannelId?.let { channelId ->
+            presenter.loadChannel(this, channelId) {
+                if (!this.isDestroyed) {
+                    selectedChannelId = null
+                    val intent = Intent(this, ChannelActivity::class.java)
+                    intent.putExtra(CHANNEL_DATA_KEY, it)
+                    startActivity(intent)
+                }
+            }
+        }
+    }
+
     override fun onSaveInstanceState(outState: Bundle?) {
+        selectedChannelId?.let {
+            outState?.putString(channelIdLoadingKey, it)
+        }
         if (searchText.isNotEmpty()) {
             outState?.putSerializable(channelsKey, Channels().apply {
                 this.nextPageToken = pageToken
