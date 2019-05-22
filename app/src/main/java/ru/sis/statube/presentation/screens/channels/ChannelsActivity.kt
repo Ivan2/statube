@@ -93,7 +93,7 @@ class ChannelsActivity : AppCompatActivity() {
                                         presenter.searchChannels(this@ChannelsActivity, text, null, ::onChannelsLoaded)
                                     }
                                 }
-                            }, 800)
+                            }, 400)
                         }
                     }
                 }

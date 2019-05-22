@@ -14,8 +14,9 @@
     <string name="channel_created">Дата создания</string>
     <string name="channel_country">Страна</string>
     <string name="channel_keywords">Ключевые слова</string>
-    <string name="channel_move_to_youtube">Перейти на Youtube</string>
+    <string name="channel_move_to_youtube">Перейти на YouTube</string>
     <string name="channel_move_to_statistics">Статистика</string>
+    <string name="channel_move_to_videos">Видео</string>
 
     <!-- statistics -->
     <string name="statistics_title">Статистика</string>

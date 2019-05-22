@@ -19,6 +19,10 @@
             <TextView
                 style="@style/TitleTextView"/>
 
+            <ImageView
+                android:id="@+id/vBackButton"
+                style="@style/TitleBackButton"/>
+
         </RelativeLayout>
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout

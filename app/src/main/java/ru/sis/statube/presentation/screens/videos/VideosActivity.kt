@@ -30,6 +30,10 @@ class VideosActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_videos)
 
+        vBackButton.setOnClickListener {
+            onBackPressed()
+        }
+
         channel = intent?.getSerializableExtra(CHANNEL_DATA_KEY) as? Channel ?: return
 
         vLastUpdateView.isLoading = false
