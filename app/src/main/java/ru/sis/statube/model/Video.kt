@@ -1,6 +1,7 @@
 package ru.sis.statube.model
 
 import org.joda.time.DateTime
+import org.joda.time.Period
 import java.io.Serializable
 
 class Video : Serializable {
@@ -18,6 +19,8 @@ class Video : Serializable {
     var description: String? = null
 
     var thumbnail: String? = null
+
+    var duration: Period? = null
 
     var viewCount: Long? = null
 

@@ -30,7 +30,7 @@ class VideosInteractor : Interactor() {
 
     private val playlistItemsPath = "playlistItems?key=%s&playlistId=%s&part=contentDetails&maxResults=50"
     private val playlistItemsWithTokenPath = "playlistItems?key=%s&playlistId=%s&part=contentDetails&maxResults=50&pageToken=%s"
-    private val videoPath = "videos?key=%s&id=%s&part=snippet,statistics"
+    private val videoPath = "videos?key=%s&id=%s&part=snippet,statistics,contentDetails"
 
     suspend fun getVideosAsync(context: Context, uploads: String, beginDate: DateTime, endDate: DateTime, channelId: String) = GlobalScope.async {
         val config = getConfig(context)

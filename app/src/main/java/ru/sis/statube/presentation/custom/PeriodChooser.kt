@@ -31,7 +31,7 @@ class PeriodChooser : FrameLayout {
         val endDateTextView = view.findViewById<TextView>(R.id.vEndDateTextView)
 
         endDate = DateTime.now()
-        beginDate = endDate.minusMonths(1)
+        beginDate = endDate.minusMonths(2)
 
         beginDateTextView.text = beginDate.formatPeriod()
         endDateTextView.text = endDate.formatPeriod()

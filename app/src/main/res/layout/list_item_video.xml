@@ -63,6 +63,29 @@
                 android:layout_width="14dp"
                 android:layout_height="14dp"
                 android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_timelapse_black_24dp"
+                android:tint="@color/colorPrimary"/>
+
+            <TextView
+                android:id="@+id/vDurationTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="4dp"
+                android:textSize="12sp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="4dp">
+
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:layout_gravity="center_vertical"
                 android:src="@drawable/ic_remove_red_eye_black_24dp"
                 android:tint="@color/colorPrimary"/>
 

@@ -21,4 +21,8 @@
     <color name="comments">#CC00CC</color>
     <color name="likes">#00AA00</color>
     <color name="dislikes">#CC4400</color>
+
+    <color name="skeletonBaseColor">#FBFBFB</color>
+    <color name="skeletonDeepColor">#F0F0F0</color>
+
 </resources>

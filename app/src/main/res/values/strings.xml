@@ -42,6 +42,7 @@
     <string name="statistics_chart_no_data">Нет данных</string>
 
     <!-- videos -->
+    <string name="videos_not_found">Ничего не нашлось</string>
     <string name="videos_date">Дата</string>
     <string name="videos_views">Просмотры</string>
     <string name="videos_likes">Лайки</string>

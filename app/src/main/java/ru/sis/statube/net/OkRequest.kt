@@ -28,7 +28,7 @@ class OkRequest private constructor() {
             .build()
 
         val response = client.newCall(request).execute()
-        val str = response.body()?.string()
+        val str = response.body?.string()
         return str
     }
 

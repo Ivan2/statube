@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.list_item_video.view.*
 import ru.sis.statube.R
 import ru.sis.statube.additional.format
+import ru.sis.statube.additional.formatDuration
 import ru.sis.statube.additional.loadVideoThumbnail
 import ru.sis.statube.model.Video
 
@@ -39,6 +40,7 @@ class VideosListAdapter : RecyclerView.Adapter<VideosListAdapter.ViewHolder>() {
             itemView.vImageView.loadVideoThumbnail(video.thumbnail)
 
             itemView.vPublishedAtTextView.text = video.publishedAt.toString("dd.MM.yyyy HH:mm:ss")
+            itemView.vDurationTextView.text = video.duration?.formatDuration() ?: "?"
             itemView.vViewCountTextView.text = video.viewCount?.format() ?: "?"
             itemView.vCommentCountTextView.text = video.commentCount?.format() ?: "?"
 

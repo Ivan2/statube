@@ -20,6 +20,8 @@ open class VideoEntity : RealmObject() {
 
     open var thumbnail: String? = null
 
+    open var duration: String? = null
+
     open var viewCount: Long? = null
 
     open var likeCount: Long? = null
