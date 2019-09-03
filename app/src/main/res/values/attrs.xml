@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="Range">
+        <attr name="r_text" format="string" />
+        <attr name="r_drawable" format="reference" />
+    </declare-styleable>
+
+</resources>

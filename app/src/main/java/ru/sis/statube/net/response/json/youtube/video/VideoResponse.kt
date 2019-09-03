@@ -16,4 +16,7 @@ class VideoResponse {
     @SerializedName("statistics")
     var statistics: VideoStatisticsResponse? = null
 
+    @SerializedName("contentDetails")
+    var contentDetails: VideoContentDetailsResponse? = null
+
 }

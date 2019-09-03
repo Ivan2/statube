@@ -19,19 +19,19 @@ class VideosPresenter : Presenter() {
     })
 
     fun loadVideos(context: Context, uploads: String, beginDate: DateTime, endDate: DateTime, channelId: String,
-                   onLoad: (videoList: List<Video>?) -> Unit) = resolvedLaunch({
+                   onLoad: (videoList: List<Video>) -> Unit) = resolvedLaunch({
         val videoList = VideosInteractor.getInstance().getVideosAsync(context, uploads, beginDate, endDate, channelId).await()
         onLoad(videoList)
     }, {
-        onLoad(null)
+        onLoad(emptyList())
     })
 
     fun loadVideosLocal(channelId: String, beginDate: DateTime, endDate: DateTime,
-                                  onLoad: (videoList: List<Video>?) -> Unit) = resolvedLaunch({
+                                  onLoad: (videoList: List<Video>) -> Unit) = resolvedLaunch({
         val videoList = VideosInteractor.getInstance().getVideosLocalAsync(channelId, beginDate, endDate).await()
         onLoad(videoList)
     }, {
-        onLoad(null)
+        onLoad(emptyList())
     })
 
     fun sortVideos(videoList: ArrayList<Video>, sortMode: SortMode, sortDirection: Int, onSorted: () -> Unit) = resolvedLaunch({
@@ -42,6 +42,10 @@ class VideosPresenter : Presenter() {
                 SortMode.DATE -> {
                     param1 = o1.publishedAt.millis
                     param2 = o2.publishedAt.millis
+                }
+                SortMode.DURATION -> {
+                    param1 = o1.duration?.toStandardDuration()?.millis
+                    param2 = o2.duration?.toStandardDuration()?.millis
                 }
                 SortMode.VIEWS -> {
                     param1 = o1.viewCount
@@ -61,10 +65,10 @@ class VideosPresenter : Presenter() {
                 }
                 SortMode.LIKES_DISLIKES -> {
                     param1 = o1.likeCount?.let { likeCount -> o1.dislikeCount?.let { dislikeCount ->
-                        (likeCount * 1000000000f / dislikeCount).toLong()
+                        (likeCount * 1000000000f / (if (dislikeCount == 0L) 1L else dislikeCount)).toLong()
                     } }
                     param2 = o2.likeCount?.let { likeCount -> o2.dislikeCount?.let { dislikeCount ->
-                        (likeCount * 1000000000f / dislikeCount).toLong()
+                        (likeCount * 1000000000f / (if (dislikeCount == 0L) 1L else dislikeCount)).toLong()
                     } }
                 }
             }

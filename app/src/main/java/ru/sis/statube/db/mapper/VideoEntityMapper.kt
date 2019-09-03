@@ -1,6 +1,7 @@
 package ru.sis.statube.db.mapper
 
 import org.joda.time.DateTime
+import org.joda.time.Period
 import ru.sis.statube.db.entity.VideoEntity
 import ru.sis.statube.model.Video
 
@@ -14,6 +15,7 @@ class VideoEntityMapper {
         video.title = from.title
         video.description = from.description
         video.thumbnail = from.thumbnail
+        video.duration = from.duration?.let { Period.parse(it) }
         video.viewCount = from.viewCount
         video.likeCount = from.likeCount
         video.dislikeCount = from.dislikeCount
@@ -29,6 +31,7 @@ class VideoEntityMapper {
         video.title = from.title
         video.description = from.description
         video.thumbnail = from.thumbnail
+        video.duration = from.duration?.toString()
         video.viewCount = from.viewCount
         video.likeCount = from.likeCount
         video.dislikeCount = from.dislikeCount

@@ -1,7 +1,9 @@
 package ru.sis.statube.additional
 
 import org.joda.time.DateTime
+import org.joda.time.Period
 import org.joda.time.format.DateTimeFormat
+import org.joda.time.format.ISOPeriodFormat
 
 private const val YOUTUBE_DATE_TIME_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
 private const val SOCIAL_BLADE_DATE_PATTERN = "yyyy-MM-dd"
@@ -34,4 +36,12 @@ fun DateTime.formatPeriod(): String {
 
 fun DateTime.formatUpdate(): String {
     return this.toString("dd MMM HH:mm")
+}
+
+fun String.parseYoutubePeriod(): Period? {
+    return ISOPeriodFormat.standard().parsePeriod(this)
+}
+
+fun Period.formatDuration(): String {
+    return String.format("%d:%02d:%02d", this.hours, this.minutes, this.seconds)
 }

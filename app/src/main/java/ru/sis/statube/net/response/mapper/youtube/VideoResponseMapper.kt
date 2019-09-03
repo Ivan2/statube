@@ -1,6 +1,7 @@
 package ru.sis.statube.net.response.mapper.youtube
 
 import ru.sis.statube.additional.parseYoutubeDateTime
+import ru.sis.statube.additional.parseYoutubePeriod
 import ru.sis.statube.model.Video
 import ru.sis.statube.net.response.json.youtube.video.VideoResponse
 
@@ -18,6 +19,7 @@ class VideoResponseMapper {
         video.thumbnail = from.snippet?.thumbnails?.let {
             it.medium?.url ?: it.high?.url ?: it.default?.url
         }
+        video.duration = from.contentDetails?.duration?.parseYoutubePeriod()
         video.viewCount = from.statistics?.viewCount?.toLongOrNull()
         video.likeCount = from.statistics?.likeCount?.toLongOrNull()
         video.dislikeCount = from.statistics?.dislikeCount?.toLongOrNull()

@@ -12,6 +12,7 @@ import ru.sis.statube.R
 import ru.sis.statube.additional.CHANNEL_DATA_KEY
 import ru.sis.statube.additional.string
 import ru.sis.statube.model.Channels
+import ru.sis.statube.presentation.custom.SkeletonViewController
 import ru.sis.statube.presentation.screens.channel.ChannelActivity
 import java.util.*
 
@@ -36,9 +37,14 @@ class ChannelsActivity : AppCompatActivity() {
     private var isRestoreSavedState = false
     private var selectedChannelId: String? = null
 
+    private lateinit var skeletonViewController: SkeletonViewController
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_channels)
+
+        skeletonViewController = SkeletonViewController(null, vRecyclerView, vDataNotFoundLayout, vSkeletonLayout)
+        skeletonViewController.inflateSkeleton(R.layout.list_item_channel_skeleton, 10)
 
         adapter = ChannelsListAdapter({
             pageToken?.let {
@@ -144,26 +150,18 @@ class ChannelsActivity : AppCompatActivity() {
     private fun setListViewState(state: State) {
         when (state) {
             State.LOADING -> {
-                vRecyclerView.visibility = View.GONE
-                vDataLoadingLayout.visibility = View.VISIBLE
-                vDataNotFoundLayout.visibility = View.GONE
+                skeletonViewController.state = SkeletonViewController.State.SKELETON
             }
             State.DATA_NOT_FOUND -> {
+                skeletonViewController.state = SkeletonViewController.State.EMPTY
                 vDataNotFoundTextView.text = string(R.string.channels_not_found)
-                vRecyclerView.visibility = View.GONE
-                vDataLoadingLayout.visibility = View.GONE
-                vDataNotFoundLayout.visibility = View.VISIBLE
             }
             State.FAVOURITE_DATA_NOT_FOUND -> {
+                skeletonViewController.state = SkeletonViewController.State.EMPTY
                 vDataNotFoundTextView.text = string(R.string.favourite_channels_not_found)
-                vRecyclerView.visibility = View.GONE
-                vDataLoadingLayout.visibility = View.GONE
-                vDataNotFoundLayout.visibility = View.VISIBLE
             }
             State.LIST -> {
-                vRecyclerView.visibility = View.VISIBLE
-                vDataLoadingLayout.visibility = View.GONE
-                vDataNotFoundLayout.visibility = View.GONE
+                skeletonViewController.state = SkeletonViewController.State.CONTENT
             }
         }
     }
@@ -181,12 +179,12 @@ class ChannelsActivity : AppCompatActivity() {
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle?) {
+    override fun onSaveInstanceState(outState: Bundle) {
         selectedChannelId?.let {
-            outState?.putString(channelIdLoadingKey, it)
+            outState.putString(channelIdLoadingKey, it)
         }
         if (searchText.isNotEmpty()) {
-            outState?.putSerializable(channelsKey, Channels().apply {
+            outState.putSerializable(channelsKey, Channels().apply {
                 this.nextPageToken = pageToken
                 this.channelList = adapter.getChannels()
             })
@@ -194,7 +192,7 @@ class ChannelsActivity : AppCompatActivity() {
         super.onSaveInstanceState(outState)
     }
 
-    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         isRestoreSavedState = true
         super.onRestoreInstanceState(savedInstanceState)
         isRestoreSavedState = false
