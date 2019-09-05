@@ -2,7 +2,7 @@ package ru.sis.statube.presentation.screens.statistics
 
 import android.content.Context
 import org.joda.time.DateTime
-import ru.sis.statube.additional.resolvedLaunch
+import ru.sis.statube.additional.launch
 import ru.sis.statube.interactor.GeneralStatisticsInteractor
 import ru.sis.statube.interactor.StatisticsLastUpdatedInteractor
 import ru.sis.statube.interactor.VideosInteractor
@@ -14,14 +14,14 @@ import ru.sis.statube.presentation.Presenter
 
 class StatisticsPresenter : Presenter() {
 
-    fun loadGeneralStatisticsLastUpdatedDateTime(channelId: String, onLoad: (statisticsLastUpdated: GeneralStatisticsLastUpdated?) -> Unit) = resolvedLaunch({
+    fun loadGeneralStatisticsLastUpdatedDateTime(channelId: String, onLoad: (statisticsLastUpdated: GeneralStatisticsLastUpdated?) -> Unit) = launch({
         val statisticsLastUpdated = StatisticsLastUpdatedInteractor.getInstance().getGeneralStatisticsLastUpdatedAsync(channelId).await()
         onLoad(statisticsLastUpdated)
     }, {
         onLoad(null)
     })
 
-    fun loadVideosStatisticsLastUpdatedDateTime(uploads: String, onLoad: (statisticsLastUpdated: VideosStatisticsLastUpdated?) -> Unit) = resolvedLaunch({
+    fun loadVideosStatisticsLastUpdatedDateTime(uploads: String, onLoad: (statisticsLastUpdated: VideosStatisticsLastUpdated?) -> Unit) = launch({
         val statisticsLastUpdated = StatisticsLastUpdatedInteractor.getInstance().getVideosStatisticsLastUpdatedAsync(uploads).await()
         onLoad(statisticsLastUpdated)
     }, {
@@ -30,14 +30,14 @@ class StatisticsPresenter : Presenter() {
 
 
     fun loadGeneralStatistics(context: Context, channelId: String, onLoad: (statistics: GeneralStatistics?) -> Unit,
-                              onError: () -> Unit) = resolvedLaunch({
+                              onError: () -> Unit) = launch({
         val statistics = GeneralStatisticsInteractor.getInstance().getGeneralStatisticsAsync(context, channelId).await()
         onLoad(statistics)
     }, {
         onError()
     })
 
-    fun loadGeneralStatisticsLocal(channelId: String, onLoad: (statistics: GeneralStatistics?) -> Unit) = resolvedLaunch({
+    fun loadGeneralStatisticsLocal(channelId: String, onLoad: (statistics: GeneralStatistics?) -> Unit) = launch({
         val statistics = GeneralStatisticsInteractor.getInstance().getGeneralStatisticsLocalAsync(channelId).await()
         onLoad(statistics)
     }, {
@@ -46,19 +46,19 @@ class StatisticsPresenter : Presenter() {
 
 
     fun loadVideosStatistics(context: Context, uploads: String, beginDate: DateTime, endDate: DateTime, channelId: String,
-                             onLoad: (videoList: List<Video>?) -> Unit) = resolvedLaunch({
+                             onLoad: (videoList: List<Video>) -> Unit) = launch({
         val videoList = VideosInteractor.getInstance().getVideosAsync(context, uploads, beginDate, endDate, channelId).await()
         onLoad(videoList)
     }, {
-        onLoad(null)
+        onLoad(emptyList())
     })
 
     fun loadVideosStatisticsLocal(channelId: String, beginDate: DateTime, endDate: DateTime,
-                                  onLoad: (videoList: List<Video>?) -> Unit) = resolvedLaunch({
+                                  onLoad: (videoList: List<Video>) -> Unit) = launch({
         val videoList = VideosInteractor.getInstance().getVideosLocalAsync(channelId, beginDate, endDate).await()
         onLoad(videoList)
     }, {
-        onLoad(null)
+        onLoad(emptyList())
     })
 
 }

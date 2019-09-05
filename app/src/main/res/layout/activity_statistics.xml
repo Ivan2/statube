@@ -65,13 +65,11 @@
                     <TextView
                         style="@style/StatisticsTableValueColumns"
                         android:textStyle="normal"
-                        android:textSize="14sp"
                         android:text="@string/statistics_subscribers"/>
 
                     <TextView
                         style="@style/StatisticsTableValueColumns"
                         android:textStyle="normal"
-                        android:textSize="14sp"
                         android:text="@string/statistics_views"/>
 
                 </TableRow>
@@ -319,12 +317,216 @@
                     android:layout_height="36dp"
                     android:layout_marginTop="8dp"/>
 
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp">
+
+                    <TableRow>
+
+                        <TextView
+                            style="@style/StatisticsTableColumn0.Min"/>
+
+                        <TextView
+                            style="@style/StatisticsTableValueColumns.Min"
+                            android:textStyle="normal"
+                            android:text="@string/statistics_views"/>
+
+                        <TextView
+                            style="@style/StatisticsTableValueColumns.Min"
+                            android:textStyle="normal"
+                            android:text="@string/statistics_likes"/>
+
+                        <TextView
+                            style="@style/StatisticsTableValueColumns.Min"
+                            android:textStyle="normal"
+                            android:text="@string/statistics_dislikes"/>
+
+                        <TextView
+                            style="@style/StatisticsTableValueColumns.Min"
+                            android:textStyle="normal"
+                            android:text="@string/statistics_comments"/>
+
+                    </TableRow>
+
+                    <TableRow>
+
+                        <TextView
+                            style="@style/StatisticsTableColumn0.Min"
+                            android:text="@string/statistics_avg_video"/>
+
+                        <TextView
+                            android:id="@+id/vAvgVideoViewsTextView"
+                            style="@style/StatisticsTableValueColumns.Min"/>
+
+                        <TextView
+                            android:id="@+id/vAvgVideoLikesTextView"
+                            style="@style/StatisticsTableValueColumns.Min"/>
+
+                        <TextView
+                            android:id="@+id/vAvgVideoDislikesTextView"
+                            style="@style/StatisticsTableValueColumns.Min"/>
+
+                        <TextView
+                            android:id="@+id/vAvgVideoCommentsTextView"
+                            style="@style/StatisticsTableValueColumns.Min"/>
+
+                    </TableRow>
+
+                    <TableRow>
+
+                        <TextView
+                            style="@style/StatisticsTableColumn0.Min"
+                            android:text="@string/statistics_14_days"/>
+
+                        <TextView
+                            android:id="@+id/vViews14TextView2"
+                            style="@style/StatisticsTableValueColumns.Min"/>
+
+                        <TextView
+                            android:id="@+id/vLikes14TextView"
+                            style="@style/StatisticsTableValueColumns.Min"/>
+
+                        <TextView
+                            android:id="@+id/vDislikes14TextView"
+                            style="@style/StatisticsTableValueColumns.Min"/>
+
+                        <TextView
+                            android:id="@+id/vComments14TextView"
+                            style="@style/StatisticsTableValueColumns.Min"/>
+
+                    </TableRow>
+
+                    <TableRow>
+
+                        <TextView
+                            style="@style/StatisticsTableColumn0.Min"
+                            android:text="@string/statistics_30_days"/>
+
+                        <TextView
+                            android:id="@+id/vViews30TextView2"
+                            style="@style/StatisticsTableValueColumns.Min"/>
+
+                        <TextView
+                            android:id="@+id/vLikes30TextView"
+                            style="@style/StatisticsTableValueColumns.Min"/>
+
+                        <TextView
+                            android:id="@+id/vDislikes30TextView"
+                            style="@style/StatisticsTableValueColumns.Min"/>
+
+                        <TextView
+                            android:id="@+id/vComments30TextView"
+                            style="@style/StatisticsTableValueColumns.Min"/>
+
+                    </TableRow>
+
+                    <TableRow>
+
+                        <TextView
+                            style="@style/StatisticsTableColumn0.Min"
+                            android:text="@string/statistics_60_days"/>
+
+                        <TextView
+                            android:id="@+id/vViews60TextView2"
+                            style="@style/StatisticsTableValueColumns.Min"/>
+
+                        <TextView
+                            android:id="@+id/vLikes60TextView"
+                            style="@style/StatisticsTableValueColumns.Min"/>
+
+                        <TextView
+                            android:id="@+id/vDislikes60TextView"
+                            style="@style/StatisticsTableValueColumns.Min"/>
+
+                        <TextView
+                            android:id="@+id/vComments60TextView"
+                            style="@style/StatisticsTableValueColumns.Min"/>
+
+                    </TableRow>
+
+                    <TableRow>
+
+                        <TextView
+                            style="@style/StatisticsTableColumn0.Min"
+                            android:text="@string/statistics_90_days"/>
+
+                        <TextView
+                            android:id="@+id/vViews90TextView2"
+                            style="@style/StatisticsTableValueColumns.Min"/>
+
+                        <TextView
+                            android:id="@+id/vLikes90TextView"
+                            style="@style/StatisticsTableValueColumns.Min"/>
+
+                        <TextView
+                            android:id="@+id/vDislikes90TextView"
+                            style="@style/StatisticsTableValueColumns.Min"/>
+
+                        <TextView
+                            android:id="@+id/vComments90TextView"
+                            style="@style/StatisticsTableValueColumns.Min"/>
+
+                    </TableRow>
+
+                    <TableRow>
+
+                        <TextView
+                            style="@style/StatisticsTableColumn0.Min"
+                            android:text="@string/statistics_180_days"/>
+
+                        <TextView
+                            android:id="@+id/vViews180TextView2"
+                            style="@style/StatisticsTableValueColumns.Min"/>
+
+                        <TextView
+                            android:id="@+id/vLikes180TextView"
+                            style="@style/StatisticsTableValueColumns.Min"/>
+
+                        <TextView
+                            android:id="@+id/vDislikes180TextView"
+                            style="@style/StatisticsTableValueColumns.Min"/>
+
+                        <TextView
+                            android:id="@+id/vComments180TextView"
+                            style="@style/StatisticsTableValueColumns.Min"/>
+
+                    </TableRow>
+
+                    <TableRow>
+
+                        <TextView
+                            style="@style/StatisticsTableColumn0.Min"
+                            android:text="@string/statistics_365_days"/>
+
+                        <TextView
+                            android:id="@+id/vViews365TextView2"
+                            style="@style/StatisticsTableValueColumns.Min"/>
+
+                        <TextView
+                            android:id="@+id/vLikes365TextView"
+                            style="@style/StatisticsTableValueColumns.Min"/>
+
+                        <TextView
+                            android:id="@+id/vDislikes365TextView"
+                            style="@style/StatisticsTableValueColumns.Min"/>
+
+                        <TextView
+                            android:id="@+id/vComments365TextView"
+                            style="@style/StatisticsTableValueColumns.Min"/>
+
+                    </TableRow>
+
+                </TableLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:baselineAligned="false"
-                    android:layout_marginTop="8dp">
+                    android:layout_marginTop="16dp">
 
                     <FrameLayout
                         android:layout_width="0dp"

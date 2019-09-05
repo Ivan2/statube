@@ -3,7 +3,7 @@ package ru.sis.statube.presentation.screens.channels
 import android.content.Context
 import android.graphics.Bitmap
 import ru.sis.statube.additional.BANNER_IMAGE_FILE_NAME
-import ru.sis.statube.additional.resolvedLaunch
+import ru.sis.statube.additional.launch
 import ru.sis.statube.interactor.ChannelInteractor
 import ru.sis.statube.interactor.ImageInteractor
 import ru.sis.statube.model.Channel
@@ -14,7 +14,7 @@ import java.io.FileOutputStream
 
 class ChannelsPresenter : Presenter() {
 
-    fun loadFavouriteChannels(onLoad: (channels: List<Channel>) -> Unit) = resolvedLaunch({
+    fun loadFavouriteChannels(onLoad: (channels: List<Channel>) -> Unit) = launch({
         val channels = ChannelInteractor.getInstance().getFavouriteChannelsAsync().await()
         onLoad(channels)
     }, {
@@ -22,14 +22,14 @@ class ChannelsPresenter : Presenter() {
     })
 
     fun searchChannels(context: Context, text: String, pageToken: String?,
-                       onLoad: (text: String, channels: Channels) -> Unit) = resolvedLaunch({
+                       onLoad: (text: String, channels: Channels) -> Unit) = launch({
         val channels = ChannelInteractor.getInstance().searchChannelsAsync(context, text, pageToken).await()
         onLoad(text, channels)
     }, {
         onLoad(text, Channels())
     })
 
-    fun loadChannel(context: Context, channelId: String, onLoad: (channel: Channel) -> Unit) = resolvedLaunch({
+    fun loadChannel(context: Context, channelId: String, onLoad: (channel: Channel) -> Unit) = launch({
         showProgressDialog(context)
         val channel = ChannelInteractor.getInstance().getChannelAsync(context, channelId).await()?.let { channel ->
             val bannerImageFile = File(context.filesDir, BANNER_IMAGE_FILE_NAME)
@@ -53,8 +53,8 @@ class ChannelsPresenter : Presenter() {
         hideProgressDialog()
     })
 
-    fun changeFavourite(channel: Channel) = resolvedLaunch({
+    fun changeFavourite(channel: Channel) = launch {
         ChannelInteractor.getInstance().changeFavouriteChannelAsync(channel).await()
-    }, {})
+    }
 
 }

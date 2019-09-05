@@ -54,6 +54,14 @@
         <item name="android:text">-</item>
     </style>
 
+    <style name="StatisticsTableColumn0.Min">
+        <item name="android:textSize">10sp</item>
+    </style>
+
+    <style name="StatisticsTableValueColumns.Min">
+        <item name="android:textSize">10sp</item>
+    </style>
+
     <style name="ChannelTableRow">
         <item name="android:layout_marginTop">4dp</item>
     </style>

@@ -36,28 +36,30 @@ class VideosListAdapter : RecyclerView.Adapter<VideosListAdapter.ViewHolder>() {
         fun bind(pos: Int) {
             val video = videoList[pos]
 
-            itemView.vTitleTextView.text = video.title
-            itemView.vImageView.loadVideoThumbnail(video.thumbnail)
+            itemView.apply {
+                vTitleTextView.text = video.title
+                vImageView.loadVideoThumbnail(video.thumbnail)
 
-            itemView.vPublishedAtTextView.text = video.publishedAt.toString("dd.MM.yyyy HH:mm:ss")
-            itemView.vDurationTextView.text = video.duration?.formatDuration() ?: "?"
-            itemView.vViewCountTextView.text = video.viewCount?.format() ?: "?"
-            itemView.vCommentCountTextView.text = video.commentCount?.format() ?: "?"
+                vPublishedAtTextView.text = video.publishedAt.toString("dd.MM.yyyy HH:mm:ss")
+                vDurationTextView.text = video.duration?.formatDuration() ?: "?"
+                vViewCountTextView.text = video.viewCount?.format() ?: "?"
+                vCommentCountTextView.text = video.commentCount?.format() ?: "?"
 
-            itemView.vLikeCountTextView.text = video.likeCount?.format() ?: "?"
-            itemView.vDislikeCountTextView.text = video.dislikeCount?.format() ?: "?"
+                vLikeCountTextView.text = video.likeCount?.format() ?: "?"
+                vDislikeCountTextView.text = video.dislikeCount?.format() ?: "?"
 
-            val likeCount = (video.likeCount ?: 0).toFloat()
-            val dislikeCount = (video.dislikeCount ?: 0).toFloat()
-            var sum = likeCount + dislikeCount
-            if (sum == 0f)
-                sum = 1f
-            val likeLayoutParams = itemView.vLikeView.layoutParams as LinearLayout.LayoutParams
-            val dislikeLayoutParams = itemView.vDislikeView.layoutParams as LinearLayout.LayoutParams
-            likeLayoutParams.weight = likeCount / sum
-            dislikeLayoutParams.weight = dislikeCount / sum
-            itemView.vLikeView.layoutParams = likeLayoutParams
-            itemView.vDislikeView.layoutParams = dislikeLayoutParams
+                val likeCount = (video.likeCount ?: 0).toFloat()
+                val dislikeCount = (video.dislikeCount ?: 0).toFloat()
+                var sum = likeCount + dislikeCount
+                if (sum == 0f)
+                    sum = 1f
+                val likeLayoutParams = vLikeView.layoutParams as LinearLayout.LayoutParams
+                val dislikeLayoutParams = vDislikeView.layoutParams as LinearLayout.LayoutParams
+                likeLayoutParams.weight = likeCount / sum
+                dislikeLayoutParams.weight = dislikeCount / sum
+                vLikeView.layoutParams = likeLayoutParams
+                vDislikeView.layoutParams = dislikeLayoutParams
+            }
         }
 
     }

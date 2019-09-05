@@ -17,6 +17,10 @@ fun String.parseYoutubeDateTime(): DateTime? {
     }
 }
 
+fun DateTime.formatYoutubeDateTime(): String {
+    return this.toString(YOUTUBE_DATE_TIME_PATTERN)
+}
+
 fun String.parseSocialBladeDate(): DateTime? {
     val formatter = DateTimeFormat.forPattern(SOCIAL_BLADE_DATE_PATTERN)
     return try {

@@ -2,7 +2,7 @@ package ru.sis.statube.presentation.screens.videos
 
 import android.content.Context
 import org.joda.time.DateTime
-import ru.sis.statube.additional.resolvedLaunch
+import ru.sis.statube.additional.launch
 import ru.sis.statube.interactor.StatisticsLastUpdatedInteractor
 import ru.sis.statube.interactor.VideosInteractor
 import ru.sis.statube.model.Video
@@ -11,7 +11,7 @@ import ru.sis.statube.presentation.Presenter
 
 class VideosPresenter : Presenter() {
 
-    fun loadVideosLastUpdatedDateTime(uploads: String, onLoad: (lastUpdated: VideosStatisticsLastUpdated?) -> Unit) = resolvedLaunch({
+    fun loadVideosLastUpdatedDateTime(uploads: String, onLoad: (lastUpdated: VideosStatisticsLastUpdated?) -> Unit) = launch({
         val statisticsLastUpdated = StatisticsLastUpdatedInteractor.getInstance().getVideosStatisticsLastUpdatedAsync(uploads).await()
         onLoad(statisticsLastUpdated)
     }, {
@@ -19,7 +19,7 @@ class VideosPresenter : Presenter() {
     })
 
     fun loadVideos(context: Context, uploads: String, beginDate: DateTime, endDate: DateTime, channelId: String,
-                   onLoad: (videoList: List<Video>) -> Unit) = resolvedLaunch({
+                   onLoad: (videoList: List<Video>) -> Unit) = launch({
         val videoList = VideosInteractor.getInstance().getVideosAsync(context, uploads, beginDate, endDate, channelId).await()
         onLoad(videoList)
     }, {
@@ -27,14 +27,14 @@ class VideosPresenter : Presenter() {
     })
 
     fun loadVideosLocal(channelId: String, beginDate: DateTime, endDate: DateTime,
-                                  onLoad: (videoList: List<Video>) -> Unit) = resolvedLaunch({
+                                  onLoad: (videoList: List<Video>) -> Unit) = launch({
         val videoList = VideosInteractor.getInstance().getVideosLocalAsync(channelId, beginDate, endDate).await()
         onLoad(videoList)
     }, {
         onLoad(emptyList())
     })
 
-    fun sortVideos(videoList: ArrayList<Video>, sortMode: SortMode, sortDirection: Int, onSorted: () -> Unit) = resolvedLaunch({
+    fun sortVideos(videoList: ArrayList<Video>, sortMode: SortMode, sortDirection: Int, onSorted: () -> Unit) = launch({
         videoList.sortWith(Comparator { o1, o2 ->
             var param1: Long? = null
             var param2: Long? = null

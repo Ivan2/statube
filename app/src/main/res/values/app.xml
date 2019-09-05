@@ -1,0 +1,4 @@
+<resources>
+    <string name="file_provider_authority">ru.sis.statube</string>
+    <string name="app_name">StaTube</string>
+</resources>

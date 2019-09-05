@@ -1,18 +1,25 @@
 package ru.sis.statube.presentation.screens.videos
 
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.afollestad.materialdialogs.MaterialDialog
 import kotlinx.android.synthetic.main.activity_videos.*
+import org.joda.time.DateTime
 import org.joda.time.Duration
+import org.supercsv.io.CsvBeanWriter
+import org.supercsv.prefs.CsvPreference
 import ru.sis.statube.R
 import ru.sis.statube.additional.*
 import ru.sis.statube.model.Channel
 import ru.sis.statube.model.Video
 import ru.sis.statube.presentation.custom.SkeletonViewController
+import java.io.File
+import java.io.PrintWriter
 import kotlin.collections.ArrayList
 
 class VideosActivity : AppCompatActivity() {
@@ -117,6 +124,10 @@ class VideosActivity : AppCompatActivity() {
 
         vRecyclerView.layoutManager = LinearLayoutManager(this)
         vRecyclerView.adapter = adapter
+
+        vExportToCSVButton.setOnClickListener {
+            exportToCSV()
+        }
 
         loadVideosLocal()
     }
@@ -240,6 +251,45 @@ class VideosActivity : AppCompatActivity() {
             maxCount?.let { maxCount ->
                 Pair(it, maxCount)
             }
+        }
+    }
+
+    private fun exportToCSV() {
+        try {
+            if (filteredVideoList.isNotEmpty()) {
+                val exportedDir = File(filesDir, "exported")
+                exportedDir.mkdirs()
+                exportedDir.listFiles()?.forEach { it.delete() }
+                val file = File(exportedDir, "Videos_${DateTime.now().toString("dd-MM-yyyy_HH-mm-ss")}.csv")
+                file.createNewFile()
+
+                val writer = PrintWriter(file)
+                val csvBeanWriter = CsvBeanWriter(writer, CsvPreference.STANDARD_PREFERENCE)
+
+                val header = arrayOf("channelId", "id", "date", "title", "duration",
+                    "views", "likes", "dislikes", "comments")
+                csvBeanWriter.writeHeader(*header)
+
+                filteredVideoList.forEach { video ->
+                    val raw = arrayOf(video.channelId, video.id, video.publishedAt.formatYoutubeDateTime(),
+                        video.title ?: "?", video.duration?.formatDuration() ?: "?",
+                        video.viewCount?.toString() ?: "?", video.likeCount?.toString() ?: "?",
+                        video.dislikeCount?.toString() ?: "?", video.commentCount?.toString() ?: "?")
+                    csvBeanWriter.writeHeader(*raw)
+                }
+
+                csvBeanWriter.close()
+                writer.close()
+
+                val intent = Intent(Intent.ACTION_SEND)
+                intent.type = "text/csv"
+                intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                val uri = FileProvider.getUriForFile(this, string(R.string.file_provider_authority), file)
+                intent.putExtra(Intent.EXTRA_STREAM, uri)
+                startActivity(Intent.createChooser(intent, string(R.string.choose_program)))
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
