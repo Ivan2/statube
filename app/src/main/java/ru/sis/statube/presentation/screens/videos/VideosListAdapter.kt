@@ -12,7 +12,9 @@ import ru.sis.statube.additional.formatDuration
 import ru.sis.statube.additional.loadVideoThumbnail
 import ru.sis.statube.model.Video
 
-class VideosListAdapter : RecyclerView.Adapter<VideosListAdapter.ViewHolder>() {
+class VideosListAdapter(
+    private val clickListener: (video: Video) -> Unit
+) : RecyclerView.Adapter<VideosListAdapter.ViewHolder>() {
 
     private var videoList: List<Video> = emptyList()
 
@@ -59,6 +61,10 @@ class VideosListAdapter : RecyclerView.Adapter<VideosListAdapter.ViewHolder>() {
                 dislikeLayoutParams.weight = dislikeCount / sum
                 vLikeView.layoutParams = likeLayoutParams
                 vDislikeView.layoutParams = dislikeLayoutParams
+
+                setOnClickListener {
+                    clickListener(video)
+                }
             }
         }
 

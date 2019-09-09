@@ -38,6 +38,10 @@
             android:name=".presentation.screens.videos.VideosActivity"
             android:screenOrientation="portrait"/>
 
+        <activity
+            android:name=".presentation.screens.video.VideoActivity"
+            android:screenOrientation="portrait"/>
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:grantUriPermissions="true"

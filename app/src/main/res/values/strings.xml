@@ -1,6 +1,8 @@
 <resources>
 
     <string name="choose_program">Выберите программу</string>
+    <string name="expand_text">Читать дальше</string>
+    <string name="collapse_text">Свернуть</string>
 
     <!-- channels -->
     <string name="channels_search">Поиск</string>
@@ -20,7 +22,6 @@
     <string name="channel_move_to_videos">Видео</string>
 
     <!-- statistics -->
-    <string name="statistics_title">Статистика</string>
     <string name="statistics_updated">Обновлено:</string>
     <string name="statistics_general_statistics_title">Общая статистика</string>
     <string name="statistics_videos_statistics_title">Статистика по видео</string>
@@ -44,13 +45,21 @@
     <string name="statistics_chart_no_data">Нет данных</string>
 
     <!-- videos -->
-    <string name="videos_not_found">Ничего не нашлось</string>
-    <string name="videos_date">Дата</string>
-    <string name="videos_views">Просмотры</string>
-    <string name="videos_likes">Лайки</string>
-    <string name="videos_dislikes">Дизлайки</string>
-    <string name="videos_comments">Комментарии</string>
-    <string name="videos_likes_dislikes">Лайки/дизлайки</string>
+    <string name="videos_not_found">Ничего нет</string>
+
+    <!-- video -->
+    <string name="video_id">ID</string>
+    <string name="video_scheduled_start_date">Время начала (план.)</string>
+    <string name="video_start_date">Время начала</string>
+    <string name="video_end_date">Время окончания</string>
+    <string name="video_published">Время публикации</string>
+    <string name="video_duration">Длительность</string>
+    <string name="video_views">Просмотров</string>
+    <string name="video_likes">Лайков</string>
+    <string name="video_dislikes">Дизлайков</string>
+    <string name="video_comments">Комментариев</string>
+    <string name="video_tags">Тэги</string>
+    <string name="video_move_to_youtube">Перейти на YouTube</string>
 
     <string name="period_template">%1$s - %2$s</string>
 

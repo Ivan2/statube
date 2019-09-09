@@ -1,9 +1,6 @@
 package ru.sis.statube.additional
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 fun launch(block: suspend CoroutineScope.() -> Unit,
            onError: (e: Exception) -> Unit) {
@@ -18,3 +15,5 @@ fun launch(block: suspend CoroutineScope.() -> Unit,
 }
 
 fun launch(block: suspend CoroutineScope.() -> Unit) = launch(block) {}
+
+fun <T> async(block: suspend CoroutineScope.() -> T) = GlobalScope.async(block = block)

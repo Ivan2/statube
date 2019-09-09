@@ -10,9 +10,9 @@ import ru.sis.statube.model.GeneralStatistics
 import ru.sis.statube.model.GeneralStatisticsLastUpdated
 import ru.sis.statube.model.Video
 import ru.sis.statube.model.VideosStatisticsLastUpdated
-import ru.sis.statube.presentation.Presenter
+import ru.sis.statube.presentation.presenter.FullVideoLoadingPresenter
 
-class StatisticsPresenter : Presenter() {
+class StatisticsPresenter : FullVideoLoadingPresenter() {
 
     fun loadGeneralStatisticsLastUpdatedDateTime(channelId: String, onLoad: (statisticsLastUpdated: GeneralStatisticsLastUpdated?) -> Unit) = launch({
         val statisticsLastUpdated = StatisticsLastUpdatedInteractor.getInstance().getGeneralStatisticsLastUpdatedAsync(channelId).await()

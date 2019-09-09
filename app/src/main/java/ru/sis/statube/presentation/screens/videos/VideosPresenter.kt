@@ -7,9 +7,10 @@ import ru.sis.statube.interactor.StatisticsLastUpdatedInteractor
 import ru.sis.statube.interactor.VideosInteractor
 import ru.sis.statube.model.Video
 import ru.sis.statube.model.VideosStatisticsLastUpdated
-import ru.sis.statube.presentation.Presenter
+import ru.sis.statube.presentation.presenter.FullVideoLoadingPresenter
+import kotlin.math.sqrt
 
-class VideosPresenter : Presenter() {
+class VideosPresenter : FullVideoLoadingPresenter() {
 
     fun loadVideosLastUpdatedDateTime(uploads: String, onLoad: (lastUpdated: VideosStatisticsLastUpdated?) -> Unit) = launch({
         val statisticsLastUpdated = StatisticsLastUpdatedInteractor.getInstance().getVideosStatisticsLastUpdatedAsync(uploads).await()
@@ -64,12 +65,8 @@ class VideosPresenter : Presenter() {
                     param2 = o2.commentCount
                 }
                 SortMode.LIKES_DISLIKES -> {
-                    param1 = o1.likeCount?.let { likeCount -> o1.dislikeCount?.let { dislikeCount ->
-                        (likeCount * 1000000000f / (if (dislikeCount == 0L) 1L else dislikeCount)).toLong()
-                    } }
-                    param2 = o2.likeCount?.let { likeCount -> o2.dislikeCount?.let { dislikeCount ->
-                        (likeCount * 1000000000f / (if (dislikeCount == 0L) 1L else dislikeCount)).toLong()
-                    } }
+                    param1 = calcRating(o1.likeCount ?: 0L, o1.dislikeCount ?: 0L)
+                    param2 = calcRating(o2.likeCount ?: 0L, o2.dislikeCount ?: 0L)
                 }
             }
 
@@ -84,9 +81,21 @@ class VideosPresenter : Presenter() {
             else
                 param2.compareTo(param1)
         })
+
         onSorted()
     }, {
         onSorted()
     })
+
+    private fun calcRating(likeCount: Long, dislikeCount: Long): Long {
+        if (likeCount == 0L && dislikeCount == 0L)
+            return 0L
+        val count = likeCount + dislikeCount
+        val z = 1.64485
+        val x = if (likeCount >= dislikeCount) likeCount else dislikeCount
+        val phat = x.toDouble() / count
+        val rating = (phat + z * z / (2 * count) - z * sqrt((phat * (1 - phat) + z * z / (4 * count)) / count)) / (1 + z * z / count)
+        return ((if (likeCount >= dislikeCount) rating else -rating) * 1000000000.0).toLong()
+    }
 
 }

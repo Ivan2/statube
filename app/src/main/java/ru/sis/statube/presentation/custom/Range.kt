@@ -17,6 +17,16 @@ open class Range : FrameLayout {
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) { init(attrs) }
 
     var onValueChanged: ((min: Long, max: Long) -> String)? = null
+    var onValueChangeEnded: ((min: Long, max: Long) -> Unit)? = null
+
+    private var minValue: Long = 0
+    private var maxValue: Long = 0
+
+    private var thumb1Value: Int = 0
+    private var thumb2Value: Int = 0
+
+    private var countFrom: Long = 0
+    private var countTo: Long = 0
 
     private fun init(attrs: AttributeSet?) {
         LayoutInflater.from(context).inflate(R.layout.view_range, this, true)
@@ -40,32 +50,57 @@ open class Range : FrameLayout {
     }
 
     fun setMinMax(minValue: Long, maxValue: Long) {
+        this.minValue = minValue
+        this.maxValue = maxValue
+
         val textView = findViewById<TextView>(R.id.vTextView)
         val slider = findViewById<MultiSlider>(R.id.vMultiSlider)
 
-        var thumb1Value = 0
-        var thumb2Value = min(minValue, 10000L).toInt()
+        thumb1Value = 0
+        thumb2Value = min(maxValue - minValue, 10000L).toInt()
 
         slider.apply {
             min = thumb1Value
             max = thumb2Value
             step = 1
+
+            getThumb(0).value = thumb1Value
+            getThumb(1).value = thumb2Value
+
+            setOnTrackingChangeListener(object : MultiSlider.OnTrackingChangeListener {
+                override fun onStartTrackingTouch(multiSlider: MultiSlider?, thumb: MultiSlider.Thumb?, value: Int) {}
+                override fun onStopTrackingTouch(multiSlider: MultiSlider?, thumb: MultiSlider.Thumb?, value: Int) {
+                    calcCount(slider)
+                    updateTextView(textView)
+                    onValueChangeEnded?.let { it(countFrom, countTo) }
+                }
+            })
+
             setOnThumbValueChangeListener { _, _, thumbIndex, value ->
                 when (thumbIndex) {
                     0 -> thumb1Value = value
                     1 -> thumb2Value = value
                 }
-                val value1Float = thumb1Value.toFloat() / max
-                val value2Float = thumb2Value.toFloat() / max
-                val diff = maxValue - minValue
-                val countFrom = minValue + (diff * value1Float).toInt()
-                val countTo = minValue + (diff * value2Float).toInt()
-
-                textView.text = onValueChanged?.let { it(countFrom, countTo) }
+                calcCount(slider)
+                updateTextView(textView)
             }
-            getThumb(0).value = thumb1Value
-            getThumb(1).value = thumb2Value
+
+            calcCount(slider)
+            updateTextView(textView)
+            onValueChangeEnded?.let { it(countFrom, countTo) }
         }
+    }
+
+    private fun calcCount(slider: MultiSlider) {
+        val value1Float = thumb1Value.toFloat() / slider.max
+        val value2Float = thumb2Value.toFloat() / slider.max
+        val diff = maxValue - minValue
+        countFrom = minValue + (diff * value1Float).toInt()
+        countTo = minValue + (diff * value2Float).toInt()
+    }
+
+    private fun updateTextView(textView: TextView) {
+        textView.text = onValueChanged?.let { it(countFrom, countTo) } ?: ""
     }
 
 }

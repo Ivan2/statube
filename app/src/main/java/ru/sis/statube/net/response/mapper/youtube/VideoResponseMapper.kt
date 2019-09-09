@@ -17,13 +17,17 @@ class VideoResponseMapper {
         video.title = from.snippet?.title
         video.description = from.snippet?.description
         video.thumbnail = from.snippet?.thumbnails?.let {
-            it.medium?.url ?: it.high?.url ?: it.default?.url
+            it.high?.url ?: it.medium?.url ?: it.default?.url
         }
+        video.tags = from.snippet?.tags
         video.duration = from.contentDetails?.duration?.parseYoutubePeriod()
         video.viewCount = from.statistics?.viewCount?.toLongOrNull()
         video.likeCount = from.statistics?.likeCount?.toLongOrNull()
         video.dislikeCount = from.statistics?.dislikeCount?.toLongOrNull()
         video.commentCount = from.statistics?.commentCount?.toLongOrNull()
+        video.scheduledStartTime = from.liveStreamingDetails?.scheduledStartTime?.parseYoutubeDateTime()
+        video.actualStartTime = from.liveStreamingDetails?.actualStartTime?.parseYoutubeDateTime()
+        video.actualEndTime = from.liveStreamingDetails?.actualEndTime?.parseYoutubeDateTime()
         return video
     }
 

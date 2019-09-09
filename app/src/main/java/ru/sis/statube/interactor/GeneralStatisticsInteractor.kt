@@ -2,10 +2,9 @@ package ru.sis.statube.interactor
 
 import android.content.Context
 import com.google.gson.Gson
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
 import org.joda.time.DateTime
 import ru.sis.statube.additional.SOCIAL_BLADE_API_URL
+import ru.sis.statube.additional.async
 import ru.sis.statube.db.store.GeneralStatisticsStore
 import ru.sis.statube.model.GeneralStatisticsLastUpdated
 import ru.sis.statube.net.OkRequest
@@ -26,7 +25,7 @@ class GeneralStatisticsInteractor : Interactor() {
 
     private val statisticsPath = "statistics?query=statistics&username=%s&email=%s&token=%s"
 
-    fun getGeneralStatisticsAsync(context: Context, channelId: String) = GlobalScope.async {
+    fun getGeneralStatisticsAsync(context: Context, channelId: String) = async {
         val config = getConfig(context)
         val url = "$SOCIAL_BLADE_API_URL${String.format(statisticsPath, channelId,
             config.socialBladeEmail, config.socialBladeToken)}"
@@ -44,7 +43,7 @@ class GeneralStatisticsInteractor : Interactor() {
         statistics
     }
 
-    fun getGeneralStatisticsLocalAsync(channelId: String) = GlobalScope.async {
+    fun getGeneralStatisticsLocalAsync(channelId: String) = async {
         GeneralStatisticsStore.getInstance().getGeneralStatistics(channelId)
     }
 

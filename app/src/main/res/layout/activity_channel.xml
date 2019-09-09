@@ -78,11 +78,22 @@
 
                     </RelativeLayout>
 
-                    <TextView
+                    <ru.sis.statube.presentation.custom.ExpandableTextView
                         android:id="@+id/vDescriptionTextView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
                         android:textSize="14sp"/>
+
+                    <TextView
+                        android:id="@+id/vExpandDescriptionButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:textSize="14.5sp"
+                        android:text="@string/expand_text"/>
 
                 </LinearLayout>
 

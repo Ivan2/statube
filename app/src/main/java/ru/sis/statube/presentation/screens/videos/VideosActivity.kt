@@ -4,7 +4,6 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.widget.ImageView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.afollestad.materialdialogs.MaterialDialog
@@ -17,14 +16,14 @@ import ru.sis.statube.R
 import ru.sis.statube.additional.*
 import ru.sis.statube.model.Channel
 import ru.sis.statube.model.Video
+import ru.sis.statube.presentation.activity.FullVideoLoadingActivity
 import ru.sis.statube.presentation.custom.SkeletonViewController
 import java.io.File
 import java.io.PrintWriter
-import kotlin.collections.ArrayList
 
-class VideosActivity : AppCompatActivity() {
+class VideosActivity : FullVideoLoadingActivity() {
 
-    private val presenter = VideosPresenter()
+    override val presenter = VideosPresenter()
 
     private lateinit var channel: Channel
     private lateinit var adapter: VideosListAdapter
@@ -95,32 +94,45 @@ class VideosActivity : AppCompatActivity() {
         updateSortDirectionView()
 
         vDurationRange.onValueChanged = { min, max ->
-            durationRange = Pair(min, max)
-            filterVideos()
             "${Duration(min).toPeriod().formatDuration()} - ${Duration(max).toPeriod().formatDuration()}"
         }
         vViewCountRange.onValueChanged = { min, max ->
-            viewCountRange = Pair(min, max)
-            filterVideos()
             "${min.format()} - ${max.format()}"
         }
         vLikeCountRange.onValueChanged = { min, max ->
-            likeCountRange = Pair(min, max)
-            filterVideos()
             "${min.format()} - ${max.format()}"
         }
         vDislikeCountRange.onValueChanged = { min, max ->
-            dislikeCountRange = Pair(min, max)
-            filterVideos()
             "${min.format()} - ${max.format()}"
         }
         vCommentCountRange.onValueChanged = { min, max ->
-            commentCountRange = Pair(min, max)
-            filterVideos()
             "${min.format()} - ${max.format()}"
         }
 
-        adapter = VideosListAdapter()
+        vDurationRange.onValueChangeEnded = { min, max ->
+            durationRange = Pair(min, max)
+            filterVideos()
+        }
+        vViewCountRange.onValueChangeEnded = { min, max ->
+            viewCountRange = Pair(min, max)
+            filterVideos()
+        }
+        vLikeCountRange.onValueChangeEnded = { min, max ->
+            likeCountRange = Pair(min, max)
+            filterVideos()
+        }
+        vDislikeCountRange.onValueChangeEnded = { min, max ->
+            dislikeCountRange = Pair(min, max)
+            filterVideos()
+        }
+        vCommentCountRange.onValueChangeEnded = { min, max ->
+            commentCountRange = Pair(min, max)
+            filterVideos()
+        }
+
+        adapter = VideosListAdapter { video ->
+            loadFullVideo(video)
+        }
 
         vRecyclerView.layoutManager = LinearLayoutManager(this)
         vRecyclerView.adapter = adapter
@@ -260,7 +272,7 @@ class VideosActivity : AppCompatActivity() {
                 val exportedDir = File(filesDir, "exported")
                 exportedDir.mkdirs()
                 exportedDir.listFiles()?.forEach { it.delete() }
-                val file = File(exportedDir, "Videos_${DateTime.now().toString("dd-MM-yyyy_HH-mm-ss")}.csv")
+                val file = File(exportedDir, "StaTube_videos_${DateTime.now().toString("dd-MM-yyyy_HH-mm-ss")}.csv")
                 file.createNewFile()
 
                 val writer = PrintWriter(file)

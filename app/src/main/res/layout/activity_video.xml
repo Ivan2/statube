@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".presentation.screens.video.VideoActivity"
+    tools:ignore="contentDescription">
+
+    <RelativeLayout
+        style="@style/TitleLayout">
+
+        <TextView
+            style="@style/TitleTextView"/>
+
+        <ImageView
+            android:id="@+id/vBackButton"
+            style="@style/TitleBackButton"/>
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/vVideoImageView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <TextView
+                    android:id="@+id/vTitleTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:textStyle="bold"
+                    android:textSize="16sp"/>
+
+                <ru.sis.statube.presentation.custom.ExpandableTextView
+                    android:id="@+id/vDescriptionTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:maxLines="14"
+                    android:ellipsize="end"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:id="@+id/vExpandDescriptionButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:textSize="14.5sp"
+                    android:text="@string/expand_text"/>
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp">
+
+                    <TableRow>
+
+                        <TextView
+                            style="@style/VideoTableColumn0"
+                            android:text="@string/video_id"/>
+
+                        <TextView
+                            android:id="@+id/vIdTextView"
+                            style="@style/VideoTableValueColumns"/>
+
+                    </TableRow>
+
+                    <TableRow
+                        style="@style/VideoTableRow">
+
+                        <TextView
+                            style="@style/VideoTableColumn0"
+                            android:text="@string/video_scheduled_start_date"/>
+
+                        <TextView
+                            android:id="@+id/vScheduledStartDateTextView"
+                            style="@style/VideoTableValueColumns"/>
+
+                    </TableRow>
+
+                    <TableRow
+                        style="@style/VideoTableRow">
+
+                        <TextView
+                            style="@style/VideoTableColumn0"
+                            android:text="@string/video_start_date"/>
+
+                        <TextView
+                            android:id="@+id/vStartDateTextView"
+                            style="@style/VideoTableValueColumns"/>
+
+                    </TableRow>
+
+                    <TableRow
+                        style="@style/VideoTableRow">
+
+                        <TextView
+                            style="@style/VideoTableColumn0"
+                            android:text="@string/video_end_date"/>
+
+                        <TextView
+                            android:id="@+id/vEndDateTextView"
+                            style="@style/VideoTableValueColumns"/>
+
+                    </TableRow>
+
+                    <TableRow
+                        style="@style/VideoTableRow">
+
+                        <TextView
+                            style="@style/VideoTableColumn0"
+                            android:text="@string/video_published"/>
+
+                        <TextView
+                            android:id="@+id/vPublishedAtTextView"
+                            style="@style/VideoTableValueColumns"/>
+
+                    </TableRow>
+
+                    <TableRow
+                        style="@style/VideoTableRow">
+
+                        <TextView
+                            style="@style/VideoTableColumn0"
+                            android:text="@string/video_duration"/>
+
+                        <TextView
+                            android:id="@+id/vDurationTextView"
+                            style="@style/VideoTableValueColumns"/>
+
+                    </TableRow>
+
+                    <TableRow
+                        style="@style/VideoTableRow">
+
+                        <TextView
+                            style="@style/VideoTableColumn0"
+                            android:text="@string/video_views"/>
+
+                        <TextView
+                            android:id="@+id/vViewCountTextView"
+                            style="@style/VideoTableValueColumns"/>
+
+                    </TableRow>
+
+                    <TableRow
+                        style="@style/VideoTableRow">
+
+                        <TextView
+                            style="@style/VideoTableColumn0"
+                            android:text="@string/video_likes"/>
+
+                        <TextView
+                            android:id="@+id/vLikeCountTextView"
+                            style="@style/VideoTableValueColumns"/>
+
+                    </TableRow>
+
+                    <TableRow
+                        style="@style/VideoTableRow">
+
+                        <TextView
+                            style="@style/VideoTableColumn0"
+                            android:text="@string/video_dislikes"/>
+
+                        <TextView
+                            android:id="@+id/vDislikeCountTextView"
+                            style="@style/VideoTableValueColumns"/>
+
+                    </TableRow>
+
+                    <TableRow
+                        style="@style/VideoTableRow">
+
+                        <TextView
+                            style="@style/VideoTableColumn0"
+                            android:text="@string/video_comments"/>
+
+                        <TextView
+                            android:id="@+id/vCommentCountTextView"
+                            style="@style/VideoTableValueColumns"/>
+
+                    </TableRow>
+
+                    <TableRow
+                        style="@style/VideoTableRow">
+
+                        <TextView
+                            style="@style/VideoTableColumn0"
+                            android:text="@string/video_tags"/>
+
+                        <TextView
+                            android:id="@+id/vTagsTextView"
+                            style="@style/VideoTableValueColumns"/>
+
+                    </TableRow>
+
+                </TableLayout>
+
+                <RelativeLayout
+                    android:id="@+id/vMoveToYoutubeLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="36dp"
+                    android:layout_marginTop="16dp"
+                    android:textSize="12sp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/icon_youtube"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="32dp"
+                        android:textSize="14sp"
+                        android:text="@string/video_move_to_youtube"/>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

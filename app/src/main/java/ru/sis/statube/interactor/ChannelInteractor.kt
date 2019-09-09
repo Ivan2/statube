@@ -2,9 +2,8 @@ package ru.sis.statube.interactor
 
 import android.content.Context
 import com.google.gson.Gson
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
 import ru.sis.statube.additional.YOUTUBE_DATA_API_URL
+import ru.sis.statube.additional.async
 import ru.sis.statube.db.store.ChannelStore
 import ru.sis.statube.model.Channel
 import ru.sis.statube.model.Channels
@@ -30,7 +29,7 @@ class ChannelInteractor : Interactor() {
     private val searchWithTokenPath = "search?key=%s&q=%s&part=id,snippet&order=relevance&maxResults=30&type=channel&pageToken=%s"
     private val channelPath = "channels?key=%s&id=%s&part=snippet,statistics,brandingSettings,contentDetails"
 
-    fun searchChannelsAsync(context: Context, text: String, pageToken: String? = null) = GlobalScope.async {
+    fun searchChannelsAsync(context: Context, text: String, pageToken: String? = null) = async {
         val config = getConfig(context)
         val url = if (pageToken == null)
             "$YOUTUBE_DATA_API_URL${String.format(searchPath, config.youtubeDataApiKey, text)}"
@@ -58,7 +57,7 @@ class ChannelInteractor : Interactor() {
         }
     }
 
-    fun getChannelAsync(context: Context, channelId: String) = GlobalScope.async {
+    fun getChannelAsync(context: Context, channelId: String) = async {
         val config = getConfig(context)
         val url = "$YOUTUBE_DATA_API_URL${String.format(channelPath, config.youtubeDataApiKey, channelId)}"
         val response = OkRequest.getInstance().get(url)
@@ -77,11 +76,11 @@ class ChannelInteractor : Interactor() {
         }
     }
 
-    fun getFavouriteChannelsAsync() = GlobalScope.async {
+    fun getFavouriteChannelsAsync() = async {
         ChannelStore.getInstance().getChannels()
     }
 
-    fun changeFavouriteChannelAsync(channel: Channel) = GlobalScope.async {
+    fun changeFavouriteChannelAsync(channel: Channel) = async {
         if (channel.isFavourite) {
             ChannelStore.getInstance().saveChannel(channel)
         } else {

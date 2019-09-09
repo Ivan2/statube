@@ -20,4 +20,7 @@ class VideoSnippetResponse {
     @SerializedName("thumbnails")
     var thumbnails: ThumbnailsResponse? = null
 
+    @SerializedName("tags")
+    var tags: Array<String>? = null
+
 }

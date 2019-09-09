@@ -8,20 +8,39 @@
     tools:ignore="contentDescription">
 
     <LinearLayout
+        android:id="@+id/vTouchableMarkerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="@drawable/bg_marker"
         android:padding="8dp">
 
-        <TextView
-            android:id="@+id/vTitleTextView"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxLines="3"
-            android:ellipsize="end"
-            android:textStyle="bold"
-            android:textSize="10sp"/>
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/vInfoButton"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_gravity="center_vertical"
+                android:layout_alignParentEnd="true"
+                android:padding="2dp"
+                android:src="@drawable/ic_info_outline_black_24dp"
+                android:tint="@color/colorPrimary"/>
+
+            <TextView
+                android:id="@+id/vTitleTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@id/vInfoButton"
+                android:layout_marginEnd="8dp"
+                android:maxLines="3"
+                android:ellipsize="end"
+                android:textStyle="bold"
+                android:textSize="10sp"/>
+
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"

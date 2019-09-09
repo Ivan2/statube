@@ -2,10 +2,10 @@ package ru.sis.statube.interactor
 
 import android.content.Context
 import com.google.gson.Gson
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
+import kotlinx.coroutines.Deferred
 import org.joda.time.DateTime
 import ru.sis.statube.additional.YOUTUBE_DATA_API_URL
+import ru.sis.statube.additional.async
 import ru.sis.statube.db.store.VideoStore
 import ru.sis.statube.model.PlayListItem
 import ru.sis.statube.model.Video
@@ -31,12 +31,12 @@ class VideosInteractor : Interactor() {
     private val playlistItemsPath = "playlistItems?key=%s&playlistId=%s&part=contentDetails&maxResults=50"
     private val playlistItemsWithTokenPath = "playlistItems?key=%s&playlistId=%s&part=contentDetails&maxResults=50&pageToken=%s"
     private val videoPath = "videos?key=%s&id=%s&part=snippet,statistics,contentDetails"
+    private val fullVideoPath = "videos?key=%s&id=%s&part=snippet,statistics,contentDetails,liveStreamingDetails"
 
-    suspend fun getVideosAsync(context: Context, uploads: String, beginDate: DateTime, endDate: DateTime, channelId: String) = GlobalScope.async {
+    suspend fun getVideosAsync(context: Context, uploads: String, beginDate: DateTime, endDate: DateTime, channelId: String) = async {
         val config = getConfig(context)
         val playListItems = getPlayListItems(uploads, beginDate, endDate, config.youtubeDataApiKey)
         val videoList = getVideos(playListItems, config.youtubeDataApiKey)
-        //TODO check network error
         VideoStore.getInstance().saveVideos(videoList)
         val statisticsLastUpdated = VideosStatisticsLastUpdated().apply {
             this.id = uploads
@@ -87,18 +87,23 @@ class VideosInteractor : Interactor() {
         return playListItems
     }
 
-    private fun getVideos(playListItemList: List<PlayListItem>, youtubeDataApiKey: String): List<Video> {
+    private suspend fun getVideos(playListItemList: List<PlayListItem>, youtubeDataApiKey: String): List<Video> {
         val mapper = VideoResponseMapper()
         val videos = ArrayList<Video>()
+        val videoDeferredList = ArrayList<Deferred<Video?>>()
 
         playListItemList.forEach { playListItem ->
             try {
-                val videoUrl = "$YOUTUBE_DATA_API_URL${String.format(videoPath, youtubeDataApiKey, playListItem.videoId)}"
-                val response = OkRequest.getInstance().get(videoUrl)
-                val videoListResponse = Gson().fromJson(response, VideoListResponse::class.java)
-                videoListResponse.items?.forEach { videoResponse ->
-                    mapper.map(videoResponse)?.let { video ->
-                        video.publishedAt = playListItem.videoPublishedAt
+                videoDeferredList.add(getVideoAsync(mapper, playListItem, youtubeDataApiKey))
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+
+        videoDeferredList.forEach { deferred ->
+            try {
+                deferred.await()?.let { video ->
+                    synchronized(videos) {
                         videos.add(video)
                     }
                 }
@@ -110,7 +115,34 @@ class VideosInteractor : Interactor() {
         return videos
     }
 
-    fun getVideosLocalAsync(channelId: String, beginDate: DateTime, endDate: DateTime) = GlobalScope.async {
+    private fun getVideoAsync(mapper: VideoResponseMapper, playListItem: PlayListItem, youtubeDataApiKey: String) = async {
+        val videoUrl = "$YOUTUBE_DATA_API_URL${String.format(videoPath, youtubeDataApiKey, playListItem.videoId)}"
+        val response = OkRequest.getInstance().get(videoUrl)
+        val videoListResponse = Gson().fromJson(response, VideoListResponse::class.java)
+        videoListResponse.items?.forEach { videoResponse ->
+            mapper.map(videoResponse)?.let { video ->
+                video.publishedAt = playListItem.videoPublishedAt
+                return@async video
+            }
+        }
+        null
+    }
+
+    fun getFullVideoAsync(context: Context, videoId: String) = async {
+        val config = getConfig(context)
+        val videoUrl = "$YOUTUBE_DATA_API_URL${String.format(fullVideoPath, config.youtubeDataApiKey, videoId)}"
+        val response = OkRequest.getInstance().get(videoUrl)
+        val videoListResponse = Gson().fromJson(response, VideoListResponse::class.java)
+        val mapper = VideoResponseMapper()
+        videoListResponse.items?.forEach { videoResponse ->
+            mapper.map(videoResponse)?.let { video ->
+                return@async video
+            }
+        }
+        null
+    }
+
+    fun getVideosLocalAsync(channelId: String, beginDate: DateTime, endDate: DateTime) = async {
         val videoList = VideoStore.getInstance().getVideosByChannelId(channelId)
         videoList.filter { video ->
             video.publishedAt.isAfter(beginDate) && video.publishedAt.isBefore(endDate)

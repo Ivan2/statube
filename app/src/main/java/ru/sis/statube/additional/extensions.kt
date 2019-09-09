@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import java.util.*
-import kotlin.Comparator
 
 fun Context.color(colorId: Int): Int = ContextCompat.getColor(this, colorId)
 

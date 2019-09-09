@@ -5,18 +5,18 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_channels.*
 import ru.sis.statube.R
 import ru.sis.statube.additional.CHANNEL_DATA_KEY
 import ru.sis.statube.additional.string
 import ru.sis.statube.model.Channels
+import ru.sis.statube.presentation.activity.BaseActivity
 import ru.sis.statube.presentation.custom.SkeletonViewController
 import ru.sis.statube.presentation.screens.channel.ChannelActivity
 import java.util.*
 
-class ChannelsActivity : AppCompatActivity() {
+class ChannelsActivity : BaseActivity() {
 
     private enum class State {
         LOADING,
@@ -25,7 +25,7 @@ class ChannelsActivity : AppCompatActivity() {
         LIST
     }
 
-    private val presenter = ChannelsPresenter()
+    override val presenter = ChannelsPresenter()
 
     private val channelsKey = "CHANNELS_KEY"
     private val channelIdLoadingKey = "CHANNEL_ID_LOADING_KEY"

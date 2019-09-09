@@ -20,6 +20,8 @@ class Video : Serializable {
 
     var thumbnail: String? = null
 
+    var tags: Array<String>? = null
+
     var duration: Period? = null
 
     var viewCount: Long? = null
@@ -29,5 +31,11 @@ class Video : Serializable {
     var dislikeCount: Long? = null
 
     var commentCount: Long? = null
+
+    var scheduledStartTime: DateTime? = null
+
+    var actualStartTime: DateTime? = null
+
+    var actualEndTime: DateTime? = null
 
 }

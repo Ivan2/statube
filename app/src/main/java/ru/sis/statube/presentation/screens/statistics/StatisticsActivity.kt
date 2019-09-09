@@ -1,14 +1,16 @@
 package ru.sis.statube.presentation.screens.statistics
 
 import android.graphics.Color
+import android.graphics.PointF
+import android.graphics.Rect
 import android.os.Bundle
+import android.view.MotionEvent
 import android.view.View
+import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import com.afollestad.materialdialogs.MaterialDialog
 import com.github.mikephil.charting.charts.LineChart
-import com.github.mikephil.charting.components.MarkerView
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
@@ -26,12 +28,15 @@ import ru.sis.statube.model.Channel
 import ru.sis.statube.model.DataDaily
 import ru.sis.statube.model.GeneralStatistics
 import ru.sis.statube.model.Video
+import ru.sis.statube.presentation.activity.FullVideoLoadingActivity
+import ru.sis.statube.presentation.screens.statistics.chart.ClickableMarkerView
+import ru.sis.statube.presentation.screens.statistics.chart.NearestPointHighlighter
 import java.util.*
 import kotlin.collections.ArrayList
 
-class StatisticsActivity : AppCompatActivity() {
+class StatisticsActivity : FullVideoLoadingActivity() {
 
-    private val presenter = StatisticsPresenter()
+    override val presenter = StatisticsPresenter()
 
     private lateinit var channel: Channel
 
@@ -123,6 +128,7 @@ class StatisticsActivity : AppCompatActivity() {
         chart.setMaxVisibleValueCount(14)
         chart.setDrawGridBackground(false)
         chart.setDrawBorders(false)
+        chart.setHighlighter(NearestPointHighlighter(chart))
         chart.data = null
     }
 
@@ -373,6 +379,14 @@ class StatisticsActivity : AppCompatActivity() {
         vGeneralStatisticsLineChart.invalidate()
     }
 
+    private fun View.getPosRelativeTo(target: View): PointF? {
+        if (this == target)
+            return PointF(0f, 0f)
+        return (this.parent as? ViewGroup)?.getPosRelativeTo(target)?.let {
+            PointF(it.x + this.x, it.y + this.y)
+        }
+    }
+
     private fun updateVideosStatisticsChart() {
         vVideosStatisticsLineChart.data = if (videoList.isNotEmpty()) {
             val videos = ArrayList(videoList)
@@ -395,7 +409,11 @@ class StatisticsActivity : AppCompatActivity() {
                 }
             }
 
-            vVideosStatisticsLineChart.marker = object : MarkerView(this, R.layout.view_marker) {
+            vVideosStatisticsLineChart.marker = object : ClickableMarkerView(this, R.layout.view_marker_video) {
+                private val maxClickDuration = 500
+                private var startClickTime = 0L
+                private var infoButtonStartClickTime = 0L
+
                 override fun refreshContent(e: Entry?, highlight: Highlight?) {
                     e?.data?.let { data ->
                         if (data is Video) {
@@ -420,6 +438,41 @@ class StatisticsActivity : AppCompatActivity() {
                             dislikeLayoutParams.weight = dislikeCount / sum
                             likeView.layoutParams = likeLayoutParams
                             dislikeView.layoutParams = dislikeLayoutParams
+
+                            val touchableMarkerView = findViewById<View>(R.id.vTouchableMarkerView)
+                            val infoButton = findViewById<View>(R.id.vInfoButton)
+                            val infoButtonPos = infoButton.getPosRelativeTo(touchableMarkerView)
+                            val infoButtonRect = infoButtonPos?.let {
+                                val infoButtonLeft = infoButtonPos.x.toInt()
+                                val infoButtonTop = infoButtonPos.y.toInt()
+                                Rect(infoButtonLeft, infoButtonTop,
+                                    infoButtonLeft + infoButton.measuredWidth,
+                                    infoButtonTop + infoButton.measuredHeight)
+                            }
+
+                            touchableMarkerView.setOnTouchListener { _, event ->
+                                val touchOnInfoButton = infoButtonRect?.contains(event.x.toInt(), event.y.toInt()) == true
+                                when (event?.action) {
+                                    MotionEvent.ACTION_DOWN -> {
+                                        if (touchOnInfoButton)
+                                            infoButtonStartClickTime = System.currentTimeMillis()
+                                        else
+                                            startClickTime = System.currentTimeMillis()
+                                    }
+                                    MotionEvent.ACTION_UP -> {
+                                        if (touchOnInfoButton) {
+                                            val clickDuration = System.currentTimeMillis() - infoButtonStartClickTime
+                                            if (clickDuration < maxClickDuration)
+                                                loadFullVideo(data)
+                                        } else {
+                                            val clickDuration = System.currentTimeMillis() - startClickTime
+                                            if (clickDuration < maxClickDuration)
+                                                chartView.highlightValues(null)
+                                        }
+                                    }
+                                }
+                                false
+                            }
                         }
                     }
                     super.refreshContent(e, highlight)

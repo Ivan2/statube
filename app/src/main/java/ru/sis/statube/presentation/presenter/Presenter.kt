@@ -1,4 +1,4 @@
-package ru.sis.statube.presentation
+package ru.sis.statube.presentation.presenter
 
 import android.content.Context
 import com.afollestad.materialdialogs.MaterialDialog

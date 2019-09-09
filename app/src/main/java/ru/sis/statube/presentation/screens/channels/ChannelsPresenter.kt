@@ -8,7 +8,7 @@ import ru.sis.statube.interactor.ChannelInteractor
 import ru.sis.statube.interactor.ImageInteractor
 import ru.sis.statube.model.Channel
 import ru.sis.statube.model.Channels
-import ru.sis.statube.presentation.Presenter
+import ru.sis.statube.presentation.presenter.Presenter
 import java.io.File
 import java.io.FileOutputStream
 

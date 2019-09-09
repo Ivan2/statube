@@ -4,18 +4,18 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_channel.*
 import ru.sis.statube.R
 import ru.sis.statube.additional.*
 import ru.sis.statube.model.Channel
+import ru.sis.statube.presentation.activity.BaseActivity
 import ru.sis.statube.presentation.screens.statistics.StatisticsActivity
 import ru.sis.statube.presentation.screens.videos.VideosActivity
 import java.io.File
 
-class ChannelActivity : AppCompatActivity() {
+class ChannelActivity : BaseActivity() {
 
-    private val presenter = ChannelPresenter()
+    override val presenter = ChannelPresenter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +51,13 @@ class ChannelActivity : AppCompatActivity() {
             channel.isFavourite = !channel.isFavourite
             presenter.changeFavourite(channel)
             updateFavouriteButton(channel.isFavourite)
+        }
+
+        vDescriptionTextView.collapseExpandView = vExpandDescriptionButton
+        vExpandDescriptionButton.setOnClickListener {
+            vDescriptionTextView.toggle()
+            vExpandDescriptionButton.text = string(if (vDescriptionTextView.isExpanded)
+                R.string.collapse_text else R.string.expand_text)
         }
 
         vMoveToYoutubeLayout.setOnClickListener {

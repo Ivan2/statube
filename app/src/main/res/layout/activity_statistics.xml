@@ -13,8 +13,7 @@
         style="@style/TitleLayout">
 
         <TextView
-            style="@style/TitleTextView"
-            android:text="@string/statistics_title"/>
+            style="@style/TitleTextView"/>
 
         <ImageView
             android:id="@+id/vBackButton"
@@ -592,7 +591,7 @@
 
                 </LinearLayout>
 
-                <com.github.mikephil.charting.charts.LineChart
+                <ru.sis.statube.presentation.screens.statistics.chart.MarkerClickableLineChart
                     android:id="@+id/vVideosStatisticsLineChart"
                     android:layout_width="match_parent"
                     android:layout_height="250dp"/>
