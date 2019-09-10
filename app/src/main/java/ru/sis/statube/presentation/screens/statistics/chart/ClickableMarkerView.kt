@@ -27,10 +27,24 @@ open class ClickableMarkerView(context: Context?, layoutResource: Int) : MarkerV
     }
 
     override fun draw(canvas: Canvas?, posX: Float, posY: Float) {
-        super.draw(canvas, posX, posY)
-        val offset = getOffsetForDrawingAtPoint(posX, posY)
-        val left = (posX + offset.x + touchableMarkerView.x).toInt()
-        val top = (posY + offset.y + touchableMarkerView.y).toInt()
+        var newPosX = posX
+        var newPosY = posY
+
+        if (newPosX > chartView.measuredWidth / 2)
+            newPosX -= this.measuredWidth
+        if (newPosX < 0)
+            newPosX = 0f
+
+        if (newPosY > chartView.measuredHeight / 2)
+            newPosY -= this.measuredHeight
+        if (newPosY < 0)
+            newPosY = 0f
+
+        super.draw(canvas, newPosX, newPosY)
+
+        val offset = getOffsetForDrawingAtPoint(newPosX, newPosY)
+        val left = (newPosX + offset.x + touchableMarkerView.x).toInt()
+        val top = (newPosY + offset.y + touchableMarkerView.y).toInt()
         touchableViewRect = Rect(left, top, left + touchableMarkerView.measuredWidth,
             top + touchableMarkerView.measuredHeight)
     }

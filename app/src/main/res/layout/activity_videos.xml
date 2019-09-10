@@ -275,7 +275,7 @@
                                 android:gravity="center"
                                 android:textColor="@color/white"
                                 android:textSize="16sp"
-                                android:text="Экспорт в CSV"/>
+                                android:text="@string/videos_export_to_csv"/>
 
                         </LinearLayout>
 

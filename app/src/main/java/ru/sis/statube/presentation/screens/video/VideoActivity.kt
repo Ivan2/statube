@@ -5,7 +5,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import kotlinx.android.synthetic.main.activity_video.*
-import org.joda.time.DateTime
 import ru.sis.statube.R
 import ru.sis.statube.additional.*
 import ru.sis.statube.model.Video
@@ -60,10 +59,6 @@ class VideoActivity : BaseActivity() {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
             startActivity(intent)
         }
-    }
-
-    private fun DateTime.formatVideoDateTime(): String {
-        return this.toString("dd.MM.yyyy HH:mm:ss")
     }
 
 }

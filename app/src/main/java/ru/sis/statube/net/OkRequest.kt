@@ -1,19 +1,17 @@
 package ru.sis.statube.net
 
+import com.google.gson.Gson
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import ru.sis.statube.exception.ResponseException
+import ru.sis.statube.net.response.json.BaseResponse
 import java.util.concurrent.TimeUnit
 
 class OkRequest private constructor() {
 
     companion object {
         private var INSTANCE: OkRequest? = null
-        fun getInstance(): OkRequest {
-            val instance = INSTANCE ?: OkRequest()
-            if (INSTANCE == null)
-                INSTANCE = instance
-            return instance
-        }
+        fun getInstance() = INSTANCE ?: OkRequest().apply { INSTANCE = this }
     }
 
     private val client = OkHttpClient.Builder()
@@ -29,6 +27,11 @@ class OkRequest private constructor() {
 
         val response = client.newCall(request).execute()
         val str = response.body?.string()
+        val baseResponse = Gson().fromJson(str, BaseResponse::class.java)
+        val errorCode = baseResponse.error?.code
+        val errorMessage = baseResponse.error?.message
+        if (!errorCode.isNullOrEmpty() || !errorMessage.isNullOrEmpty())
+            throw ResponseException(errorCode, errorMessage)
         return str
     }
 

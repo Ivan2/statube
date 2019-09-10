@@ -14,19 +14,21 @@ import java.io.FileOutputStream
 
 class ChannelsPresenter : Presenter() {
 
-    fun loadFavouriteChannels(onLoad: (channels: List<Channel>) -> Unit) = launch({
+    fun loadFavouriteChannels(context: Context, onLoad: (channels: List<Channel>) -> Unit) = launch({
         val channels = ChannelInteractor.getInstance().getFavouriteChannelsAsync().await()
         onLoad(channels)
-    }, {
+    }, { e ->
         onLoad(emptyList())
+        onError(context, e)
     })
 
     fun searchChannels(context: Context, text: String, pageToken: String?,
                        onLoad: (text: String, channels: Channels) -> Unit) = launch({
         val channels = ChannelInteractor.getInstance().searchChannelsAsync(context, text, pageToken).await()
         onLoad(text, channels)
-    }, {
+    }, { e ->
         onLoad(text, Channels())
+        onError(context, e)
     })
 
     fun loadChannel(context: Context, channelId: String, onLoad: (channel: Channel) -> Unit) = launch({
@@ -49,8 +51,9 @@ class ChannelsPresenter : Presenter() {
         }
         hideProgressDialog()
         channel?.let { onLoad(it) }
-    }, {
+    }, { e ->
         hideProgressDialog()
+        onError(context, e)
     })
 
     fun changeFavourite(channel: Channel) = launch {

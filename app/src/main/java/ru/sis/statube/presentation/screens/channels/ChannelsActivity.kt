@@ -122,7 +122,7 @@ class ChannelsActivity : BaseActivity() {
     private fun loadFavouriteChannels() {
         setListViewState(State.LOADING)
         adapter.clear()
-        presenter.loadFavouriteChannels { channels ->
+        presenter.loadFavouriteChannels(this) { channels ->
             if (channels.isEmpty()) {
                 setListViewState(State.FAVOURITE_DATA_NOT_FOUND)
             } else {

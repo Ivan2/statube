@@ -17,12 +17,7 @@ class ChannelInteractor : Interactor() {
 
     companion object {
         private var INSTANCE: ChannelInteractor? = null
-        fun getInstance(): ChannelInteractor {
-            val instance = INSTANCE ?: ChannelInteractor()
-            if (INSTANCE == null)
-                INSTANCE = instance
-            return instance
-        }
+        fun getInstance() = INSTANCE ?: ChannelInteractor().apply { INSTANCE = this }
     }
 
     private val searchPath = "search?key=%s&q=%s&part=id,snippet&order=relevance&maxResults=30&type=channel"
@@ -81,11 +76,10 @@ class ChannelInteractor : Interactor() {
     }
 
     fun changeFavouriteChannelAsync(channel: Channel) = async {
-        if (channel.isFavourite) {
+        if (channel.isFavourite)
             ChannelStore.getInstance().saveChannel(channel)
-        } else {
+        else
             ChannelStore.getInstance().deleteChannel(channel)
-        }
         Unit
     }
 

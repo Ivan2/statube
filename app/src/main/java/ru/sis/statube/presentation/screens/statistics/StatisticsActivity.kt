@@ -129,18 +129,21 @@ class StatisticsActivity : FullVideoLoadingActivity() {
         chart.setDrawGridBackground(false)
         chart.setDrawBorders(false)
         chart.setHighlighter(NearestPointHighlighter(chart))
+        chart.isHighlightPerDragEnabled = false
+        chart.isHighlightPerTapEnabled = true
+        chart.maxHighlightDistance = 32f
         chart.data = null
     }
 
     private fun updateGeneralStatisticsLastUpdatedDateTime() {
-        presenter.loadGeneralStatisticsLastUpdatedDateTime(channel.id) { statisticsLastUpdated ->
+        presenter.loadGeneralStatisticsLastUpdatedDateTime(this, channel.id) { statisticsLastUpdated ->
             vGeneralStatisticsLastUpdateView.update(statisticsLastUpdated?.date)
         }
     }
 
     private fun updateVideosStatisticsLastUpdatedDateTime() {
         channel.uploads?.let { uploads ->
-            presenter.loadVideosStatisticsLastUpdatedDateTime(uploads) { statisticsLastUpdated ->
+            presenter.loadVideosStatisticsLastUpdatedDateTime(this, uploads) { statisticsLastUpdated ->
                 vVideosStatisticsLastUpdateView.update(statisticsLastUpdated?.date, statisticsLastUpdated?.beginDate, statisticsLastUpdated?.endDate)
             }
         }
@@ -160,7 +163,7 @@ class StatisticsActivity : FullVideoLoadingActivity() {
 
     private fun updateGeneralStatisticsLocal() {
         vGeneralStatisticsLastUpdateView.isLoading = true
-        presenter.loadGeneralStatisticsLocal(channel.id) { statistics ->
+        presenter.loadGeneralStatisticsLocal(this, channel.id) { statistics ->
             vGeneralStatisticsLastUpdateView.isLoading = false
             updateGeneralStatisticsTable(statistics)
             updateGeneralStatisticsChart()
@@ -192,7 +195,8 @@ class StatisticsActivity : FullVideoLoadingActivity() {
         channel.uploads?.let { uploads ->
             vVideosStatisticsLastUpdateView.isLoading = true
 
-            presenter.loadVideosStatistics(this, uploads, vVideosStatisticsPeriodChooser.beginDate, vVideosStatisticsPeriodChooser.endDate, channel.id) { videoList ->
+            presenter.loadVideosStatistics(this, uploads, vVideosStatisticsPeriodChooser.beginDate,
+                    vVideosStatisticsPeriodChooser.endDate, channel.id) { videoList ->
                 vVideosStatisticsLastUpdateView.isLoading = false
                 this.videoList = videoList
                 updateVideosStatisticsTable()
@@ -204,7 +208,8 @@ class StatisticsActivity : FullVideoLoadingActivity() {
 
     private fun updateVideosStatisticsLocal() {
         vVideosStatisticsLastUpdateView.isLoading = true
-        presenter.loadVideosStatisticsLocal(channel.id, vVideosStatisticsPeriodChooser.beginDate, vVideosStatisticsPeriodChooser.endDate) { videoList ->
+        presenter.loadVideosStatisticsLocal(this, channel.id, vVideosStatisticsPeriodChooser.beginDate,
+                vVideosStatisticsPeriodChooser.endDate) { videoList ->
             vVideosStatisticsLastUpdateView.isLoading = false
             this.videoList = videoList
             updateVideosStatisticsTable()
@@ -336,6 +341,40 @@ class StatisticsActivity : FullVideoLoadingActivity() {
                     }
                 }
 
+                vGeneralStatisticsLineChart.marker = object : ClickableMarkerView(this, R.layout.view_marker_day_statistics) {
+                    private val maxClickDuration = 500
+                    private var startClickTime = 0L
+
+                    override fun refreshContent(e: Entry?, highlight: Highlight?) {
+                        e?.data?.let { data ->
+                            if (data is DataDaily) {
+                                findViewById<TextView>(R.id.vDateTextView).text = data.date.toString("dd.MM.yyyy")
+                                findViewById<TextView>(R.id.vSubsTextView).text = data.subs.format()
+                                findViewById<TextView>(R.id.vViewsTextView).text = data.views.format()
+
+                                val touchableMarkerView = findViewById<View>(R.id.vTouchableMarkerView)
+
+                                touchableMarkerView.setOnTouchListener { _, event ->
+                                    when (event?.action) {
+                                        MotionEvent.ACTION_DOWN -> {
+                                            startClickTime = System.currentTimeMillis()
+                                        }
+                                        MotionEvent.ACTION_UP -> {
+                                            val clickDuration = System.currentTimeMillis() - startClickTime
+                                            if (clickDuration < maxClickDuration)
+                                                chartView.highlightValues(null)
+                                        }
+                                    }
+                                    false
+                                }
+                            }
+                        }
+                        super.refreshContent(e, highlight)
+                    }
+                }.apply {
+                    chartView = vGeneralStatisticsLineChart
+                }
+
                 val subEntries = ArrayList<Entry>()
                 val viewEntries = ArrayList<Entry>()
                 for (i in 0 until dataDailyList.size) {
@@ -343,18 +382,18 @@ class StatisticsActivity : FullVideoLoadingActivity() {
                     val x = Days.daysBetween(periodBegin, dataDaily.date).days.toFloat()
 
                     if (chartType == 0) {
-                        subEntries.add(Entry(x, dataDaily.subs.toFloat()))
-                        viewEntries.add(Entry(x, dataDaily.views.toFloat()))
+                        subEntries.add(Entry(x, dataDaily.subs.toFloat(), dataDaily))
+                        viewEntries.add(Entry(x, dataDaily.views.toFloat(), dataDaily))
                     } else {
                         val prevDataDaily = if (i == 0) dataDaily else dataDailyList[i - 1]
 
                         val prevSubs = prevDataDaily.subs
                         val subDif = dataDaily.subs - prevSubs
-                        subEntries.add(Entry(x, if (prevSubs <= 0) 0f else subDif.toFloat() / prevSubs * 100f))
+                        subEntries.add(Entry(x, if (prevSubs <= 0) 0f else subDif.toFloat() / prevSubs * 100f, dataDaily))
 
                         val prevViews = prevDataDaily.views
                         val viewDif = dataDaily.views - prevViews
-                        viewEntries.add(Entry(x, if (prevViews <= 0) 0f else viewDif.toFloat() / prevViews * 100f))
+                        viewEntries.add(Entry(x, if (prevViews <= 0) 0f else viewDif.toFloat() / prevViews * 100f, dataDaily))
                     }
                 }
 
@@ -418,7 +457,7 @@ class StatisticsActivity : FullVideoLoadingActivity() {
                     e?.data?.let { data ->
                         if (data is Video) {
                             findViewById<TextView>(R.id.vTitleTextView).text = data.title
-                            findViewById<TextView>(R.id.vPublishedAtTextView).text = data.publishedAt.toString("dd.MM.yyyy HH:mm:ss")
+                            findViewById<TextView>(R.id.vPublishedAtTextView).text = data.publishedAt.formatVideoDateTime()
                             findViewById<TextView>(R.id.vDurationTextView).text = data.duration?.formatDuration() ?: "?"
                             findViewById<TextView>(R.id.vViewCountTextView).text = data.viewCount?.format() ?: "?"
                             findViewById<TextView>(R.id.vCommentCountTextView).text = data.commentCount?.format() ?: "?"

@@ -82,7 +82,7 @@ class VideosActivity : FullVideoLoadingActivity() {
         vSortByLikesButton.setOnClickListener { updateSortMode(SortMode.LIKES) }
         vSortByDislikesButton.setOnClickListener { updateSortMode(SortMode.DISLIKES) }
         vSortByCommentsButton.setOnClickListener { updateSortMode(SortMode.COMMENTS) }
-        vSortByLikesDislikesButton.setOnClickListener { updateSortMode(SortMode.LIKES_DISLIKES) }
+        vSortByLikesDislikesButton.setOnClickListener { updateSortMode(SortMode.RATING) }
 
         vSortDirectionButton.setOnClickListener {
             sortDirection = 1 - sortDirection
@@ -157,7 +157,7 @@ class VideosActivity : FullVideoLoadingActivity() {
         vSortByLikesButton.updateSortMode(sortMode == SortMode.LIKES)
         vSortByDislikesButton.updateSortMode(sortMode == SortMode.DISLIKES)
         vSortByCommentsButton.updateSortMode(sortMode == SortMode.COMMENTS)
-        vSortByLikesDislikesButton.updateSortMode(sortMode == SortMode.LIKES_DISLIKES)
+        vSortByLikesDislikesButton.updateSortMode(sortMode == SortMode.RATING)
         updateVideos()
     }
 
@@ -171,7 +171,7 @@ class VideosActivity : FullVideoLoadingActivity() {
 
     private fun updateVideosLastUpdatedDateTime() {
         channel.uploads?.let { uploads ->
-            presenter.loadVideosLastUpdatedDateTime(uploads) { statisticsLastUpdated ->
+            presenter.loadVideosLastUpdatedDateTime(this, uploads) { statisticsLastUpdated ->
                 vLastUpdateView.update(statisticsLastUpdated?.date, statisticsLastUpdated?.beginDate, statisticsLastUpdated?.endDate)
             }
         }
@@ -195,7 +195,7 @@ class VideosActivity : FullVideoLoadingActivity() {
 
     private fun loadVideosLocal() {
         skeletonViewController.state = SkeletonViewController.State.SKELETON
-        presenter.loadVideosLocal(channel.id, vPeriodChooser.beginDate, vPeriodChooser.endDate) { videoList ->
+        presenter.loadVideosLocal(this, channel.id, vPeriodChooser.beginDate, vPeriodChooser.endDate) { videoList ->
             this.videoList.clear()
             this.filteredVideoList.clear()
             this.videoList.addAll(videoList)
@@ -235,7 +235,7 @@ class VideosActivity : FullVideoLoadingActivity() {
     private fun updateVideos() {
         skeletonViewController.state = if (filteredVideoList.isEmpty())
             SkeletonViewController.State.EMPTY else SkeletonViewController.State.CONTENT
-        presenter.sortVideos(filteredVideoList, sortMode, sortDirection) {
+        presenter.sortVideos(this, filteredVideoList, sortMode, sortDirection) {
             adapter.updateVideos(filteredVideoList)
         }
     }

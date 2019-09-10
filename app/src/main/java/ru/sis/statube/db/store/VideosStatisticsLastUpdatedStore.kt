@@ -9,11 +9,7 @@ class VideosStatisticsLastUpdatedStore {
 
     companion object {
         private var INSTANCE: VideosStatisticsLastUpdatedStore? = null
-        fun getInstance(): VideosStatisticsLastUpdatedStore {
-            if (INSTANCE == null)
-                INSTANCE = VideosStatisticsLastUpdatedStore()
-            return INSTANCE!!
-        }
+        fun getInstance() = INSTANCE ?: VideosStatisticsLastUpdatedStore().apply { INSTANCE = this }
     }
 
     fun getVideosStatisticsLastUpdated(id: String): VideosStatisticsLastUpdated? = Realm.getDefaultInstance().use { realm ->

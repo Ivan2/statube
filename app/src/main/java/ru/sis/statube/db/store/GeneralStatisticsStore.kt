@@ -9,11 +9,7 @@ class GeneralStatisticsStore {
 
     companion object {
         private var INSTANCE: GeneralStatisticsStore? = null
-        fun getInstance(): GeneralStatisticsStore {
-            if (INSTANCE == null)
-                INSTANCE = GeneralStatisticsStore()
-            return INSTANCE!!
-        }
+        fun getInstance() = INSTANCE ?: GeneralStatisticsStore().apply { INSTANCE = this }
     }
 
     fun getGeneralStatistics(channelId: String): GeneralStatistics? = Realm.getDefaultInstance().use { realm ->

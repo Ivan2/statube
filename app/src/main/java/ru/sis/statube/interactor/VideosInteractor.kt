@@ -20,12 +20,7 @@ class VideosInteractor : Interactor() {
 
     companion object {
         private var INSTANCE: VideosInteractor? = null
-        fun getInstance(): VideosInteractor {
-            val instance = INSTANCE ?: VideosInteractor()
-            if (INSTANCE == null)
-                INSTANCE = instance
-            return instance
-        }
+        fun getInstance() = INSTANCE ?: VideosInteractor().apply { INSTANCE = this }
     }
 
     private val playlistItemsPath = "playlistItems?key=%s&playlistId=%s&part=contentDetails&maxResults=50"
@@ -33,7 +28,8 @@ class VideosInteractor : Interactor() {
     private val videoPath = "videos?key=%s&id=%s&part=snippet,statistics,contentDetails"
     private val fullVideoPath = "videos?key=%s&id=%s&part=snippet,statistics,contentDetails,liveStreamingDetails"
 
-    suspend fun getVideosAsync(context: Context, uploads: String, beginDate: DateTime, endDate: DateTime, channelId: String) = async {
+    suspend fun getVideosAsync(context: Context, uploads: String, beginDate: DateTime,
+            endDate: DateTime, channelId: String) = async {
         val config = getConfig(context)
         val playListItems = getPlayListItems(uploads, beginDate, endDate, config.youtubeDataApiKey)
         val videoList = getVideos(playListItems, config.youtubeDataApiKey)
@@ -48,7 +44,8 @@ class VideosInteractor : Interactor() {
         getVideosLocalAsync(channelId, beginDate, endDate).await()
     }
 
-    private fun getPlayListItems(uploads: String, beginDate: DateTime, endDate: DateTime, youtubeDataApiKey: String): List<PlayListItem> {
+    private fun getPlayListItems(uploads: String, beginDate: DateTime, endDate: DateTime,
+            youtubeDataApiKey: String): List<PlayListItem> {
         val beginDate2 = beginDate.minusMonths(1)
         val mapper = PlayListItemResponseMapper()
         val playListItems = ArrayList<PlayListItem>()

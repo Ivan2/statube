@@ -7,5 +7,5 @@ enum class SortMode {
     LIKES,
     DISLIKES,
     COMMENTS,
-    LIKES_DISLIKES
+    RATING
 }

@@ -9,11 +9,7 @@ class VideoStore {
 
     companion object {
         private var INSTANCE: VideoStore? = null
-        fun getInstance(): VideoStore {
-            if (INSTANCE == null)
-                INSTANCE = VideoStore()
-            return INSTANCE!!
-        }
+        fun getInstance() = INSTANCE ?: VideoStore().apply { INSTANCE = this }
     }
 
     fun getVideosByChannelId(channelId: String): List<Video> = Realm.getDefaultInstance().use { realm ->

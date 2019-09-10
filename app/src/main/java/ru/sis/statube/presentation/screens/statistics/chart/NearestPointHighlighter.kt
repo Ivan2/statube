@@ -10,7 +10,7 @@ import kotlin.math.sqrt
 
 class NearestPointHighlighter(chart: BarLineScatterCandleBubbleDataProvider?) : ChartHighlighter<BarLineScatterCandleBubbleDataProvider>(chart) {
 
-    override fun getHighlight(x: Float, y: Float): Highlight {
+    override fun getHighlight(x: Float, y: Float): Highlight? {
         var minDist = -1.0
         var nearestPoint: MPPointD? = null
         mChart.data.dataSets.forEach { dataSet ->

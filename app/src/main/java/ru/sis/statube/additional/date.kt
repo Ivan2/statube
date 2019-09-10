@@ -49,3 +49,7 @@ fun String.parseYoutubePeriod(): Period? {
 fun Period.formatDuration(): String {
     return String.format("%d:%02d:%02d", this.hours, this.minutes, this.seconds)
 }
+
+fun DateTime.formatVideoDateTime(): String {
+    return this.toString("dd.MM.yyyy     HH:mm:ss")
+}

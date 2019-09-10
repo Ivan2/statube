@@ -4,9 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
-import com.github.mikephil.charting.charts.LineChart
 
-class MarkerClickableLineChart : LineChart {
+class MarkerClickableLineChart : CustomHighlightLineChart {
 
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)

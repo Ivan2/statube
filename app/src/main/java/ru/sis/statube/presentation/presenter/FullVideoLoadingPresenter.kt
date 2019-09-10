@@ -31,9 +31,10 @@ open class FullVideoLoadingPresenter : Presenter() {
 
         hideProgressDialog()
         onLoad(fullVideo ?: video)
-    }, {
+    }, { e ->
         hideProgressDialog()
         onLoad(video)
+        onError(context, e)
     })
 
 }

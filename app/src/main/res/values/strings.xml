@@ -1,8 +1,12 @@
 <resources>
 
+    <string name="wait">Подождите</string>
+    <string name="ok">OK</string>
     <string name="choose_program">Выберите программу</string>
     <string name="expand_text">Читать дальше</string>
     <string name="collapse_text">Свернуть</string>
+    <string name="error_title_template">Ошибка%s</string>
+    <string name="unknown_error">Неизвестная ошибка</string>
 
     <!-- channels -->
     <string name="channels_search">Поиск</string>
@@ -46,6 +50,7 @@
 
     <!-- videos -->
     <string name="videos_not_found">Ничего нет</string>
+    <string name="videos_export_to_csv">Экспорт в CSV</string>
 
     <!-- video -->
     <string name="video_id">ID</string>

@@ -9,11 +9,7 @@ class ChannelStore {
 
     companion object {
         private var INSTANCE: ChannelStore? = null
-        fun getInstance(): ChannelStore {
-            if (INSTANCE == null)
-                INSTANCE = ChannelStore()
-            return INSTANCE!!
-        }
+        fun getInstance() = INSTANCE ?: ChannelStore().apply { INSTANCE = this }
     }
 
     fun getChannels(): List<Channel> = Realm.getDefaultInstance().use { realm ->

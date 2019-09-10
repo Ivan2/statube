@@ -2,8 +2,7 @@ package ru.sis.statube.additional
 
 import kotlinx.coroutines.*
 
-fun launch(block: suspend CoroutineScope.() -> Unit,
-           onError: (e: Exception) -> Unit) {
+fun launch(block: suspend CoroutineScope.() -> Unit, onError: (e: Exception) -> Unit) {
     GlobalScope.launch(Dispatchers.Main) {
         try {
             block()

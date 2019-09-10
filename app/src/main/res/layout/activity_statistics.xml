@@ -272,7 +272,7 @@
 
             </LinearLayout>
 
-            <com.github.mikephil.charting.charts.LineChart
+            <ru.sis.statube.presentation.screens.statistics.chart.MarkerClickableLineChart
                 android:id="@+id/vGeneralStatisticsLineChart"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"/>

@@ -10,12 +10,7 @@ class StatisticsLastUpdatedInteractor : Interactor() {
 
     companion object {
         private var INSTANCE: StatisticsLastUpdatedInteractor? = null
-        fun getInstance(): StatisticsLastUpdatedInteractor {
-            val instance = INSTANCE ?: StatisticsLastUpdatedInteractor()
-            if (INSTANCE == null)
-                INSTANCE = instance
-            return instance
-        }
+        fun getInstance() = INSTANCE ?: StatisticsLastUpdatedInteractor().apply { INSTANCE = this }
     }
 
     fun setGeneralStatisticsLastUpdatedAsync(statisticsLastUpdated: GeneralStatisticsLastUpdated) = async {

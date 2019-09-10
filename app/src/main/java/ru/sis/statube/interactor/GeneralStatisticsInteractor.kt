@@ -15,12 +15,7 @@ class GeneralStatisticsInteractor : Interactor() {
 
     companion object {
         private var INSTANCE: GeneralStatisticsInteractor? = null
-        fun getInstance(): GeneralStatisticsInteractor {
-            val instance = INSTANCE ?: GeneralStatisticsInteractor()
-            if (INSTANCE == null)
-                INSTANCE = instance
-            return instance
-        }
+        fun getInstance() = INSTANCE ?: GeneralStatisticsInteractor().apply { INSTANCE = this }
     }
 
     private val statisticsPath = "statistics?query=statistics&username=%s&email=%s&token=%s"
@@ -28,7 +23,7 @@ class GeneralStatisticsInteractor : Interactor() {
     fun getGeneralStatisticsAsync(context: Context, channelId: String) = async {
         val config = getConfig(context)
         val url = "$SOCIAL_BLADE_API_URL${String.format(statisticsPath, channelId,
-            config.socialBladeEmail, config.socialBladeToken)}"
+                config.socialBladeEmail, config.socialBladeToken)}"
         val response = OkRequest.getInstance().get(url)
         val socialBladeResponse = Gson().fromJson(response, SocialBladeResponse::class.java)
         val statistics = SocialBladeResponseMapper().map(socialBladeResponse)

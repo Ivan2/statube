@@ -9,11 +9,7 @@ class GeneralStatisticsLastUpdatedStore {
 
     companion object {
         private var INSTANCE: GeneralStatisticsLastUpdatedStore? = null
-        fun getInstance(): GeneralStatisticsLastUpdatedStore {
-            if (INSTANCE == null)
-                INSTANCE = GeneralStatisticsLastUpdatedStore()
-            return INSTANCE!!
-        }
+        fun getInstance() = INSTANCE ?: GeneralStatisticsLastUpdatedStore().apply { INSTANCE = this }
     }
 
     fun getGeneralStatisticsLastUpdated(id: String): GeneralStatisticsLastUpdated? = Realm.getDefaultInstance().use { realm ->

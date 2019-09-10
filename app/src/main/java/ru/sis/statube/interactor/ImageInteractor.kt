@@ -8,12 +8,7 @@ class ImageInteractor : Interactor() {
 
     companion object {
         private var INSTANCE: ImageInteractor? = null
-        fun getInstance(): ImageInteractor {
-            val instance = INSTANCE ?: ImageInteractor()
-            if (INSTANCE == null)
-                INSTANCE = instance
-            return instance
-        }
+        fun getInstance() = INSTANCE ?: ImageInteractor().apply { INSTANCE = this }
     }
 
     fun getImageAsync(context: Context, url: String) = async {

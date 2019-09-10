@@ -9,6 +9,7 @@ import kotlinx.android.synthetic.main.list_item_video.view.*
 import ru.sis.statube.R
 import ru.sis.statube.additional.format
 import ru.sis.statube.additional.formatDuration
+import ru.sis.statube.additional.formatVideoDateTime
 import ru.sis.statube.additional.loadVideoThumbnail
 import ru.sis.statube.model.Video
 
@@ -42,7 +43,7 @@ class VideosListAdapter(
                 vTitleTextView.text = video.title
                 vImageView.loadVideoThumbnail(video.thumbnail)
 
-                vPublishedAtTextView.text = video.publishedAt.toString("dd.MM.yyyy HH:mm:ss")
+                vPublishedAtTextView.text = video.publishedAt.formatVideoDateTime()
                 vDurationTextView.text = video.duration?.formatDuration() ?: "?"
                 vViewCountTextView.text = video.viewCount?.format() ?: "?"
                 vCommentCountTextView.text = video.commentCount?.format() ?: "?"
